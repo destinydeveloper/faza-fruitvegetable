@@ -13,9 +13,13 @@ class CreateKeranjangsTable extends Migration
      */
     public function up()
     {
-        Schema::create('keranjangs', function (Blueprint $table) {
+        Schema::create('keranjang', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('jumlah');
+            $table->integer('total');
             $table->timestamps();
+
+            // Relasi ke barang
         });
     }
 
@@ -26,6 +30,6 @@ class CreateKeranjangsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('keranjangs');
+        Schema::dropIfExists('keranjang');
     }
 }

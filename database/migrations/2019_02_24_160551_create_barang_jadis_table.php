@@ -22,7 +22,7 @@ class CreateBarangJadisTable extends Migration
             $table->string('satuan', 10);
             $table->string('deskripsi', 50);
             $table->timestamps();
-            // Relasi ke foto_barang dan jenis
+            // Relasi jenis
         });
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateKurirsTable extends Migration
+class UpdateRelationUser extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,9 @@ class CreateKurirsTable extends Migration
      */
     public function up()
     {
-        Schema::create('kurir', function (Blueprint $table) {
-            $table->increments('id');
-            $table->enum('tipe_transaksi', ['COD', 'ATM', 'PETANI']);
-            $table->string('status');
-
-            $table->timestamps();
-
-            // Relasi ke id user
+        Schema::table('users', function (Blueprint $table) {
+            $table->unsignedInteger('id_role')->after('id')->nullable()->index();
+            $table->foreign('id_role')->references('id')->on('role')->onDelete('cascade');
         });
     }
 
@@ -31,6 +26,8 @@ class CreateKurirsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kurir');
+        Schema::table('users', function (Blueprint $table) {
+            //
+        });
     }
 }

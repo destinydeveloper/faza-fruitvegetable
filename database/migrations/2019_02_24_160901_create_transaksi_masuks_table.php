@@ -13,9 +13,14 @@ class CreateTransaksiMasuksTable extends Migration
      */
     public function up()
     {
-        Schema::create('transaksi_masuks', function (Blueprint $table) {
+        Schema::create('transaksi_masuk', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('total_barang_baku');
+            $table->string('status_transaksi_masuk');
+
             $table->timestamps();
+
+            // relasi ke petani, users, kurir
         });
     }
 
@@ -26,6 +31,6 @@ class CreateTransaksiMasuksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transaksi_masuks');
+        Schema::dropIfExists('transaksi_masuk');
     }
 }

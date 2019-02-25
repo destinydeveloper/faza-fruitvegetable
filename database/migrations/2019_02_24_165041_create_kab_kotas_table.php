@@ -13,9 +13,14 @@ class CreateKabKotasTable extends Migration
      */
     public function up()
     {
-        Schema::create('kab_kotas', function (Blueprint $table) {
+        Schema::create('kab_kota', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('nama', 25);
+            $table->integer('kode');
+            $table->unsignedInteger('id_provinsi');
             $table->timestamps();
+
+            $table->foreign('id_provinsi')->references('id')->on('provinsi')->onDelete('cascade');
         });
     }
 
@@ -26,6 +31,6 @@ class CreateKabKotasTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('kab_kotas');
+        // Schema::dropIfExists('kab_kota');
     }
 }
