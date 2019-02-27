@@ -89,10 +89,16 @@ Auth()->user()
 ```
 
 
+Get Information Auth Role :
+```
+Auth()->user()->role()
+```
+
 Get Information role - User Loged :
 ```
 Auth()->user()->info
 ```
+
 #### Middleware auth.role
 role Registered :
 * Admin

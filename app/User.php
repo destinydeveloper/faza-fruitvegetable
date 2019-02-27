@@ -43,6 +43,10 @@ class User extends Authenticatable
      *
      * @var array
      */
+    public function role()
+    {
+        return strtolower(str_replace('App\\Models\\', '', $this->role_type));
+    }
     public function info()
     {
         return $this->morphTo('role');

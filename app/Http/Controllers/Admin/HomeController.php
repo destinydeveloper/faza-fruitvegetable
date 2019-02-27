@@ -24,6 +24,7 @@ class HomeController extends Controller
     {
         $data = [
             'USER' => Auth()->user(),
+            'USER ROLE' => Auth()->user()->role(),
             'USER ROLE EXTRA INFO' => Auth()->user()->info
         ];
         dd($data);

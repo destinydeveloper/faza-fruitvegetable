@@ -4,8 +4,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Auth::routes();
-// Route::get('/home', 'HomeController@index')->name('home')->middleware('auth.role:REDIRECT_HOME_PAGE');
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth.role:REDIRECT_HOME_PAGE');
+// Route::get('/home', 'HomeController@index')->name('home');
 
 
 /**
@@ -18,7 +18,7 @@ Route::group([
     'namespace' => 'Admin'
 ], function(){
     Route::get('/', 'HomeController@index')->name('admin.home');
-    Route::get('/info', 'HomeController@info')->name('admin.home');
+    Route::get('/info', 'HomeController@info')->name('admin.info');
 });
 
 /**
