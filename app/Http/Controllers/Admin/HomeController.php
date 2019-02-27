@@ -27,6 +27,6 @@ class HomeController extends Controller
             'USER ROLE' => Auth()->user()->role(),
             'USER ROLE EXTRA INFO' => Auth()->user()->info
         ];
-        dd($data);
+        return "a : " . print_r($data);
     }
 }

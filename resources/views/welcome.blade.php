@@ -90,6 +90,9 @@
                     <a target="_blank" href="https://github.com/destinydeveloper/faza-fruitvegetable/tree/faza_tmd_vers">Project This Branch</a>
                     <a target="_blank" href="https://github.com/destinydeveloper/faza-fruitvegetable/tree/faza_tmd_vers#docs---guide">Documentation</a>
                 </div>
+                @php
+                    $string                    
+                @endphp
             </div>
         </div>
     </body>

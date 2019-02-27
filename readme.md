@@ -13,6 +13,7 @@
 * Selected Branch : `faza_tmd_vers -> origin`
 * `composer install`
 * copy `.env.example` to `.env` and Configure Your Database
+* `php artisan key:generate`
 * `php artisan migrate:fresh --seeder=UserTableSeeder`
 * `php artisan serve` and login with email : `admin@mail.com` and Password : `admin`
 <hr>
@@ -23,6 +24,7 @@
     * Optimize `auth.role`
     * Update Route - web.php
     * Make Default Namespace Cotroller for role home page
+    * Install Laravel `DebugBar`
 - b-1.2
     * New Table ~ Farmers, Couriers (database\migrations\2014_10_12_000000_create_users_table.php)
     * New Models ~ Farmer, Courier (App\Models\Farmer, App\Models\Courier)
@@ -31,7 +33,7 @@
 <hr>
 
 ### To Do List
-* Make Auth System  <span style="color: red;"> <= </span>
+* Make Auth System  <span style="color: red !important;"> <= </span>
 * Make Auth Front End Scafollding
 * Make Public Home (index)
 <hr>
