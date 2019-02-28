@@ -18,13 +18,17 @@
 * `php artisan serve` and login with email : `admin@mail.com` and Password : `admin`
 <hr>
 
-### Added - Latest (b-1.2)
+### Added - Latest (b-1.3)
+- b-1.3
+    * New Table ~ Images
+    * New Models ~ Images
+    * New Package ~ `Image Intervention`
 - b-1.2.1
     * Upgrade Laravel `5.7.2` to `5.8.0`
     * Optimize `auth.role`
     * Update Route - web.php
     * Make Default Namespace Cotroller for role home page
-    * Install Laravel `DebugBar`
+    * New Package ~ `Laravel DebugBar`
 - b-1.2
     * New Table ~ Farmers, Couriers (database\migrations\2014_10_12_000000_create_users_table.php)
     * New Models ~ Farmer, Courier (App\Models\Farmer, App\Models\Courier)

@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
          * Main Table For Auth All Users
          */
         Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
 
             $table->string('name');
             $table->string('email')->unique();
@@ -40,7 +40,7 @@ class CreateUsersTable extends Migration
          * Extra table for spesific information users level Admin
          */
         Schema::create('admins', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->timestamps();
         });
 
@@ -50,7 +50,7 @@ class CreateUsersTable extends Migration
          * Extra table for spesific information users level Customer
          */
         Schema::create('customers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->timestamps();
         });
 
@@ -60,7 +60,7 @@ class CreateUsersTable extends Migration
          * Extra table for spesific information users level Farmer
          */
         Schema::create('farmers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->timestamps();
         });
 
@@ -70,7 +70,7 @@ class CreateUsersTable extends Migration
          * Extra table for spesific information users level Courier
          */
         Schema::create('couriers', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->timestamps();
         });
     }
