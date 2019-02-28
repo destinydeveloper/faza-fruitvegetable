@@ -10,8 +10,8 @@ class HomeController extends Controller
     /**
      * Index Default Methods
      */
-    public function index()
+    public function index($username)
     {
-        return "user - Customer home page";
+        return "anda sedang berada pada user : " . $username;
     }
 }

@@ -15,6 +15,7 @@ class UserTableSeeder extends Seeder
         $user_level = \App\Models\Admin::create([]);
         $user = new \App\User();
         $user->name = 'MASTER ADMIN';
+        $user->username = 'adminnya';
         $user->email = 'admin@mail.com';
         $user->password = bcrypt('admin');
         $user_level->user()->save($user);
@@ -23,6 +24,7 @@ class UserTableSeeder extends Seeder
         $user_level = \App\Models\Customer::create([]);
         $user = new \App\User();
         $user->name = 'Customer Demo';
+        $user->username = 'viandwi';
         $user->email = 'user@mail.com';
         $user->password = bcrypt('user');
         $user_level->user()->save($user);

@@ -47,12 +47,16 @@ Route::group([
  * Customer - Route Group
  * 
  */
+Route::get('/user/{username}', 'Customer\ProfileController@index');
+
 Route::group([
     'middleware' => 'auth.role:customer',
     'prefix' => '/user',
     'namespace' => 'Customer'
 ], function(){
-    Route::get('/', 'HomeController@index')->name('user.home');
+    Route::get('/', function(){
+        return "anda sedang di home page user";
+    })->name('user.home');
 });
 
 /**
