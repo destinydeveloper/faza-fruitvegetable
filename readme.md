@@ -37,8 +37,9 @@
 <hr>
 
 ### To Do List
-* Make Auth System  <span style="color: red !important;"> <= </span>
-* Make Auth Front End Scafollding
+* Make Auth System  [fix]
+* Make Basic Front End - Assets Resource Configuration <span style="color: red !important;"> <= </span>
+* Make Auth Front End Scafollding 
 * Make Public Home (index)
 <hr>
 
@@ -53,6 +54,8 @@
     * Customers
     * Farmers
     * Couriers
+- Assets / Resource
+    * Images
 
 <hr>
 
