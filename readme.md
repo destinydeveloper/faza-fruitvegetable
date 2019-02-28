@@ -22,8 +22,12 @@
 don't forget after your update this branch with (pull), run this command :
 * `composer update` 
 * update configuration env [if .env changed]
+<hr>
 
-### Added - Latest (b-1.3)
+### Added - Latest (b-1.3.1)
+- b-1.3.1
+    * New Table ~ goods, raw_goods, image_goods
+    * Added Relation [ER-diagram]
 - b-1.3
     * New Table ~ Images
     * New Models ~ Images
@@ -56,12 +60,16 @@ don't forget after your update this branch with (pull), run this command :
     * passwords_resets
     * users
 - Custom Multi-role Auth
-    * Admins
-    * Customers
-    * Farmers
-    * Couriers
+    * admins
+    * customers
+    * farmers
+    * couriers
 - Assets / Resource
-    * Images
+    * images
+- Goods - Main
+    * goods
+    * raw_goods
+    * image_goods
 
 <hr>
 
