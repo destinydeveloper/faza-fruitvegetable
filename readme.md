@@ -10,7 +10,7 @@
 ### Clone
 * `git clone https://github.com/destinydeveloper/faza-fruitvegetable -b faza_tmd_vers`
 * `cd faza-fruitvegetable`
-* Selected Branch : `faza_tmd_vers -> origin`
+* make sure the selected branch is : `faza_tmd_vers -> origin`
 * `composer install`
 * copy `.env.example` to `.env` and Configure Your Database
 * `php artisan key:generate`
@@ -18,11 +18,17 @@
 * `php artisan serve` and login with email : `admin@mail.com` and Password : `admin`
 <hr>
 
+### Update This Branch (pull)
+don't forget after your update this branch with (pull), run this command :
+* `composer update` 
+* update configuration env [if .env changed]
+
 ### Added - Latest (b-1.3)
 - b-1.3
     * New Table ~ Images
     * New Models ~ Images
     * New Package ~ `Image Intervention`
+    * Add Helpers ~ `App\Helpers\Images` [Guide In Bottom]
 - b-1.2.1
     * Upgrade Laravel `5.7.2` to `5.8.0`
     * Optimize `auth.role`
@@ -38,7 +44,7 @@
 
 ### To Do List
 * Make Auth System  [fix]
-* Make Basic Front End - Assets Resource Configuration <span style="color: red !important;"> <= </span>
+* Make Basic Front End - Assets Resource Configuration    <====
 * Make Auth Front End Scafollding 
 * Make Public Home (index)
 <hr>
@@ -131,4 +137,18 @@ route::get('/extra', function(){
 For Auth Route Home, Redirect To HOME PAGE of USER role :
 ```
 route::get('/home', function(){ return ''; })->middleware('auth.role:REDIRECT_HOME_PAGE');
+```
+
+#### Helpers ~ Images
+Upload Image :
+```
+\App\Helpers\Images::upload( $request->file('image') );
+```
+
+Image Configuration :
+```
+// ENV
+
+RESOURCE_IMAGES_PATH=assets/images
+RESOURCE_IMAGES_DIMENSIONS=245,300,500
 ```
