@@ -116,8 +116,8 @@ route::get('/admin', function(){
 ```
 Make Permission to multi user role in route :
 ```
-route::get('/admin', function(){
-    return "this admin page, only user with role admin can see this page.";
+route::get('/extra', function(){
+    return "this extra page, only user with role admin and customer can see this page.";
 })->middleware('auth.role:admin,customer');
 ```
 
