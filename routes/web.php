@@ -1,6 +1,5 @@
 <?php
 use Illuminate\Http\Request;
-use Carbon\Carbon;
 
 Route::get('/', function () {
     return view('welcome');
@@ -12,6 +11,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/img', function(){
     return '
+        <img src="'. asset('assets/images/245/1551351066_5c77bd1aae182.jpg') .'" />
         <form method="post" enctype="multipart/form-data">
             '. csrf_field() .'
             <input type="file" name="image" />
@@ -25,10 +25,7 @@ Route::post('/img', function(Request $request){
         'image' => 'required|image|mimes:jpg,png,jpeg'
     ]);
 
-    $path = asset('assets/images/');
-    $file = $request->file('image');
-    $fileName = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-    \Image::make($file)->save($path . '/' . 'original' . '/' . $fileName);
+    dd( \App\Helpers\Images::upload($request->file('image')) );
 });
 
 
