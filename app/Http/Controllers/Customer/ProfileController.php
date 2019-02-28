@@ -14,11 +14,7 @@ class ProfileController extends Controller
         $usernya = User::where('username', $username)->first();
         if ($usernya === null) return abort(404);
 
-        $html = '
-            ditemukan! user yang anda cari ['. $username .'] ada di database dengan nama 
-            <b>'. $usernya->name .'</b> dan <b>email '. $usernya->email .'</b>
-        ';
-
-        return $html;
+        // kasih view tampilan
+        return view('customer.profile', ['user' => $usernya]);
     }
 }
