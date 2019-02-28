@@ -10,7 +10,7 @@
 ### Clone
 * `git clone https://github.com/destinydeveloper/faza-fruitvegetable -b faza_tmd_vers`
 * `cd faza-fruitvegetable`
-* Selected Branch : `faza_tmd_vers -> origin`
+* make sure the selected branch is : `faza_tmd_vers -> origin`
 * `composer install`
 * copy `.env.example` to `.env` and Configure Your Database
 * `php artisan key:generate`
@@ -20,7 +20,8 @@
 
 ### Update This Branch (pull)
 don't forget after your update this branch with (pull), run this command :
-* `composer update`
+* `composer update` 
+* update configuration env [if .env changed]
 
 ### Added - Latest (b-1.3)
 - b-1.3
@@ -43,7 +44,7 @@ don't forget after your update this branch with (pull), run this command :
 
 ### To Do List
 * Make Auth System  [fix]
-* Make Basic Front End - Assets Resource Configuration <span style="color: red !important;"> <= </span>
+* Make Basic Front End - Assets Resource Configuration    <====
 * Make Auth Front End Scafollding 
 * Make Public Home (index)
 <hr>
