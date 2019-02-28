@@ -6,30 +6,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 Auth::routes();
+Route::get('/dev', function(){
+    return "uji coba";
+});
 // Route::get('/home', 'HomeController@index')->name('home')->middleware('auth.role:REDIRECT_HOME_PAGE');
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::get('/img', function(){
-    return '
-        <form method="post" enctype="multipart/form-data">
-            '. csrf_field() .'
-            <input type="file" name="image" />
-            <button>upload</button>
-        </form>
-    ';
-});
-
-Route::post('/img', function(Request $request){
-    $request->validate([
-        'image' => 'required|image|mimes:jpg,png,jpeg'
-    ]);
-
-    $path = asset('assets/images/');
-    $file = $request->file('image');
-    $fileName = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-    \Image::make($file)->save($path . '/' . 'original' . '/' . $fileName);
-});
 
 
 
@@ -80,4 +63,24 @@ Route::group([
     'namespace' => 'Courier'
 ], function(){
     Route::get('/', 'HomeController@index')->name('courier.home');
+});
+Route::get('/img', function(){
+    return '
+        <form method="post" enctype="multipart/form-data">
+            '. csrf_field() .'
+            <input type="file" name="image" />
+            <button>upload</button>
+        </form>
+    ';
+});
+
+Route::post('/img', function(Request $request){
+    $request->validate([
+        'image' => 'required|image|mimes:jpg,png,jpeg'
+    ]);
+
+    $path = asset('assets/images/');
+    $file = $request->file('image');
+    $fileName = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+    \Image::make($file)->save($path . '/' . 'original' . '/' . $fileName);
 });
