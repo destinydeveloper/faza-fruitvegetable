@@ -13,12 +13,12 @@ class CreateBarangBakuTable extends Migration
      */
     public function up()
     {
-        Schema::create('raw_goods', function (Blueprint $table) {
+        Schema::create('barang_mentah', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
-            $table->integer('weight');
-            $table->integer('price');
-            $table->string('note');
+            $table->string('nama');
+            $table->integer('berat');
+            $table->integer('harga');
+            $table->string('catatan');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateBarangBakuTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('raw_goods');
+        Schema::dropIfExists('barang_mentah');
     }
 }

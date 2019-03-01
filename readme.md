@@ -1,6 +1,6 @@
 <div align="center">
     <h1>
-        Please Read!
+        Harap Dibaca!
     </h1>
     <small>
         I made this only for comparison and made this project more maximal magic and in line with Laravel
@@ -24,13 +24,15 @@ don't forget after your update this branch with (pull), run this command :
 * update configuration env [if .env changed]
 <hr>
 
-### Added - Latest (b-1.3.1)
+### Added - Latest (b-1.4)
+- b-1.4
+    * Penggatian Bahasa Inggris ke Bahasa Indonesia karena ada yang tidak bisa bahasa inggris.
 - b-1.3.1
-    * New Table ~ goods, raw_goods, image_goods
+    * New Table ~ barang, barang_mentah, gambar_barang
     * Added Relation [ER-diagram]
 - b-1.3
-    * New Table ~ Images
-    * New Models ~ Images
+    * New Table ~ Gambar
+    * New Models ~ Gambar
     * New Package ~ `Image Intervention`
     * Add Helpers ~ `App\Helpers\Images` [Guide In Bottom]
 - b-1.2.1
@@ -60,20 +62,24 @@ don't forget after your update this branch with (pull), run this command :
     * passwords_resets
     * users
 - Custom Multi-role Auth
-    * admins
-    * customers
-    * farmers
-    * couriers
+    * admin
+    * pelanggan
+    * petani
+    * kurir
 - Assets / Resource
-    * images
-- Goods - Main
-    * goods
-    * raw_goods
+    * gambar
+- Barang - Main
+    * barang
+    * barang_mentah
     * image_goods
 
 <hr>
 
 ### Reference
+##### Kenapa Sebelumnya Pakai Bahasa Inggris?
+* Membuat aplikasi universal, mudah dikembangkan.
+* Laravel itu pakai bahasa inggris, laravel juga memudahkan bahasa inggris. Pakai Bahasa Indonesia? Yah percuma pakai laravel.
+* Aplikasi Go International ? percuma kalau mau translate indo ke inggris.
 ##### Mengapa Memakai Morph Dalam Membuat Auth?
 Menyederhanakan tabel, karena informasi user yang sama tidak usah ditulis lagi, itu sangat membuang-buang waktu! Sebagai Contoh :
 ```Tabel User Admin  : id, nama, email, password

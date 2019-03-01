@@ -8,7 +8,7 @@
 </head>
 <body>
     <b>user yang dicari :</b>
-    <div>Nama : {{ $user->name }}</div>
+    <div>Nama : {{ $user->nama }}</div>
     <div>Email : {{ $user->email }}</div>
     <div>Username : {{ $user->username }}</div>
 </body>

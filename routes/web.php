@@ -27,53 +27,22 @@ Route::group([
 });
 
 /**
- * Customer - Route Group
+ * Pelanggan - Route Group
  * 
  */
-Route::get('/user/{username}', 'Customer\ProfileController@index');
+Route::get('/user/{username}', 'Pelanggan\ProfileController@index');
 
 Route::group([
-    'middleware' => 'auth.role:customer',
+    'middleware' => 'auth.role:pelanggan',
     'prefix' => '/user',
-    'namespace' => 'Customer'
+    'namespace' => 'Pelanggan'
 ], function(){
     Route::get('/', function(){
         return "anda sedang di home page user";
     })->name('user.home');
 });
 
-/**
- * Farmer - Route Group
- * 
- */
-Route::group([
-    'middleware' => 'auth.role:farmer',
-    'prefix' => '/farmer',
-    'namespace' => 'Farmer'
-], function(){
-    Route::get('/', 'HomeController@index')->name('farmer.home');
-});
 
-/**
- * Farmer - Route Group
- * 
- */
-Route::group([
-    'middleware' => 'auth.role:courier',
-    'prefix' => '/courier',
-    'namespace' => 'Courier'
-], function(){
-    Route::get('/', 'HomeController@index')->name('courier.home');
-});
-Route::get('/img', function(){
-    return '
-        <form method="post" enctype="multipart/form-data">
-            '. csrf_field() .'
-            <input type="file" name="image" />
-            <button>upload</button>
-        </form>
-    ';
-});
 
 Route::post('/img', function(Request $request){
     $request->validate([

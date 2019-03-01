@@ -21,17 +21,17 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->increments('id');
 
-            $table->string('name');
+            $table->string('nama');
             $table->string('username');
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('avatar')->unsigned()->index()->nullable();
-            $table->morphs('role');
 
+            $table->morphs('role');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
 
-            $table->timestamp('last_activity')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('aktifitas_terakhir')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
         });
 
@@ -40,7 +40,7 @@ class CreateUsersTable extends Migration
          * ------------
          * Extra table for spesific information users level Admin
          */
-        Schema::create('admins', function (Blueprint $table) {
+        Schema::create('admin', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
         });
@@ -50,7 +50,7 @@ class CreateUsersTable extends Migration
          * ------------
          * Extra table for spesific information users level Customer
          */
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('pelanggan', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
         });
@@ -60,7 +60,7 @@ class CreateUsersTable extends Migration
          * ------------
          * Extra table for spesific information users level Farmer
          */
-        Schema::create('farmers', function (Blueprint $table) {
+        Schema::create('petani', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
         });
@@ -70,7 +70,7 @@ class CreateUsersTable extends Migration
          * ------------
          * Extra table for spesific information users level Courier
          */
-        Schema::create('couriers', function (Blueprint $table) {
+        Schema::create('kurir', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamps();
         });
@@ -84,9 +84,9 @@ class CreateUsersTable extends Migration
     public function down()
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('admins');
-        Schema::dropIfExists('customers');
-        Schema::dropIfExists('farmers');
-        Schema::dropIfExists('couriers');
+        Schema::dropIfExists('admin');
+        Schema::dropIfExists('pelanggan');
+        Schema::dropIfExists('petani');
+        Schema::dropIfExists('kurir');
     }
 }

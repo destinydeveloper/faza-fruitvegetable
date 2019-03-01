@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Farmer extends Model
+class Pelanggan extends Model
 {
+    protected $table = 'pelanggan';
+    
     /**
      * Morph Relation
      * 

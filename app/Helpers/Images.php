@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use Carbon\Carbon;
 use Intervention\Image\Facades\Image;
-use App\Models\Image as tbImages;
+use App\Models\Gambar as tbImages;
 
 class Images {
     
@@ -18,8 +18,8 @@ class Images {
 
         $saveDB = tbImages::create([
             'path' => $fileName,
-            'title' => $title === null ? $fileName : $title,
-            'description' => $description
+            'judul' => $title === null ? $fileName : $title,
+            'deskripsi' => $description
         ]);
 
         foreach ($dimensions as $row) {
@@ -33,10 +33,10 @@ class Images {
             $canvas->save($path . '/' . $row . '/' . $fileName);
 
             return (object) [
-                'name'  => $fileName,
+                'nama'  => $fileName,
                 'id'    => $saveDB->id,
-                'title' => $saveDB->title,
-                'description' => $description,
+                'judul' => $saveDB->title,
+                'deskripsi' => $description,
             ];
         }
     }

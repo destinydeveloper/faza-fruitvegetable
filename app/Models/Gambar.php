@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Image extends Model
+class Gambar extends Model
 {
+    protected $table = 'gambar';    
     protected $fillable = ['title', 'description', 'path'];
 }

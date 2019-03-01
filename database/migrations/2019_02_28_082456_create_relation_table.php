@@ -14,11 +14,11 @@ class CreateRelationTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->foreign('avatar')->references('id')->on('images');
+            $table->foreign('avatar')->references('id')->on('gambar');
         });
-        Schema::table('image_goods', function (Blueprint $table) {
-            $table->foreign('image_id')->references('id')->on('images');
-            $table->foreign('goods_id')->references('id')->on('goods');
+        Schema::table('gambar_barang', function (Blueprint $table) {
+            $table->foreign('gambar_id')->references('id')->on('gambar');
+            $table->foreign('barang_id')->references('id')->on('barang');
         });
     }
 
@@ -30,7 +30,7 @@ class CreateRelationTable extends Migration
     public function down()
     {
         $table->dropForeign('users_avatar_foreign');
-        $table->dropForeign('image_goods_image_id_foreign');
-        $table->dropForeign('image_goods_goods_id_foreign');
+        $table->dropForeign('gambar_barang_gambar_id_foreign');
+        $table->dropForeign('gambar_barang_barang_id_foreign');
     }
 }

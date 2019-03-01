@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Customer;
+namespace App\Http\Controllers\Pelanggan;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -15,6 +15,6 @@ class ProfileController extends Controller
         if ($usernya === null) return abort(404);
 
         // kasih view tampilan
-        return view('customer.profile', ['user' => $usernya]);
+        return view('pelanggan.profile', ['user' => $usernya]);
     }
 }

@@ -13,10 +13,10 @@ class CreateImageTable extends Migration
      */
     public function up()
     {
-        Schema::create('images', function (Blueprint $table) {
+        Schema::create('gambar', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('title')->nullable();
-            $table->string('description')->nullable();
+            $table->string('judul')->nullable();
+            $table->string('deskripsi')->nullable();
             $table->string('path');
             $table->timestamps();
         });
@@ -29,6 +29,6 @@ class CreateImageTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('images');
+        Schema::dropIfExists('gambar');
     }
 }

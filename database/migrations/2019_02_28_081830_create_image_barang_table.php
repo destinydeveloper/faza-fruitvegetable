@@ -13,10 +13,10 @@ class CreateImageBarangTable extends Migration
      */
     public function up()
     {
-        Schema::create('image_goods', function (Blueprint $table) {
+        Schema::create('gambar_barang', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('goods_id')->unsigned();
-            $table->integer('image_id')->unsigned();
+            $table->integer('barang_id')->unsigned();
+            $table->integer('gambar_id')->unsigned();
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ class CreateImageBarangTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('image_goods');
+        Schema::dropIfExists('gambar_barang');
     }
 }
