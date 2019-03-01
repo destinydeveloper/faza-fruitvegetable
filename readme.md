@@ -26,7 +26,7 @@ don't forget after your update this branch with (pull), run this command :
 
 ### Added - Latest (b-1.4)
 - b-1.4
-    * Penggatian Bahasa Inggris ke Bahasa Indonesia karena ada yang tidak bisa bahasa inggris.
+    * Penggatian Bahasa Inggris ke Bahasa Indonesia.
 - b-1.3.1
     * New Table ~ barang, barang_mentah, gambar_barang
     * Added Relation [ER-diagram]
