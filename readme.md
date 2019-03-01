@@ -79,7 +79,6 @@ don't forget after your update this branch with (pull), run this command :
 ##### Kenapa Sebelumnya Pakai Bahasa Inggris?
 * Membuat aplikasi universal, mudah dikembangkan.
 * Laravel itu pakai bahasa inggris, laravel juga memudahkan bahasa inggris. Pakai Bahasa Indonesia? Yah percuma pakai laravel.
-* Aplikasi Go International ? percuma kalau mau translate indo ke inggris.
 ##### Mengapa Memakai Morph Dalam Membuat Auth?
 Menyederhanakan tabel, karena informasi user yang sama tidak usah ditulis lagi, itu sangat membuang-buang waktu! Sebagai Contoh :
 ```Tabel User Admin  : id, nama, email, password
