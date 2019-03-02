@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateJenisBarang extends Migration
+class CreateTransaksiMasukTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,11 @@ class CreateJenisBarang extends Migration
      */
     public function up()
     {
-        // Schema::create('jenis_barang', function (Blueprint $table) {
-        //     $table->increments('id');
-        //     $table->timestamps();
+        // Schema::create('transaksi_masuk', function (Blueprint $table) {
+            // $table->increments('id');
+            // $table->integer('user_id')->unsigned();
+            // $table->integer('user_id')->unsigned();
+            // $table->timestamps();
         // });
     }
 
@@ -26,6 +28,6 @@ class CreateJenisBarang extends Migration
      */
     public function down()
     {
-        // Schema::dropIfExists('jenis_barang');
+        // Schema::dropIfExists('transaksi_masuk');
     }
 }

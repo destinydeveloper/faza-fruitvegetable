@@ -1,5 +1,4 @@
 <?php
-use Illuminate\Http\Request;
 
 Route::get('/', function () {
     return view('welcome');
@@ -44,13 +43,17 @@ Route::group([
 
 
 
-Route::post('/img', function(Request $request){
-    $request->validate([
-        'image' => 'required|image|mimes:jpg,png,jpeg'
-    ]);
+Route::get('/img', function(){
+    $html = '
+        <form method="post" enctype="multipart/form-data">
+            '. csrf_field() .'
+            <input type="file" name="image" />
+            <button>go</button>
+        </form>
+    ';
 
-    $path = asset('assets/images/');
-    $file = $request->file('image');
-    $fileName = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-    \Image::make($file)->save($path . '/' . 'original' . '/' . $fileName);
+    return $html;
+});
+Route::post('/img', function(\Illuminate\Http\Request $request){
+    dd(\App\Helpers\Images::upload($request->file('image')));
 });
