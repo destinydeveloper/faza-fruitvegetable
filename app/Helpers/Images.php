@@ -27,8 +27,6 @@ class Images {
 
         $dimensions = explode('|', $dimensions);
 
-        dd($dimensions);
-
         $fileName = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 
         self::checkPath($path);
