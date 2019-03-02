@@ -7,6 +7,14 @@
     </small>
 </div>
 
+### Attention 
+please....<br>
+read the text above. I apologize if someone gets hurt seeing this branch. but, this branch is purely my thinking and what I have made here has references that you can see below. once again this branch of my results as a human being, it is impossible for me as a human being to hurt other humans, I apologize as much as possible, and please contact me.<br>
+
+Aku Punya Refrensi Kenapa Saya Melakukan Ini, dan pastinya melakukan riset sebelum menggunakan suatu teknologi seperti ini, demi hasil yang baik dan pemeliharaan kode yang baik. <br>
+jika punya pendapat lain silahkan kontak ^_^
+<hr>
+
 ### Clone
 * `git clone https://github.com/destinydeveloper/faza-fruitvegetable -b faza_tmd_vers`
 * `cd faza-fruitvegetable`
