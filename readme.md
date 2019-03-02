@@ -187,5 +187,5 @@ Image Configuration :
 RESOURCE_IMAGES_PATH=assets/images
 RESOURCE_IMAGES_DIMENSIONS=1280x720|800x600
 ```
-`RESOURCE_IMAGES_PATH` : Lokasi Gambar Akan Di Upload
+`RESOURCE_IMAGES_PATH` : Lokasi Gambar Akan Di Upload<br>
 `RESOURCE_IMAGES_DIMENSIONS` : Dimensi Yang Dibutuhkan, Gambar Yang Di Upload Akan Kami Pecah Menjadi Beberapa Dimensi sesuai kebutuhan, pisahkan dimensi dengan tanda | antar dimensi. dan tanda x untuk memisahkan width dan height.
