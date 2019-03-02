@@ -175,10 +175,10 @@ Upload Image :
 ```
 
 Jika Membutuhkan Informasi Dari Gambar Yang Telah Di Upload :
-
+```
 $upload = \App\Helpers\Images::upload( $request->file('image') );
-
 echo "Gambar Di simpan di database dengan id : " . $upload->id;
+```
 
 Image Configuration :
 ```
