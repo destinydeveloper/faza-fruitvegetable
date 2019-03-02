@@ -32,11 +32,12 @@ don't forget after your update this branch with (pull), run this command :
 * update configuration env [if .env changed]
 <hr>
 
-### Added - Latest (b-1.5)
+### Added - Latest (b-1.5.1)
+- b-1.5.1
+    * Update Image Helpers
 - b-1.5
     * Upgrade Laravel `5.8.0` to `5.8.2`
     * Update Database
-    * Update Image Helpers
 - b-1.4
     * Penggatian Bahasa Inggris ke Bahasa Indonesia.
 - b-1.3.1
