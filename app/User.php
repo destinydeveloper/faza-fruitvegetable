@@ -55,6 +55,6 @@ class User extends Authenticatable
     
     public function avatar()
     {
-        return $this->hasOne('App\Models\Gambar', 'avatar');
+        return $this->hasOne('App\Models\Gambar', 'id', 'gambar_id');
     }
 }

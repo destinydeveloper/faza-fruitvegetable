@@ -45,6 +45,7 @@ Route::group([
 
 Route::get('/img', function(){
     $html = '
+        <img src="'. asset('assets/images/100x100/'.Auth()->user()->avatar->path) .'" />
         <form method="post" enctype="multipart/form-data">
             '. csrf_field() .'
             <input type="file" name="image" />
@@ -55,5 +56,9 @@ Route::get('/img', function(){
     return $html;
 });
 Route::post('/img', function(\Illuminate\Http\Request $request){
-    dd(\App\Helpers\Images::upload($request->file('image')));
+    // Default Dimension (Only Dimension In .Env Configuration)
+    // dd(\App\Helpers\Images::upload($request->file('image')));
+
+    // Custom Dimension with merge Default Dimension
+    dd(\App\Helpers\Images::upload($request->file('image'), null, null, '100x100', true));
 });
