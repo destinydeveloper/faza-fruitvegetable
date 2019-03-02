@@ -34,7 +34,7 @@ don't forget after your update this branch with (pull), run this command :
 
 ### Added - Latest (b-1.4)
 - b-1.4
-    * Penggatian Bahasa Inggris ke Bahasa Indonesia karena ada yang tidak bisa bahasa inggris.
+    * Penggatian Bahasa Inggris ke Bahasa Indonesia.
 - b-1.3.1
     * New Table ~ barang, barang_mentah, gambar_barang
     * Added Relation [ER-diagram]
@@ -87,7 +87,6 @@ don't forget after your update this branch with (pull), run this command :
 ##### Kenapa Sebelumnya Pakai Bahasa Inggris?
 * Membuat aplikasi universal, mudah dikembangkan.
 * Laravel itu pakai bahasa inggris, laravel juga memudahkan bahasa inggris. Pakai Bahasa Indonesia? Yah percuma pakai laravel.
-* Aplikasi Go International ? percuma kalau mau translate indo ke inggris.
 ##### Mengapa Memakai Morph Dalam Membuat Auth?
 Menyederhanakan tabel, karena informasi user yang sama tidak usah ditulis lagi, itu sangat membuang-buang waktu! Sebagai Contoh :
 ```Tabel User Admin  : id, nama, email, password
@@ -139,9 +138,9 @@ Auth()->user()->info
 #### Middleware auth.role
 role Registered :
 * Admin
-* Customer
-* Farmer
-* Courier
+* Pelanggan
+* Petani
+* Kurir
 
 Make Permission in route :
 ```
@@ -153,7 +152,7 @@ Make Permission to multi user role in route :
 ```
 route::get('/extra', function(){
     return "this extra page, only user with role admin and customer can see this page.";
-})->middleware('auth.role:admin,customer');
+})->middleware('auth.role:admin,pelanggan');
 ```
 
 For Auth Route Home, Redirect To HOME PAGE of USER role :
