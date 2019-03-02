@@ -8,11 +8,26 @@ use App\Models\Gambar as tbImages;
 use File;
 
 class Images {
+    private static $errors;
     
-    public static function upload($file, $title = null, $description = null)
+    public static function upload($file, $title = null, $description = null, $dimension = null, $mergeDimension = false)
     {
         $path = public_path(env('RESOURCE_IMAGES_PATH', 'assets/images/'));
-        $dimensions = explode('|', env('RESOURCE_IMAGES_DIMENSIONS', '1280x720|800x600'));
+        $dimensions = env('RESOURCE_IMAGES_DIMENSIONS', '1280x720|800x600');
+
+        if ($dimension !== null and $mergeDimension == false) $dimensions = $dimension;
+        if ($dimension !== null and $mergeDimension == true) 
+        {
+            $dimensions = explode('|', $dimensions);
+            $dimension = explode('|', $dimension);
+            $dimensions = implode('|', $dimensions);
+            $dimension = implode('|', $dimension);
+            $dimensions = $dimension . '|' . $dimensions;
+        }
+
+        $dimensions = explode('|', $dimensions);
+
+        dd($dimensions);
 
         $fileName = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
 

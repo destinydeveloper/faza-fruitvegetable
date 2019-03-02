@@ -47,8 +47,14 @@ class User extends Authenticatable
     {
         return strtolower(str_replace('App\\Models\\', '', $this->role_type));
     }
+    
     public function info()
     {
         return $this->morphTo('role');
+    }
+    
+    public function avatar()
+    {
+        return $this->hasOne('App\Models\Gambar', 'avatar');
     }
 }

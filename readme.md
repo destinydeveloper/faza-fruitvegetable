@@ -32,7 +32,9 @@ don't forget after your update this branch with (pull), run this command :
 * update configuration env [if .env changed]
 <hr>
 
-### Added - Latest (b-1.5.1)
+### Added - Latest (b-1.5.2)
+- b-1.5.2
+    * Update Feature - Image Helpers (Check Guide)
 - b-1.5.1
     * Update Image Helpers
 - b-1.5
@@ -171,7 +173,25 @@ Helpers Berikut akan mengupload gambar ke folder yang sudah ditentukan di `.env`
 
 Upload Image :
 ```
-\App\Helpers\Images::upload( $request->file('image') );
+// Function
+Images::upload($imageFile, $titleForDatabase, $descriptionForDatabase, $customDimension, $mergeDimension);
+
+
+// Default Dimension (Only Dimension In .Env Configuration) (Env :1280x720|800x600)
+// Output : original|1280x720|800x600
+\App\Helpers\Images::upload($request->file('image'), null, null);
+
+
+// Custom Dimension
+// Output : original|100x100
+\App\Helpers\Images::upload($request->file('image'), null, null, '100x100');
+\App\Helpers\Images::upload($request->file('image'), 'Title Image Upload', 'Description Image Uplaod', '262x262');
+
+
+// Custom Dimension and Dimension Fro .Env Configuration
+// In .Env : 1280x720|800x600 and Custom : 100x100
+// Ouput : original|1280x720|800x600|100x100
+\App\Helpers\Images::upload($request->file('image'), null, null, '100x100', true);
 ```
 
 Jika Membutuhkan Informasi Dari Gambar Yang Telah Di Upload :
