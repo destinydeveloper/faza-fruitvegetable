@@ -16,9 +16,9 @@
         <div class="content-inner">
             <!-- Page Header-->
             <header class="page-header">
-            <div class="container-fluid">
-                <h2 class="no-margin-bottom">Dashboard</h2>
-            </div>
+                <div class="container-fluid">
+                    <h2 class="no-margin-bottom">@yield('page-header')</h2>
+                </div>
             </header>
 
             <!-- Page Content-->

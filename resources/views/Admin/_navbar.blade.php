@@ -12,7 +12,7 @@
                 <!-- Navbar Header-->
                 <div class="navbar-header">
                 <!-- Navbar Brand --><a href="index.html" class="navbar-brand d-none d-sm-inline-block">
-                    <div class="brand-text d-none d-lg-inline-block"><span>Bootstrap </span><strong>Dashboard</strong></div>
+                    <div class="brand-text d-none d-lg-inline-block"><span>Faza </span><strong>Administrator</strong></div>
                     <div class="brand-text d-none d-sm-inline-block d-lg-none"><strong>BD</strong></div></a>
                 <!-- Toggle Button--><a id="toggle-btn" href="#" class="menu-btn active"><span></span><span></span><span></span></a>
                 </div>

@@ -1,10 +1,11 @@
 <nav class="side-navbar">
     <!-- Sidebar Header-->
     <div class="sidebar-header d-flex align-items-center">
-        <div class="avatar"><img src="{{ asset('assets/dist/img/avatar-1.jpg') }}" alt="..." class="img-fluid rounded-circle"></div>
+        
+        <div class="avatar"><img src="{{ Auth()->user()->avatar === null ? asset('assets/dist/img/avatar.png') : 'assets/images/100x100/'.Auth()->user()->avatar->path }}" alt="..." class="img-fluid rounded-circle"></div>
         <div class="title">
-            <h1 class="h4">Mark Stephen</h1>
-            <p>Web Designer</p>
+            <h1 class="h4">{{ strlen(Auth()->user()->nama) > 12 ? substr(Auth()->user()->nama, 0, 12) . '...' : Auth()->user()->nama  }}</h1>
+            <p>{{ strlen(Auth()->user()->email) > 14 ? substr(Auth()->user()->email, 0, 14) . '...' : Auth()->user()->email }}</p>
         </div>
     </div>
     <!-- Sidebar Navidation Menus--><span class="heading">Main</span>

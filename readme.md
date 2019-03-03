@@ -40,7 +40,9 @@ don't forget after your update this branch with (pull), run this command :
 * update configuration env [if .env changed]
 <hr>
 
-### Added - Latest (b-1.6)
+### Added - Latest (b-1.6.1)
+- b-1.6.1
+    * Fix Admin Home Template
 - b-1.6
     * Added Concept Pattern View - (Check Admin View) (Check Guide)
     * Added New Template - Admin Material Bootstrap 4 (assets/dist|assets/vendor)
