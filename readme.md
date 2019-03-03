@@ -32,7 +32,13 @@ don't forget after your update this branch with (pull), run this command :
 * update configuration env [if .env changed]
 <hr>
 
-### Added - Latest (b-1.5.2)
+### Added - Latest (b-1.6)
+- b-1.6
+    * Added Concept Pattern View - (Check Admin View) (Check Guide)
+    * Added New Template - Admin Material Bootstrap 4 (assets/dist|assets/vendor)
+    * Rename View 
+        - `layouts/app.blade.php` to `layouts/auth.blade.php`
+        - `auth/*` change extends to `@extends('layouts.auth)`
 - b-1.5.2
     * Update Feature - Image Helpers (Check Guide)
 - b-1.5.1
@@ -209,3 +215,21 @@ RESOURCE_IMAGES_DIMENSIONS=1280x720|800x600
 ```
 `RESOURCE_IMAGES_PATH` : Lokasi Gambar Akan Di Upload<br>
 `RESOURCE_IMAGES_DIMENSIONS` : Dimensi Yang Dibutuhkan, Gambar Yang Di Upload Akan Kami Pecah Menjadi Beberapa Dimensi sesuai kebutuhan, pisahkan dimensi dengan tanda | antar dimensi. dan tanda x untuk memisahkan width dan height.
+
+
+
+#### New Concept Pattern View
+Pattern Yang Saya Buat Adalah :
+```
+// Struktur :
+views/layouts/app.blade.php [Main Parrent]
+views/layouts/parent-name.blade.php [Parrent]
+view/child-name/page.blade.php [Child]
+
+// Contoh Penerapan :
+[Child : admin/home.blade.php]   =>  [Parrent : layouts/admin.blade.php]  => [Main : layouts/app.blade.php]
+
+=>      : Extends
+[]      : Blade View
+```
+Contoh Langsung Bisa Dilihat di Admin Dashboard.

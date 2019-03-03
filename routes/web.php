@@ -7,8 +7,8 @@ Auth::routes();
 Route::get('/dev', function(){
     return "uji coba";
 });
-// Route::get('/home', 'HomeController@index')->name('home')->middleware('auth.role:REDIRECT_HOME_PAGE');
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index')->name('home')->middleware('auth.role:REDIRECT_HOME_PAGE');
+// Route::get('/home', 'HomeController@index')->name('home');
 
 
 
@@ -44,8 +44,7 @@ Route::group([
 
 
 Route::get('/img', function(){
-    $html = '
-        <img src="'. asset('assets/images/100x100/'.Auth()->user()->avatar->path) .'" />
+    $html = '                                                                                                                       
         <form method="post" enctype="multipart/form-data">
             '. csrf_field() .'
             <input type="file" name="image" />
@@ -60,5 +59,10 @@ Route::post('/img', function(\Illuminate\Http\Request $request){
     // dd(\App\Helpers\Images::upload($request->file('image')));
 
     // Custom Dimension with merge Default Dimension
-    dd(\App\Helpers\Images::upload($request->file('image'), null, null, '100x100', true));
+    $upload = \App\Helpers\Images::upload($request->file('image'), null, null, '100x100', true);
+    $upload = "nama : $upload->nama, id : $upload->id, judul : $upload->judul";
+    return 'tes saja : '  . $upload;
 });
+
+
+route::get('/tes', function(){ return view('about'); });

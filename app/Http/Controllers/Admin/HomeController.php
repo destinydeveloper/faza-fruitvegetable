@@ -12,7 +12,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return "user - admin home page";
+        return view('admin.home');
     }
     
     /**

@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
             $table->string('username');
             $table->string('email')->unique();
             $table->string('password');
-            $table->integer('avatar')->unsigned()->index()->nullable();
+            $table->integer('gambar_id')->unsigned()->nullable();
 
             $table->morphs('role');
             $table->timestamp('email_verified_at')->nullable();

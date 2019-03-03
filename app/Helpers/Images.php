@@ -9,6 +9,11 @@ use File;
 
 class Images {
     private static $errors;
+
+    public function getError()
+    {
+        return self::$errors;
+    }
     
     public static function upload($file, $title = null, $description = null, $dimension = null, $mergeDimension = false)
     {
@@ -56,7 +61,7 @@ class Images {
         return (object) [
             'nama'  => $fileName,
             'id'    => $saveDB->id,
-            'judul' => $saveDB->title,
+            'judul' => $title === null ? $fileName : $title,
             'deskripsi' => $description,
         ];
     }
