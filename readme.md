@@ -72,7 +72,7 @@ don't forget after your update this branch with (pull), run this command :
 ### To Do List
 * Make Auth System  [fix]
 * Make Basic Front End - Assets Resource Configuration    <====
-* Make Auth Front End Scafollding 
+* Make Auth Front End Scafollding  <====
 * Make Public Home (index)
 <hr>
 
