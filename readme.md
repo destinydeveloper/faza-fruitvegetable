@@ -17,7 +17,9 @@ jika punya pendapat lain silahkan kontak ^_^
 
 ### ScreenShot
 <div align="center">
+
 ![Gambar Struktur Resource](https://github.com/destinydeveloper/faza-fruitvegetable/raw/faza_tmd_vers/ss_struktur_resource.png "Gambar Struktur Resource")
+
 </div>
 <hr>
 
