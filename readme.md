@@ -15,6 +15,10 @@ Aku Punya Refrensi Kenapa Saya Melakukan Ini, dan pastinya melakukan riset sebel
 jika punya pendapat lain silahkan kontak ^_^
 <hr>
 
+### ScreenShot
+![Gambar Struktur Resource](https://github.com/destinydeveloper/faza-fruitvegetable/raw/faza_tmd_vers/ss_struktur_resource.png "Gambar Struktur Resource")
+<hr>
+
 ### Clone
 * `git clone https://github.com/destinydeveloper/faza-fruitvegetable -b faza_tmd_vers`
 * `cd faza-fruitvegetable`
