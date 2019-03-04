@@ -34,17 +34,41 @@
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.js"></script>
     <script>
+        NProgress.start();
+        NProgress.set(0.4);
         // axios config
         axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
         axios.defaults.baseURL = "{{ route('admin.manager.user.api') }}";
+        var table;
         const app = new Vue({
             el: '#app',
             data: {
-                nama : 'alfian dwi'
+                nama : 'alfian dwi',
+                filter: 'admin'
             },
-            mounted() {
+            mounted(){
+                NProgress.done();
             },
             methods: {
+                loadTable(){
+                    var tableDOM = $('#users-table');
+                    tableDOM.dataTable().fnDestroy();
+                    table = tableDOM.DataTable({
+                        processing: true,
+                        serverSide: true,
+                        ajax: {
+                            url: '',
+                            data: {filter: app.filter}
+                        },
+                        columns: [
+                            {data: 'id', name: 'id'},
+                            {data: 'nama', name: 'nama'},
+                            {data: 'email', name: 'email'},
+                            {data: 'action', name: 'action'},
+                        ],
+                        responsive: true
+                    });
+                },
                 detail(id){
                     NProgress.start();
                     NProgress.set(0.4);
@@ -55,9 +79,15 @@
                             setTimeout(function(){
                                 NProgress.done();
                                 var user = res.data.result;
-                                var html = "<table><tr><td><b>Nama</b></td><td>: "+user.nama+"</td></tr><tr><td><b>Email</b></td><td>: "+user.email+"</td></tr><tr><td><b>Username</b></td><td>: "+user.username+"</td></tr><tr><td><b>Created at</b></td><td>: "+user.created_at+"</td></tr></table>";
-                                alertify.alert('Detail User', html);
-                            }, 2000);
+                                var avatar;
+                                if (user.avatar === null) {
+                                    avatar = "{{ asset('assets/dist/img/avatar.png') }}";
+                                } else {
+                                    avatar = "{{ asset('assets/images/100x100/') }}" + user.avatar.path;
+                                }
+                                var html = "<div class='row'><div class='col-3'><div class='avatar'><img src='"+avatar+"' alt='...' class='img-fluid rounded-circle'></div></div><div class='col-8'><table><tr><td><b>Nama</b></td><td>: "+user.nama+"</td></tr><tr><td><b>Email</b></td><td>: "+user.email+"</td></tr><tr><td><b>Username</b></td><td>: "+user.username+"</td></tr><tr><td><b>Created at</b></td><td>: "+user.created_at+"</td></tr></table></div></div>";
+                                alertify.alert('Detail User', html); 
+                            }, 500);
                         }
                     });
                 },
@@ -70,22 +100,10 @@
                 handleError(res){
                     alert('Error : ' + res.data.error + ' ['+res.status+']');
                 }
-            }
-        })
-
-        // table
-        var table = $('#users-table').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '',
-            columns: [
-                {data: 'id', name: 'id'},
-                {data: 'nama', name: 'nama'},
-                {data: 'email', name: 'email'},
-                {data: 'action', name: 'action'},
-            ],
-            responsive: true
+            },
         });
+        
+        app.loadTable();
     </script>
 @endpush
 
@@ -97,7 +115,7 @@
                 <div class="card-body">
                     <form v-on:submit.prevent="" class="form-inline" style="margin-bottom: 15px;">
                         <label style="margin-right: 10px;" for="filter">Filter : </label>
-                        <select class="form-control" id="filter">
+                        <select v-on:change="loadTable()" v-model="filter" class="form-control" id="filter">
                             <option value="admin">Admin</option>
                             <option value="investor">Investor</option>
                             <option value="pengepak">Pengepak</option>
@@ -109,6 +127,9 @@
                         <span style="margin-left: 10px;">
                             <button v-on:click="table.ajax.reload( null, false )" title="Refresh" class="btn btn-sm btn-warning">
                                 <i class="fa fa-refresh"></i>
+                            </button>
+                            <button v-on:click="alert('t')" title="Tambah" class="btn btn-sm btn-success">
+                                <i class="fa fa-plus"></i>
                             </button>
                         </span>
                     </form>

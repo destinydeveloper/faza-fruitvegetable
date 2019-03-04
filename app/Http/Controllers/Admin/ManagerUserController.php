@@ -25,7 +25,7 @@ class ManagerUserController extends Controller
         switch ($request->input('action'))
         {
             case 'detail':
-                $user = User::find($request->input('id'));
+                $user = User::with('avatar')->whereId($request->input('id'))->first();
                 if ($user === null) return $this->errNotFound();
                 return response()->json(['status' => 'success', 'result' => $user], 200);
                 break;
@@ -38,13 +38,18 @@ class ManagerUserController extends Controller
 
     public function getUser($request)
     {
-        switch ($request) 
+        switch ($request->input('filter')) 
         {
+            case 'admin':
+                $data = \App\Models\Admin::query();
+                break;
+
             case 'pelanggan':
+                $data = \App\Models\Pelanggan::query();
                 break;
 
             default:
-                $data = \App\Models\Admin::query();
+                $data = [];
                 break;
 
         }
