@@ -179,7 +179,8 @@ return [
         /*
          * Faza Custom - Application Service Providers...
          */
-        Intervention\Image\ImageServiceProvider::class
+        Intervention\Image\ImageServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
 
     ],
 
@@ -235,7 +236,8 @@ return [
         /**
          * Faza Custom - aliases
          */
-        'Image' => Intervention\Image\Facades\Image::class
+        'Image' => Intervention\Image\Facades\Image::class,
+        'Datatables' => Yajra\Datatables\Datatables::class,
     ],
 
 ];

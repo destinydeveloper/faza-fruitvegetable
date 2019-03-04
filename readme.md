@@ -40,7 +40,11 @@ don't forget after your update this branch with (pull), run this command :
 * update configuration env [if .env changed]
 <hr>
 
-### Added - Latest (b-1.6.1)
+### Added - Latest (b-1.7)
+- b-1.7
+    * Added Page - Admin / Manager / User 
+    * Added Vendor - Alertify, Vuejs, NProgress, Datatables
+    * Added package - Yajra Datatables
 - b-1.6.1
     * Fix Admin Home Template
 - b-1.6

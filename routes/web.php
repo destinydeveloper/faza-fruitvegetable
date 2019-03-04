@@ -23,6 +23,8 @@ Route::group([
 ], function(){
     Route::get('/', 'HomeController@index')->name('admin.home');
     Route::get('/info', 'HomeController@info')->name('admin.info');
+    Route::get('/manager/user', 'ManagerUserController@index');
+    Route::post('/manager/user/process', 'ManagerUserController@process')->name('admin.manager.user.api');
 });
 
 /**
