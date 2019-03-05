@@ -74,6 +74,20 @@ class CreateUsersTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
         });
+
+
+        Schema::create('investor', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->timestamps();
+        });
+        Schema::create('pengepak', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->timestamps();
+        });
+        Schema::create('supervisor', function (Blueprint $table) {
+            $table->bigIncrements('id');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -88,5 +102,8 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('pelanggan');
         Schema::dropIfExists('petani');
         Schema::dropIfExists('kurir');
+        Schema::dropIfExists('investor');
+        Schema::dropIfExists('pengepak');
+        Schema::dropIfExists('supervisor');
     }
 }

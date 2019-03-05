@@ -20,7 +20,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
 <body>
-    <div class="page @yield('page-class')">
+    <div id="app" class="page @yield('page-class')">
         @yield('content-header')
         @yield('content-main')
         @yield('content-footer')

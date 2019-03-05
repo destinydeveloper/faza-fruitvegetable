@@ -17,7 +17,7 @@ Route::get('/home', 'HomeController@index')->name('home')->middleware('auth.role
  * 
  */
 Route::group([
-    'middleware' => 'auth.role:admin',
+    'middleware' => ['auth', 'auth.role:admin'],
     'prefix' => '/admin',
     'namespace' => 'Admin'
 ], function(){
@@ -34,7 +34,7 @@ Route::group([
 Route::get('/user/{username}', 'Pelanggan\ProfileController@index');
 
 Route::group([
-    'middleware' => 'auth.role:pelanggan',
+    'middleware' => ['auth', 'auth.role:pelanggan'],
     'prefix' => '/user',
     'namespace' => 'Pelanggan'
 ], function(){
