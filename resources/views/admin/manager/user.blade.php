@@ -43,8 +43,8 @@
         axios.defaults.baseURL = "{{ route('admin.manager.user.api') }}";
         var table;
         const app = new Vue({
-            el: '#app',
-            data: {
+              data: {
+          el: '#app',
                 filter: 'admin',
                 nama: 'tes',
                 username: '',
