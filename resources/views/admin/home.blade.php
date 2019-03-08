@@ -13,3 +13,8 @@
         </div>
     </section>
 @endsection
+
+
+@push('js')
+    <script>$('#sidebar-home').addClass('active');</script>    
+@endpush

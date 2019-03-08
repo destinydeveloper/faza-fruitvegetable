@@ -22,9 +22,10 @@ Route::group([
     'namespace' => 'Admin'
 ], function(){
     Route::get('/', 'HomeController@index')->name('admin.home');
-    Route::get('/info', 'HomeController@info')->name('admin.info');
-    Route::get('/manager/user', 'ManagerUserController@index');
-    Route::post('/manager/user/process', 'ManagerUserController@process')->name('admin.manager.user.api');    
+    Route::get('/profil', 'ProfilController@index')->name('admin.profil');
+    Route::post('/profil', 'ProfilController@upload')->name('admin.profil.action');
+    Route::get('/manager/user', 'ManagerUserController@index')->name('admin.manager.user'); 
+    Route::post('/manager/user/process', 'ManagerUserController@process')->name('admin.manager.user.action');    
 });
 
 /**

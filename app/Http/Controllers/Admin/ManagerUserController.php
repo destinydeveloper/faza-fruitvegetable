@@ -13,31 +13,26 @@ class ManagerUserController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            return Datatables::of(\App\User::whereRoleType('App\\Models\\'.ucfirst($request->input('filter'))))
+            return Datatables::of(\App\User::WhereNotIn('id', (array) Auth()->user()->id)->whereRoleType('App\\Models\\'.ucfirst($request->input('filter'))))
+                ->addColumn('no', function(){
+                    static $no = 1;
+                    return $no++;
+                })
                 ->addColumn('action', function($u){
                     $id = $u->id;
                     $username = "'".$u->username."'";
                     return '
-                        <button onclick="app.detail('.$id.')" title="Lihat" class="btn btn-sm btn-success"><i class="fa fa-search"></i></button>
-                        <button onclick="app.edit('.$id.')" title="Edit" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i></button>
-                        <button onclick="app.delete('.$id.', '.$username.')" title="Hapus" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
+                        <button onclick="app.detail('.$id.')" title="Lihat" class="btn btn-xs btn-success"><i class="fa fa-search"></i></button>
+                        <button onclick="app.edit('.$id.')" title="Edit" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></button>
+                        <button onclick="app.delete('.$id.', '.$username.')" title="Hapus" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
                     ';
                 })
                 ->make(true);
         }
-        return view('admin.manager.tes');
-    }
-
-
-
-
-
-
-    public function indexa(Request $request)
-    {
-        if ($request->ajax()) return $this->getUser($request);
         return view('admin.manager.user');
     }
+
+
 
     public function process(Request $request)
     {
@@ -53,7 +48,7 @@ class ManagerUserController extends Controller
                 $role = ucfirst($request->input('role'));
                 $request->validate([
                     'nama' => 'required',
-                    'email' => 'required',
+                    'email' => 'required|email',
                     'username' => 'required',
                     'password' => 'required',
                 ]);
@@ -84,55 +79,29 @@ class ManagerUserController extends Controller
 
                 return response()->json(['status' => 'success', 'result' => $request->input('id')]);
                 break;
+            
+            case 'update':
+                $request->validate([
+                    'nama' => 'required',
+                    'email' => 'required|email',
+                    'username' => 'required'
+                ]);
+                $changePassword = true;
+                if (!$request->has('password') or $request->input('password') === null) $changePassword = false;
+                $user = User::find($request->input('id'));
+                $user->nama = $request->input('nama');
+                $user->username = $request->input('username');
+                $user->email = $request->input('email');
+                if ($changePassword) $user->password = bcrypt($request->input('password'));
+                $update = $user->save();
+                return response()->json(['status' => 'success', 'result' => ['username' => $request->input('username')]]);
+                break;
 
             default:
                 if (!$request->has('action')) return $this->errResponse('action not found');
                 break;
         }
     }
-
-    public function getUser($request)
-    {
-        $data = \App\User::whereRoleType('App\\Models\\'.ucfirst($request->input('filter')));
-        // return $data === null ? 'null' : 
-        //     Datatables::of($data)
-        //         ->addColumn('nama', function($u){
-        //             return $u->user->nama;
-        //         })
-        //         ->addColumn('email', function($u){
-        //             return $u->user->email;
-        //         })
-        //         ->addColumn('action', function($u){
-        //             $id = $u->user->id;
-        //             $username = "'".$u->user->username."'";
-        //             return '
-        //                 <button onclick="app.detail('.$id.')" title="Lihat" class="btn btn-sm btn-success"><i class="fa fa-search"></i></button>
-        //                 <button onclick="app.edit('.$id.')" title="Edit" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i></button>
-        //                 <button onclick="app.delete('.$id.', '.$username.')" title="Hapus" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-        //             ';
-        //         })
-        //         ->make(true);
-        
-        return Datatables::of(User::query())
-            ->addColumn('nama', function($u){
-                return $u->nama;
-            })
-            ->addColumn('email', function($u){
-                return $u->email;
-            })
-            ->addColumn('action', function($u){
-                $id = $u->id;
-                $username = "'".$u->username."'";
-                return '
-                    <button onclick="app.detail('.$id.')" title="Lihat" class="btn btn-sm btn-success"><i class="fa fa-search"></i></button>
-                    <button onclick="app.edit('.$id.')" title="Edit" class="btn btn-sm btn-warning"><i class="fa fa-pencil"></i></button>
-                    <button onclick="app.delete('.$id.', '.$username.')" title="Hapus" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></button>
-                ';
-            })
-            ->make(true);
-    }
-
-
 
 
     /**

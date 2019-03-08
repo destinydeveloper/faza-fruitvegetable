@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ asset('assets/dist/css/style.default.css') }}" id="theme-stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/dist/css/custom.css') }}">
     <link rel="shortcut icon" href="{{ asset('assets/dist/img/favicon.ico') }}">
+    <style>body{display: none;}</style>
     @stack('css')
     <!-- Tweaks for older IEs--><!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -30,6 +31,7 @@
     <script src="{{ asset('assets/vendor/jquery/jquery.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/popper.js/umd/popper.min.js') }}"> </script>
     <script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script>$('body').fadeIn(1000);</script>
     {{-- <script src="{{ asset('assets/vendor/jquery-validation/jquery.validate.min.js') }}"></script> --}}
     {{-- <script src="{{ asset('assets/dist/js/charts-home.js') }}"></script>
     <script src="{{ asset('assets/vendor/chart.js/Chart.min.js') }}"></script> --}}

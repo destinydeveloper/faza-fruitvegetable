@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
 
             $table->string('nama');
-            $table->string('username');
+            $table->string('username')->unique();
             $table->string('email')->unique();
             $table->string('password');
             $table->integer('gambar_id')->unsigned()->nullable();

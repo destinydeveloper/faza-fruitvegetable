@@ -48,10 +48,12 @@ class Images {
         foreach ($dimensions as $row) {
             $row = explode('x', $row);
             $canvas = Image::canvas($row[0], $row[1]);
-            $resizeImage  = Image::make($file)->resize($row[0], $row[1], function($constraint) {
+            $img = Image::make($file);
+            $resizeImage  = $img->resize($row[0], $row[1], function($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
             });
+            $img->crop($row[0], $row[1]);
             
             $canvas->insert($resizeImage, 'center');
             self::checkPath($path . '/' . $row[0] . 'x' . $row[1]);
