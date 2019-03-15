@@ -30,7 +30,8 @@ Route::group([
     })->name('home');
     Route::get('/manager/user', 'ManagerUserController@index')->name('manager.user');
     Route::post('/manager/user/action', 'ManagerUserController@action')->name('manager.user.action');
-    Route::get('/manager/gajikaryawan', function () {})->name('manager.gajikaryawan');
+    Route::get('/manager/gajikaryawan', 'ManagerGajiKaryawanController@index')->name('manager.gajikaryawan');
+    Route::post('/manager/gajikaryawan', 'ManagerGajiKaryawanController@action')->name('manager.gajikaryawan.action');
     Route::get('/profil', 'ProfilController@index')->name('profil');
     Route::post('/profil', 'ProfilController@upload')->name('profil.upload');
 });

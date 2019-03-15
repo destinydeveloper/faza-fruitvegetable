@@ -42,10 +42,11 @@ class FazaInstall extends Command
         $this->line("faza ini ke fresh project yang siap digunakan.");
 
         
-        $askContinue = $this->option('force') == null ? false : true;
-        $askbeforeinstall = $this->option('custom') == null ? false : true;
-        
-        if (!$askContinue) if (!$this->confirm('Lanjutkan?')) return ;
+        $askbeforeinstall = $this->option('custom');
+        if (!$this->option('force')) {
+            $continueInstal = $this->confirm('Lanjutkan?');
+            if (!$continueInstal) return ;
+        }
 
         if ($askbeforeinstall) {
             if ($this->confirm('Lakukan Migration DB?')) {

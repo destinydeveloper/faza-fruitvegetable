@@ -1,6 +1,6 @@
 @extends('layouts.user')
-@section('title', 'User \ Manager \ User')
-@section('page-header', 'Manager User')
+@section('title', 'User \ Manager \ Gaji Karyawan')
+@section('page-header', 'Manager Gaji Karyawan')
 
 @push('css')
     {{-- NProgress --}}
@@ -34,7 +34,7 @@
 @endpush
 
 @push('meta')
-    <meta name="api" content="{{ route('user.manager.user.action') }}">    
+    <meta name="api" content="{{ route('user.manager.gajikaryawan.action') }}">    
     <meta name="assets" content="{{ asset('assets') }}">    
 @endpush
 
@@ -61,13 +61,9 @@
                     <form v-on:submit.prevent="" class="form-inline" style="margin-bottom: 15px;">
                         <label style="margin-right: 10px;" for="filter">Filter : </label>
                         <select v-on:change="loadTable()" v-model="filter" class="form-control" id="filter">
-                            <option value="admin">Admin</option>
-                            <option value="investor">Investor</option>
                             <option value="pengepak">Pengepak</option>
                             <option value="supervisor">Supervisor</option>
                             <option value="kurir">Kurir</option>
-                            <option value="pelanggan">Pelanggan</option>
-                            <option value="petani">Petani</option>
                         </select>
                         <span style="margin-left: 10px;">
                             <button v-on:click="refreshTable()" title="Refresh" class="btn btn-sm btn-warning">
@@ -82,10 +78,10 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">ID</th>
                                 <th scope="col">Nama</th>
-                                <th scope="col">Username</th>
-                                <th scope="col">Email</th>
+                                <th scope="col">Gaji Pokok</th>
+                                <th scope="col">Tunjangan</th>
+                                <th scope="col">Bonus</th>
                                 <th scope="col">...</th>
                             </tr>
                         </thead>
@@ -94,13 +90,49 @@
             </div>
         </div>
     </section>
+
+    {{-- Modal selectUser --}}
+    <div class="modal fade" id="selectUser" tabindex="-1" role="dialog" aria-labelledby="selectUserLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="overflow-y: initial !important;" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="selectUserLabel">Pilih @{{ filter }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="max-height: 60vh!important;overflow-y: auto !important;padding: 0;">
+                <div class="text-center" style="margin: 10px;" v-if="getSelectUser">
+                    Loading...
+                </div>
+                <div v-else>
+                    <div class="text-center" v-if="listuserselect == null">
+                        Tidak ada satupun.
+                    </div>
+                    <div class="list-group" v-else>
+                        <a v-on:click.prevent="addnewselecteduser={id: user.id, nama: user.nama};closeModalUserSelect()" v-for="user in listuserselect" :key="user.$index" href="#" class="list-group-item list-group-item-action">
+                            <div class="d-flex w-100 justify-content-between">
+                                <h5 class="mb-1">@{{ user.nama }}</h5>
+                                <small>@@{{ user.username }}</small>
+                            </div>
+                            @{{ user.email }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button v-on:click="closeModalUserSelect()" type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            </div>                
+            </div>
+        </div>
+    </div>
     
     {{-- Modal AddNew --}}
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah @{{ filter }}</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Input Gaji</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -109,24 +141,25 @@
                 <form class="form" v-on:submit.prevent="">
                     <div class="form-group">
                         <label>Nama</label>
-                        <input type="text" class="form-control" v-model="nama">
-                    </div>
-                    <div class="form-group">
-                        <label>Username</label>
-                        <input type="text" class="form-control" v-model="username">
-                    </div>
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="text" class="form-control" v-model="email">
-                    </div>
-                    <div class="form-group">
-                        <label>Password</label>
                         <div class="input-group mb-3">
-                            <input type="new-password" class="form-control" v-model="password">
+                            <input type="text" class="form-control" v-model="addnewselecteduserNama" disabled>
                             <div class="input-group-append">
-                                <button v-on:click="generateSafePassword()" class="btn btn-outline-secondary" type="button">Generate</button>
+                                <button v-on:click="openModalSelectuser()" class="btn btn-outline-secondary" type="button">Pilih @{{ filter }}</button>
                             </div>
                         </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>Gaji Pokok</label>
+                        <input type="text" class="form-control" v-model="gaji_pokok">
+                    </div>
+                    <div class="form-group">
+                        <label>Tunjangan</label>
+                        <input type="text" class="form-control" v-model="tunjangan">
+                    </div>
+                    <div class="form-group">
+                        <label>Bonus</label>
+                        <input type="text" class="form-control" v-model="bonus">
                     </div>
                 </form>
             </div>
@@ -143,44 +176,29 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="modalEditLabel">Edit @@{{ username }}</h5>
+                <h5 class="modal-title" id="modalEditLabel">Edit Gaji</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form class="form" v-on:submit.prevent="">
-                        {{-- <div class="form-group" style="text-align: center;">
-                            <div class='avatar' style="position: relative;">
-                                <img v-on:mouseover="showChangeAvatar = true" v-on:mouseleave="showChangeAvatar = false" v-bind:src="avatar" alt='Avatar' class='img-fluid rounded-circle'>
-                                <div style="text-grey" v-if="showChangeAvatar">Click to change avatar</div>
-                            </div>
-                        </div>
-                        <input id="image" type="file" v-on:change="alert('image change')">
-                        <hr> --}}
                         <div class="form-group">
                             <label>Nama</label>
-                            <input type="text" class="form-control" v-model="nama">
-                        </div>
-                        <div class="form-group">
-                            <label>Username</label>
-                            <input type="text" class="form-control" v-model="username">
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                        <input type="text" class="form-control" v-model="email">
+                            <input type="text" class="form-control" v-model="nama" disabled>
                         </div>
                         <hr>
                         <div class="form-group">
-                            <label>Ganti Password</label>
-                            <div class="input-group mb-3">
-                                <input type="new-password" class="form-control" v-model="password">
-                                <div class="input-group-append">
-                                        <button v-on:click="generateSafePassword()" class="btn btn-outline-secondary" type="button">Generate</button>
-                                        <button v-on:click="password = ''" class="btn btn-outline-secondary" type="button">blank</button>
-                                </div>
-                                <span class="text-grey">*nb : Biarkan kosong jika tidak bermaksud mengganti password</span>
-                            </div>
+                            <label>Gaji Pokok</label>
+                            <input type="text" class="form-control" v-model="gaji_pokok">
+                        </div>
+                        <div class="form-group">
+                            <label>Tunjangan</label>
+                            <input type="text" class="form-control" v-model="tunjangan">
+                        </div>
+                        <div class="form-group">
+                            <label>Bonus</label>
+                            <input type="text" class="form-control" v-model="bonus">
                         </div>
                     </form>
                 </div>
@@ -197,19 +215,33 @@
 
 @push('js')
     <script>
-    $('#sidebar-manager-user').addClass('active');
+    $('#sidebar-manager-gajikaryawan').addClass('active');
     // Configuration
     const loadTimeInterval = 200;
     const assets = $("meta[name='assets']").attr("content");
     axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     axios.defaults.baseURL = $("meta[name='api']").attr("content");
-    // Jquery
+    //Jquery
+    $(document).on('hidden.bs.modal','#exampleModal', function () {
+        app.addnewselecteduser = null;
+    });
+    $(document).on('hidden.bs.modal','#modalEdit', function () {
+        app.password = '';
+        app.email = '';
+        app.username = '';
+        app.nama = '';
+        app.id = '';
+        app.gaji_pokok = '';
+        app.tunjangan = '';
+        app.bonus = '';
+        app.avatar = '';
+    });
     // Vue Instance
     var app = new Vue({
         el: '#app',
         data: {
             table: null,
-            filter: 'admin',
+            filter: 'pengepak',
             nama: '',
             username: '',
             email: '',
@@ -217,6 +249,28 @@
             avatar: '',
             showChangeAvatar: false,
             id: 0,
+            gaji_pokok: null,
+            tunjangan: null,
+            bonus: null,
+            getSelectUser: true,
+            listuserselect: null,
+            addnewselecteduser: null,
+        },
+        computed: {
+            addnewselecteduserNama: function(){
+                if (this.addnewselecteduser == null) {
+                    return "Pilih user"
+                } else {
+                    return this.addnewselecteduser.nama;
+                }
+            },
+            addnewselecteduserId: function(){
+                if (this.addnewselecteduser == null) {
+                    return ;
+                } else {
+                    return this.addnewselecteduser.id;
+                }
+            }
         },
         methods: {
             loadStart(){
@@ -242,14 +296,15 @@
                             } else {
                                 alertify.error('['+jqXHR.status+'] Error : '+'['+jqXHR.statusText+']');
                             }
+                            console.log(jqXHR);
                         }
                     },
                     columns: [
                         {data: 'no'},
-                        {data: 'id'},
-                        {data: 'nama'},
-                        {data: 'username'},
-                        {data: 'email', searchable: true},
+                        {data: 'user.nama'},
+                        {data: 'gaji_pokok'},
+                        {data: 'tunjangan'},
+                        {data: 'bonus'},
                         {data: 'action', orderable: false, searchable: false},
                     ],
                     responsive: true,
@@ -268,7 +323,7 @@
                 this.loadStart();
                 axios.post('', {action: 'detail', 'id': id}).then(function(res){
                     if (res.data.status == 'success') {
-                        let user = res.data.result;
+                        let user = res.data.result.user;
                         let avatar = (user.avatar === null ? assets + '/dist/img/avatar.png' : assets + "/images/100x100/" + user.avatar.path);
                         let html = "<div class='row'><div class='col-3'><div class='avatar'><img src='"+avatar+"' alt='...' class='img-fluid rounded-circle'></div></div><div class='col-8'><table><tr><td><b>ID</b></td><td> : "+user.id+"</td></tr><tr><td><b>Nama</b></td><td> : "+user.nama+"</td></tr><tr><td><b>Email</b></td><td> : "+user.email+"</td></tr><tr><td><b>Username</b></td><td> : "+user.username+"</td></tr><tr><td><b>Created at</b></td><td> : "+user.created_at+"</td></tr></table></div></div>";
                         alertify.alert('Detail User', html); 
@@ -283,15 +338,20 @@
             edit(id) {
                 this.loadStart();
                 axios.post('', {action: 'detail', 'id': id}).then(function(res){
-                    let user = res.data.result;
+                    app.loadDone();
+                    if (res.data.result === undefined) return;
+                    let data = res.data.result;
+                    let user = res.data.result.user;
                     app.password = '';
                     app.email = user.email;
                     app.username = user.username;
                     app.nama = user.nama;
-                    app.id = user.id;
+                    app.id = data.id;
+                    app.gaji_pokok = data.gaji_pokok;
+                    app.tunjangan = data.tunjangan;
+                    app.bonus = data.bonus;
                     app.avatar = (user.avatar === null ? assets + '/dist/img/avatar.png' : assets + "/images/100x100/" + user.avatar.path);
                     $('#modalEdit').modal('show');
-                    app.loadDone();
                 }).catch(function(error){
                     error = error.response;
                     app.loadDone();
@@ -299,12 +359,18 @@
                 });
             },
             delete(id, username) {
+                console.log(username);
                 let html = '<div style="text-align: center;">Yakin Akan Menghapus @' + username + '?</div>';
                 alertify.confirm('Konfirmasi', html, function(){
                     app.loadStart();
                     axios.post('', {action: 'delete', 'id': id}).then(function(res){
+                        console.log(res);
                         if (res.data.status == 'success') {
                             alertify.success('Berhasil menghapus');
+                        } else if (res.data.status == 'error') {
+                            alertify.error(res.data.error);
+                        } else {
+                            alertify.error('Gagal menghapus');
                         }
                         app.refreshTable();
                         app.loadDone();
@@ -317,23 +383,31 @@
                 }).set({labels:{ok:'Hapus', cancel: 'Batal'}});
             },
             addNew(){
+                if (app.addnewselecteduser == null) {
+                    alert('Pilih user yang akan ditambahkan');
+                    return ;
+                }
                 var params = {
                     action: 'addnew',
-                    nama: app.nama,
-                    username: app.username,
-                    email: app.email,
-                    password: app.password,
-                    role: app.filter
+                    id: app.addnewselecteduserId,
+                    nama: app.addnewselecteduserNama,
+                    gaji_pokok: app.gaji_pokok,
+                    tunjangan: app.tunjangan,
+                    bonus: app.bonus,
+                    filter: app.filter
                 };
 
                 this.loadStart();
                 axios.post('', params).then(function(res){
                     app.loadDone();
+                    console.log(res);
                     if (res.data.status == 'success') {
-                        alertify.success('User berhasil dibuat');
+                        alertify.success('Berhasil ditambahkan');
                         app.refreshTable();
+                    } else if (res.data.status == 'error') {
+                        alertify.error(res.data.error);
                     } else {
-                        alertify.error('User gagal dibuat');
+                        alertify.error('Gagal ditambahkan');
                     }
                 }).catch(function(error){
                     error = error.response;
@@ -351,9 +425,13 @@
                 app.username = '';
                 app.nama = '';
                 app.id = '';
+                app.gaji_pokok = '';
+                app.tunjangan = '';
+                app.bonus = '';
             },
             handleCatch(error) {
                 app.loadDone();
+                console.log(error);
                 if (error.status == 500) {
                     alertify.error('Server Error, Try again later');
                 } else if (error.status == 422) {
@@ -366,20 +444,22 @@
                 var params = {
                     action: 'update',
                     nama: app.nama,
-                    username: app.username,
-                    email: app.email,
-                    password: app.password,
                     id: app.id,
+                    gaji_pokok: app.gaji_pokok,
+                    tunjangan: app.tunjangan,
+                    bonus: app.bonus
                 };
 
                 this.loadStart();
                 axios.post('', params).then(function(res){
                     app.loadDone();
                     if (res.data.status == 'success') {
-                        alertify.success('@'+res.data.result.username+' berhasil diperbarui');
+                        alertify.success('Berhasil diperbarui');
                         app.refreshTable();
+                    } else if (res.data.status == 'error') {
+                        alertify.error(res.data.error);
                     } else {
-                        alertify.error('@'+res.data.result.username+' gagal diperbarui');
+                        alertify.error('Gagal diperbarui');
                     }
                 }).catch(function(error){
                     error = error.response;
@@ -392,37 +472,26 @@
                     } else { app.handleCatch(error); }
                 });
             },
-            generateSafePassword() {
-                // var specials = '!@#$%^&*()_+{}:"<>?\|[];\',./`~';
-                var lowercase = 'abcdefghijklmnopqrstuvwxyz';
-                var uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                var numbers = '0123456789';
-                var all = lowercase + uppercase + numbers;
-                String.prototype.pick = function(min, max) {
-                    var n, chars = '';
-                    if (typeof max === 'undefined') {
-                        n = min;
-                    } else {
-                        n = min + Math.floor(Math.random() * (max - min));
+            openModalSelectuser() {
+                $('#exampleModal').modal('hide');
+                setTimeout(function(){ $('#selectUser').modal('show'); }, 500);
+                this.loadStart();
+                axios.post('', {action: 'getlistuser', 'filter': app.filter}).then(function(res){
+                    app.loadDone();
+                    if (res.data.status == 'success') {
+                        app.listuserselect = res.data.result;
+                        app.getSelectUser = false;
                     }
-                    for (var i = 0; i < n; i++) {
-                        chars += this.charAt(Math.floor(Math.random() * this.length));
-                    }
-                    return chars;
-                };
-                String.prototype.shuffle = function() {
-                    var array = this.split('');
-                    var tmp, current, top = array.length;
-                    if (top) while (--top) {
-                        current = Math.floor(Math.random() * (top + 1));
-                        tmp = array[current];
-                        array[current] = array[top];
-                        array[top] = tmp;
-                    }
-                    return array.join('');    
-                };
-                var password = (lowercase.pick(1) + uppercase.pick(1) + all.pick(3, 10)).shuffle();
-                this.password = password;
+                    console.log(res);
+                }).catch(function(error){
+                    error = error.response;
+                    app.loadDone();
+                    app.handleCatch(error);
+                });
+            },
+            closeModalUserSelect(){
+                $('#selectUser').modal('hide');
+                setTimeout(function(){ $('#exampleModal').modal('show'); }, 500);
             }
         },
         mounted(){

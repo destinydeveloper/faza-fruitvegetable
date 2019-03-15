@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         require_once app_path() . '/Helpers/load.php';
-        
+        Schema::defaultStringLength(191);
     }
 
 

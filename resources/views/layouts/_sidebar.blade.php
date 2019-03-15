@@ -16,7 +16,7 @@
         <li id="sidebar-manager-user"><a href="{{ route('user.manager.user') }}"> <i class="fa fa-user"></i>User </a></li>
         <li><a href="{{ route('user.manager.gajikaryawan') }}"> <i class="fa fa-cubes"></i>Barang</a></li>
         <li><a href="{{ route('user.manager.gajikaryawan') }}"> <i class="fa fa-cube"></i>Barang Mentah</a></li>
-        <li><a href="{{ route('user.manager.gajikaryawan') }}"> <i class="fa fa-users"></i>Gaji Karyawan </a></li>
+        <li id="sidebar-manager-gajikaryawan"><a href="{{ route('user.manager.gajikaryawan') }}"> <i class="fa fa-users"></i>Gaji Karyawan </a></li>
     </ul>
     <span class="heading">Pengaturan</span>
     <ul class="list-unstyled">
