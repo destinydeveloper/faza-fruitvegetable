@@ -97,6 +97,6 @@ RESOURCE_IMAGES_MAX_SIZE=1024
 RESOURCE_IMAGES_MIMES=jpeg,bmp,png
 ```
 `RESOURCE_IMAGES_PATH` : Lokasi Gambar Akan Di Upload<br>
-`RESOURCE_IMAGES_DIMENSIONS` : Dimensi Yang Dibutuhkan, Gambar Yang Di Upload Akan Kami Pecah Menjadi Beberapa Dimensi sesuai kebutuhan, pisahkan dimensi dengan tanda | antar dimensi. dan tanda x untuk memisahkan width dan height.
-`RESOURCE_IMAGES_MAX_SIZE` : Maksimal Ukuran Yang diperbolehkan dalam byte.
-`RESOURCE_IMAGES_MIMES` : Format gambar yang diperbolehkan.
+`RESOURCE_IMAGES_DIMENSIONS` : Dimensi Yang Dibutuhkan, Gambar Yang Di Upload Akan Kami Pecah Menjadi Beberapa Dimensi sesuai kebutuhan, pisahkan dimensi dengan tanda | antar dimensi. dan tanda x untuk memisahkan width dan height.<br>
+`RESOURCE_IMAGES_MAX_SIZE` : Maksimal Ukuran Yang diperbolehkan dalam byte.<br>
+`RESOURCE_IMAGES_MIMES` : Format gambar yang diperbolehkan.<br>
