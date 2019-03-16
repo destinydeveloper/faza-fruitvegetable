@@ -7,6 +7,14 @@
 
 <hr>
 
+### ScreenShot
+<div align="center">
+
+![Gambar Struktur Resource](https://github.com/destinydeveloper/faza-fruitvegetable/raw/faza_c/ss_struktur_resource.png "Gambar Struktur Resource")
+
+</div>
+<hr>
+
 # Database
 * Laravel System
     - migrations
