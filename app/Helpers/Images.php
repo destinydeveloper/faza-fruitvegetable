@@ -15,10 +15,21 @@ class Images {
         return self::$errors;
     }
     
-    public static function upload($file, $title = null, $description = null, $dimension = null, $mergeDimension = false)
+    public static function upload($requestFile, $title = null, $description = null, $dimension = null, $mergeDimension = false)
     {
         $path = public_path(env('RESOURCE_IMAGES_PATH', 'assets/images/'));
         $dimensions = env('RESOURCE_IMAGES_DIMENSIONS', '1280x720|800x600');
+        $max_size = env('RESOURCE_IMAGES_MAX_SIZE', '1024');
+        $mimes = env('RESOURCE_IMAGES_MIMES', 'jpeg,bmp,png');
+
+        $request = app()->request;
+        $file = $request->file($requestFile);
+
+        if (!$request->has($requestFile)) return Redirect::back()->withErrors([$requestFile, 'File Image '.$requestFile."Not Found"]);
+
+        $request->validate([
+            $requestFile => 'mimes:'.$mimes.'|max:'.$max_size,            
+        ]);
 
         if ($dimension !== null and $mergeDimension == false) $dimensions = $dimension;
         if ($dimension !== null and $mergeDimension == true) 

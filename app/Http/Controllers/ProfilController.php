@@ -37,11 +37,8 @@ class ProfilController extends Controller
             $user->username = $request->input('username');
 
             if ($request->has('avatar')) {
-                $request->validate([
-                    'avatar' => 'mimes:jpeg,bmp,png'
-                ]);
 
-                $avatar = Images::upload($request->file('avatar'), $auth_nama." Avatar", "Image for avatar ".$auth_nama, '100x100');
+                $avatar = Images::upload('avatar', $auth_nama." Avatar", "Image for avatar ".$auth_nama, '100x100');
                 $user->gambar_id = $avatar->id;
             }
                         
