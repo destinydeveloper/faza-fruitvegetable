@@ -18,9 +18,12 @@ class CreateBarangTable extends Migration
             $table->string('nama');
             $table->integer('berat');
             $table->integer('harga');
+            $table->enum('jenis', ['sayur', 'buah']);
             $table->longText('catatan')->nullable();
             $table->integer('stok')->default(0);
             $table->enum('status', [0, 1])->default(1);
+            $table->string('satuan_berat')->default('gram');
+            $table->string('satuan_stok')->default('stok');
             $table->timestamps();
         });
     }

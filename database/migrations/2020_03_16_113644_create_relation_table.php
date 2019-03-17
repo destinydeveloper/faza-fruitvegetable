@@ -20,6 +20,8 @@ class CreateRelationTable extends Migration
             $table->foreign('gambar_id')->references('id')->on('gambar')->onDelete('cascade');
             $table->foreign('barang_id')->references('id')->on('barang')->onDelete('cascade');
         });
+        Schema::table('barang', function (Blueprint $table) {
+        });
     }
 
     /**

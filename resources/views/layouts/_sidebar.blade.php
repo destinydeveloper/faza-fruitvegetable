@@ -9,13 +9,15 @@
     </div>
     <span class="heading">Main</span>
     <ul class="list-unstyled">
-        <li id="sidebar-home"><a href="{{ route('user.home') }}"> <i class="fa fa-home"></i>Home </a></li>
+            <li id="sidebar-home"><a href="{{ route('user.home') }}"> <i class="fa fa-home"></i>Home </a></li>
+            <li id="notifikasi"><a href="{{ route('user.home') }}"> <i class="fa fa-bell"></i>Notifikasi </a></li>
     </ul>
     <span class="heading">Manager</span>
     <ul class="list-unstyled">
         <li id="sidebar-manager-user"><a href="{{ route('user.manager.user') }}"> <i class="fa fa-user"></i>User </a></li>
-        <li><a href="{{ route('user.manager.gajikaryawan') }}"> <i class="fa fa-cubes"></i>Barang</a></li>
-        <li><a href="{{ route('user.manager.gajikaryawan') }}"> <i class="fa fa-cube"></i>Barang Mentah</a></li>
+        <li id="sidebar-manager-barang"><a href="{{ route('user.manager.barang') }}"> <i class="fa fa-cubes"></i>Barang</a></li>
+        <li id="sidebar-manager-barangmentah"><a href="{{ route('user.manager.barang_mentah') }}"> <i class="fa fa-cube"></i>Barang Mentah</a></li>
+        <li id="sidebar-manager-updatebarang"><a href="{{ route('user.manager.barang_mentah') }}"> <i class="fa fa-exchange"></i>Barang Mentah -> Barang</a></li>
         <li id="sidebar-manager-gajikaryawan"><a href="{{ route('user.manager.gajikaryawan') }}"> <i class="fa fa-users"></i>Gaji Karyawan </a></li>
     </ul>
     <span class="heading">Pengaturan</span>

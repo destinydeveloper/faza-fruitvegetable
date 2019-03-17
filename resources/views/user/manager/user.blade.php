@@ -12,25 +12,6 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/alertify/css/alertify.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/vendor/alertify/css/themes/default.min.css') }}">
     {{-- Custom --}}
-    <style>
-        .btn-xs, .btn-group-xs > .btn {
-            padding: 0.15rem 0.4rem;
-            font-size: 0.675rem;
-            line-height: 1.4;
-            border-radius: 0.15rem;
-        }
-        .btn-xs + .dropdown-toggle-split, .btn-group-xs > .btn + .dropdown-toggle-split {
-            padding-right: 0.275rem;
-            padding-left: 0.275rem;
-        }
-        #nprogress .bar { height: 4px !important; }
-        div.dataTables_wrapper .row { padding: 10px 5px !important; }
-        @media (max-width: 768px) {
-            div.dataTables_wrapper div.dataTables_filter input {
-                width: 50%;
-            }
-        }
-    </style>
 @endpush
 
 @push('meta')
@@ -122,7 +103,7 @@
                     <div class="form-group">
                         <label>Password</label>
                         <div class="input-group mb-3">
-                            <input type="new-password" class="form-control" v-model="password">
+                            <input type="text" class="form-control" v-model="password">
                             <div class="input-group-append">
                                 <button v-on:click="generateSafePassword()" class="btn btn-outline-secondary" type="button">Generate</button>
                             </div>
@@ -203,6 +184,7 @@
     const assets = $("meta[name='assets']").attr("content");
     axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     axios.defaults.baseURL = $("meta[name='api']").attr("content");
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = $("meta[name='csrf-token']").attr("content");
     // Jquery
     // Vue Instance
     var app = new Vue({
