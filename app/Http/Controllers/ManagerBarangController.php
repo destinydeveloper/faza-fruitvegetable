@@ -67,12 +67,13 @@ class ManagerBarangController extends Controller
             case 'update':
                 $request->validate([
                     'nama' => 'required',
-                    'jenis' => 'required',
+                    'jenis' => 'required|in:sayur,buah',
                     'harga' => 'required|integer',
                     'berat' => 'required|integer',
                     'stok' => 'required|integer',
                     'satuan_berat' => 'required',
                     'satuan_stok' => 'required',
+                    'status' => 'required|in:0,1',
                 ]);
 
                 $barang = Barang::with('gambar')->findOrFail($request->input('id'));
@@ -104,6 +105,7 @@ class ManagerBarangController extends Controller
                     'stok' => $request->input('stok'),
                     'satuan_berat' => $request->input('satuan_berat'),
                     'satuan_stok' => $request->input('satuan_stok'),
+                    'status' => $request->input('status'),
                 ]);
                 
                 if ($request->has('images')) {
@@ -143,7 +145,7 @@ class ManagerBarangController extends Controller
             case 'addnew':
                 $request->validate([
                     'nama' => 'required',
-                    'jenis' => 'required',
+                    'jenis' => 'required|in:sayur,buah',
                     'harga' => 'required|integer',
                     'berat' => 'required|integer',
                     'stok' => 'required|integer',

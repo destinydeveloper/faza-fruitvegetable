@@ -17,7 +17,7 @@
         <li id="sidebar-manager-user"><a href="{{ route('user.manager.user') }}"> <i class="fa fa-user"></i>User </a></li>
         <li id="sidebar-manager-barang"><a href="{{ route('user.manager.barang') }}"> <i class="fa fa-cubes"></i>Barang</a></li>
         <li id="sidebar-manager-barangmentah"><a href="{{ route('user.manager.barang_mentah') }}"> <i class="fa fa-cube"></i>Barang Mentah</a></li>
-        <li id="sidebar-manager-updatebarang"><a href="{{ route('user.manager.barang_mentah') }}"> <i class="fa fa-exchange"></i>Barang Mentah -> Barang</a></li>
+        <li id="sidebar-manager-inputbarangmentah"><a href="{{ route('user.manager.input_barang_mentah') }}"> <i class="fa fa-exchange"></i>Input Barang Mentah</a></li>
         <li id="sidebar-manager-gajikaryawan"><a href="{{ route('user.manager.gajikaryawan') }}"> <i class="fa fa-users"></i>Gaji Karyawan </a></li>
     </ul>
     <span class="heading">Pengaturan</span>

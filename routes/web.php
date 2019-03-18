@@ -43,6 +43,10 @@ Route::group([
     // Manager Barang Mentah
     Route::get('/manager/barang-mentah', 'ManagerBarangMentahController@index')->name('manager.barang_mentah');
     Route::post('/manager/barang-mentah', 'ManagerBarangMentahController@action')->name('manager.barang_mentah.action');
+    
+    // Manager Input Barang Mentah
+    Route::get('/manager/input-barang-mentah', 'ManagerInputBarangMentahController@index')->name('manager.input_barang_mentah');
+    Route::post('/manager/input-barang-mentah', 'ManagerInputBarangMentahController@action')->name('manager.input_barang_mentah.action');
 
 
     Route::get('/profil', 'ProfilController@index')->name('profil');

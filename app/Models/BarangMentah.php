@@ -8,6 +8,16 @@ class BarangMentah extends Model
 {
     protected $table = 'barang_mentah';    
     protected $fillable = [
-        'nama', 'berat', 'harga', 'catatan', 'stok'
+        'barang_id', 'catatan', 'user_id', 'stok'
     ];
+
+    public function barang()
+    {
+        return $this->belongsTo('App\Models\Barang');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User');
+    }
 }

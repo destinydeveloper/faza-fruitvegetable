@@ -14,10 +14,9 @@ class CreateBarangMentahTable extends Migration
     public function up()
     {
         Schema::create('barang_mentah', function (Blueprint $table) {
-            $table->increments('id')->unsigned();
-            $table->string('nama');
-            $table->integer('berat');
-            $table->integer('harga');
+            $table->increments('id');
+            $table->integer('barang_id')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->longText('catatan')->nullable();
             $table->integer('stok')->default(0);
             $table->timestamps();

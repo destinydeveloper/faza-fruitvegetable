@@ -185,6 +185,13 @@
                                 <input v-model="nama" type="text" class="form-control">
                             </div>
                             <div class="form-group">
+                                <label>Status</label>
+                                <select v-model="status" class="form-control">
+                                    <option value="1">Ditampilkan</option>
+                                    <option value="0">Disembunyikan</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label>Jenis</label>
                                 <select v-model="jenis" class="form-control">
                                     <option value="sayur">Sayur</option>
@@ -270,6 +277,7 @@
             satuan_berat: '',
             satuan_stok: '',
             id: null,
+            status: '',
         },
         methods: {
             loadStart(){
@@ -344,10 +352,8 @@
                     $('#previewImageNew').append(html);
                     $('#imgPreviewThumbnailNew'+i).attr('src', url);
                 }
-                console.log(this.addNewData);
             },
             handleCatch(error) {
-                console.log(error);
                 app.loadDone();
                 if (error.status == 500) {
                     alertify.error('Server Error, Try again later');
@@ -381,14 +387,18 @@
                 }).catch(function(error){
                     error = error.response;
                     app.loadDone();
-                    app.handleCatch(error);
+                    if (error.status == 422 && error.statusText == "Unprocessable Entity"){
+                        let errors  = error.data.errors;
+                        Object.keys(errors).map(function(item, index){
+                            alertify.error(errors[item][0]);
+                        });
+                    } else { app.handleCatch(error); }
                 });
             },
             detail(id) {
                 app.loadStart();
                 axios.post('', { action: 'detail', 'id': id }).then(function(res){
                     app.loadDone();
-                    console.log(res);
                     let barang = res.data.result;
                     let gambar = '';
 
@@ -396,7 +406,13 @@
                         gambar = gambar + '<img style="max-height: 100px;margin: 5px;" src="'+assets+'/images/original/'+item.path+'">';
                     });
 
-                    let html = '<div><div style="display: flex;flex-wrap: nowrap;overflow-x: scroll">'+gambar+'</div><hr><table><tr><td><b>ID</b></td><td> : '+barang.id+'</td></tr><tr><td><b>Nama</b></td><td> : '+barang.nama+'</td></tr><tr><td><b>Jenis</b></td><td> : '+ barang.jenis.charAt(0).toUpperCase() + barang.jenis.slice(1) +'</td></tr><tr><td><b>Harga</b></td><td> : '+ (app.rupiah(barang.harga)) +'</td></tr><tr><td><b>Berat</b></td><td> : '+barang.berat+' '+barang.satuan_berat+'</td></tr><tr><td><b>Stok</b></td><td> : '+barang.stok+' '+barang.satuan_stok+'</td></tr><tr><td><b>Status</b></td><td> : '+ (barang.status == 1 ? 'Ditampilkan' : 'Disembunyikan') +'</td></tr></table></div>';
+                    if (barang.gambar.length == 0 || barang.gambar === undefined) {
+                        gambar = '<div style="text-align: center;">Tidak ada gambar.</div>'
+                    } else {
+                        gambar = '<div style="display: flex;flex-wrap: nowrap;overflow-x: scroll">'+gambar+'</div>';
+                    }
+
+                    let html = '<div>'+gambar+'<hr><table><tr><td><b>ID</b></td><td> : '+barang.id+'</td></tr><tr><td><b>Nama</b></td><td> : '+barang.nama+'</td></tr><tr><td><b>Jenis</b></td><td> : '+ barang.jenis.charAt(0).toUpperCase() + barang.jenis.slice(1) +'</td></tr><tr><td><b>Harga</b></td><td> : '+ (app.rupiah(barang.harga)) +'</td></tr><tr><td><b>Berat</b></td><td> : '+barang.berat+' '+barang.satuan_berat+'</td></tr><tr><td><b>Stok</b></td><td> : '+barang.stok+' '+barang.satuan_stok+'</td></tr><tr><td><b>Status</b></td><td> : '+ (barang.status == 1 ? 'Ditampilkan' : 'Disembunyikan') +'</td></tr></table></div>';
                     alertify.alert('Detail Barang', html); 
                 }).catch(function(error){
                     error = error.response;
@@ -435,7 +451,6 @@
                 app.loadStart();
                 axios.post('', { action: 'detail', 'id': id }).then(function(res){
                     app.loadDone();
-                    console.log(res);
                     let barang = res.data.result;
                     let gambar = '';
 
@@ -448,6 +463,7 @@
                     app.stok = barang.stok;
                     app.satuan_berat = barang.satuan_berat;
                     app.satuan_stok = barang.satuan_stok;
+                    app.status = barang.status;
 
 
                     app.reloadPeviewImageEdit();
@@ -478,15 +494,12 @@
                     let url = assets + '/images/original/' + app.imagesEdit[i].path;
                     $('#imgPreviewThumbnailEdit'+i).attr('src', url);
                 }
-
-                // console.log();
                 var files = this.images;
                 $('#previewImageNew').html('');
                 this.addEditData = new FormData();
                 this.addEditData.append('nama', 'alfian dwi');
                 var previewImageNew = $('#previewImageNew');
                 for (var i = app.imagesEdit.length; i < (app.imagesEdit.length + files.length); i++ ) {
-                    console.log(i);
                     let j = (i-(app.imagesEdit.length));
                     this.addEditData.append('images[]', files[j]);
                     let url = URL.createObjectURL(files[j]);
@@ -495,7 +508,6 @@
                     $('#previewImageEdit').append(html);
                     $('#imgPreviewThumbnailEdit'+i).attr('src', url);
                 }
-                console.log(this.addEditData);
             },
             update(){
                 this.addEditData.append('action', 'update');
@@ -507,6 +519,7 @@
                 this.addEditData.append('stok', this.stok);
                 this.addEditData.append('satuan_berat', this.satuan_berat);
                 this.addEditData.append('satuan_stok', this.satuan_stok);
+                this.addEditData.append('status', this.status);
 
                 this.imagesEdit.forEach(function(item) {
                     app.addEditData.append('images_old[]', item.id);
@@ -515,20 +528,24 @@
 
                 app.loadStart();
                 axios.post('', this.addEditData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(function(res){
-                    console.log(res);
-                    // if (res.data.status == 'success') {
-                    //     alertify.success('Berhasil menambahkan');
-                    // } else if (res.data.status == 'error') {
-                    //     alertify.error(res.data.error);
-                    // } else {
-                    //     alertify.error('Gagal menambahkan');
-                    // }
+                    if (res.data.status == 'success') {
+                        alertify.success('Berhasil memperbarui');
+                    } else if (res.data.status == 'error') {
+                        alertify.error(res.data.error);
+                    } else {
+                        alertify.error('Gagal memperbarui');
+                    }
                     app.refreshTable();
                     app.loadDone();
                 }).catch(function(error){
                     error = error.response;
                     app.loadDone();
-                    app.handleCatch(error);
+                    if (error.status == 422 && error.statusText == "Unprocessable Entity"){
+                        let errors  = error.data.errors;
+                        Object.keys(errors).map(function(item, index){
+                            alertify.error(errors[item][0]);
+                        });
+                    } else { app.handleCatch(error); }
                 });
             },
         },

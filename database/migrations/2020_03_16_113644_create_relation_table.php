@@ -20,7 +20,12 @@ class CreateRelationTable extends Migration
             $table->foreign('gambar_id')->references('id')->on('gambar')->onDelete('cascade');
             $table->foreign('barang_id')->references('id')->on('barang')->onDelete('cascade');
         });
-        Schema::table('barang', function (Blueprint $table) {
+        Schema::table('barang_mentah', function (Blueprint $table) {
+            $table->foreign('barang_id')->references('id')->on('barang')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        });
+        Schema::table('gaji_karyawan', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -37,6 +42,13 @@ class CreateRelationTable extends Migration
         Schema::table('gambar_barang', function (Blueprint $table) {
             $table->dropForeign('gambar_barang_gambar_id_foreign');
             $table->dropForeign('gambar_barang_barang_id_foreign');
+        });
+        Schema::table('barang_mentah', function (Blueprint $table) {
+            $table->dropForeign('barang_mentah_barang_id_foreign');
+            $table->dropForeign('barang_mentah_user_id_foreign');
+        });
+        Schema::table('gaji_karyawan', function (Blueprint $table) {
+            $table->dropForeign('gaji_karyawan_user_id_foreign');
         });
     }
 }
