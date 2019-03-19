@@ -41,6 +41,7 @@
                         <span style="margin-left: 10px;">
                             <button v-on:click="refreshTable()" title="Refresh" class="btn btn-sm btn-warning">
                                 <i class="fa fa-refresh"></i>
+                                Refresh
                             </button>
                         </span>
                     </form>
@@ -60,6 +61,36 @@
             </div>
         </div>
     </section>
+    {{-- Modal Edit --}}
+    <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog" aria-labelledby="modalEditLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="modalEditLabel">Edit</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form" v-on:submit.prevent="">
+                    <div class="form-group">
+                        <label>Nama</label>
+                        <input type="text" class="form-control" v-model="nama">
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>Stok</label>
+                    <input type="text" class="form-control" v-model="stok">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button v-on:click="update()" type="button" class="btn btn-primary" data-dismiss="modal">Update</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+            </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @push('js')
@@ -76,7 +107,9 @@
     var app = new Vue({
         el: '#app',
         data: {
-
+            nama: '',
+            id: null,
+            stok: 0,
         },
         methods: {
             loadStart(){
@@ -122,6 +155,83 @@
             },
             refreshTable(){
                 this.table.ajax.reload( null, false );
+            },
+            delete(id, nama, username) {
+                let html = '<div style="text-align: center;">Yakin Akan menambahkan @' + nama + ' dari  @'+ username +'?</div>';
+                alertify.confirm('Konfirmasi', html, function(){
+                    app.loadStart();
+                    axios.post('', {action: 'delete', 'id': id}).then(function(res){
+                        if (res.data.status == 'success') {
+                            alertify.success('Berhasil menghapus');
+                        }
+                        app.refreshTable();
+                        app.loadDone();
+                    }).catch(function(error){
+                        error = error.response;
+                        app.loadDone();
+                        app.handleCatch(error);
+                    });
+                },function(){
+                }).set({labels:{ok:'Hapus', cancel: 'Batal'}});
+            },
+            add(id, nama) {
+                let html = '<div style="text-align: center;">Pidahkan @' + nama + ' ke Barang?</div>';
+                alertify.confirm('Konfirmasi', html, function(){
+                    app.loadStart();
+                    axios.post('', {action: 'add', 'id': id}).then(function(res){
+                        if (res.data.status == 'success') {
+                            alertify.success('Berhasil memindahkan ke barang');
+                        }
+                        app.refreshTable();
+                        app.loadDone();
+                    }).catch(function(error){
+                        error = error.response;
+                        app.loadDone();
+                        app.handleCatch(error);
+                    });
+                },function(){
+                }).set({labels:{ok:'Pindahkan', cancel: 'Batal'}});
+
+            },
+            edit(id) {
+                app.loadStart();
+                axios.post('', {action: 'detail', 'id': id}).then(function(res){
+                    if (res.data.status == 'success') {
+                        app.nama = res.data.result.barang.nama;
+                        app.stok = res.data.result.stok;
+                        app.id = res.data.result.id;
+                        $('#modalEdit').modal('show');
+                    }
+                    app.loadDone();
+                }).catch(function(error){
+                    error = error.response;
+                    app.loadDone();
+                    app.handleCatch(error);
+                });
+            },
+            update() {
+                app.loadStart();
+                axios.post('', {action: 'update', 'id': app.id, stok: app.stok}).then(function(res){
+                    if (res.data.status == 'success') {
+                        alertify.success('Berhasil memperbarui');
+                    }
+                    app.refreshTable();
+                    app.loadDone();
+                }).catch(function(error){
+                    error = error.response;
+                    app.loadDone();
+                    app.handleCatch(error);
+                });
+            },
+            handleCatch(error) {
+                app.loadDone();
+                if (error.status == 500) {
+                    alertify.error('Server Error, Try again later');
+                } else if (error.status == 422) {
+                    alertify.error('Form invalid, Check input form');
+                } else {
+                    alertify.error('['+error.status+'] Error : '+'['+error.statusText+']');
+                }
             },
         },
         mounted(){

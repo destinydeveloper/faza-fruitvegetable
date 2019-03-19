@@ -156,9 +156,11 @@
         },
         watch: {
             search: function(){
+                app.isLoading = true;
                 clearTimeout(this.timeout);
                 this.timeout = setTimeout(function(){ 
                     app.isTyping = false;
+                    app.isLoading = false;
                 }, 1000);
             },
             isTyping: function(value) {
