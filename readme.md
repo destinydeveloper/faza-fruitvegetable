@@ -56,6 +56,16 @@ php artisan faza:create-user
 Ingat! Untuk Melakukan Upload Gambar Selalu Gunakan Helpers Berikut :<br>
 Helpers Berikut akan mengupload gambar ke folder yang sudah ditentukan di `.env` dan akan memecahnya menjadi dimensi lain sesuai yang ada di `.env`
 
+Use Helper :
+```
+use App\Helpers\Images;
+```
+
+Atau langsung dengan global function :
+```
+images()->upload();
+```
+
 Upload Image :
 ```
 // Function
@@ -100,3 +110,21 @@ RESOURCE_IMAGES_MIMES=jpeg,bmp,png
 `RESOURCE_IMAGES_DIMENSIONS` : Dimensi Yang Dibutuhkan, Gambar Yang Di Upload Akan Kami Pecah Menjadi Beberapa Dimensi sesuai kebutuhan, pisahkan dimensi dengan tanda | antar dimensi. dan tanda x untuk memisahkan width dan height.<br>
 `RESOURCE_IMAGES_MAX_SIZE` : Maksimal Ukuran Yang diperbolehkan dalam byte.<br>
 `RESOURCE_IMAGES_MIMES` : Format gambar yang diperbolehkan.<br>
+
+
+### Helper - Account
+
+Use Helper :
+```
+use App\Helpers\Account;
+```
+
+Atau langsung dengan global function :
+```
+Account()->make();
+```
+
+Membuat akun :
+```
+make($name, $username, $email, $password, $role);
+```
