@@ -65,7 +65,7 @@ class ManagerBarangMentahController extends Controller
                 break;
 
             case 'add':
-                $request->validate(['stok' => 'required|integer']);
+                $request->validate(['id' => 'required|integer']);
                 $BarangMentah = BarangMentah::with('barang')->findOrFail($request->input('id'));
                 $barang = Barang::findOrFail($BarangMentah->barang->id);
                 $barang->increment('stok', $BarangMentah->stok);

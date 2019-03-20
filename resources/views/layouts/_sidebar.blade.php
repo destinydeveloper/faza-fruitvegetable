@@ -10,7 +10,7 @@
     <span class="heading">Main</span>
     <ul class="list-unstyled">
             <li id="sidebar-home"><a href="{{ route('user.home') }}"> <i class="fa fa-home"></i>Home </a></li>
-            <li id="notifikasi"><a href="{{ route('user.home') }}"> <i class="fa fa-bell"></i>Notifikasi </a></li>
+            <li id="sidebar-notifikasi"><a href="{{ route('user.home') }}"> <i class="fa fa-bell"></i>Notifikasi </a></li>
     </ul>
     <span class="heading">Manager</span>
     <ul class="list-unstyled">

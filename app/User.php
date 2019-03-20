@@ -43,4 +43,9 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\Models\Gambar', 'id', 'gambar_id');
     }
+    
+    public function notification()
+    {
+        return $this->hasMany('App\Models\Notification');
+    }
 }

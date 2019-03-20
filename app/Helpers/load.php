@@ -15,3 +15,9 @@ if (! function_exists('images')) {
         return app(\App\helpers\Images::class);
     }
 }
+if (! function_exists('notification')) {
+    function notification()
+    {
+        return app(\App\helpers\Notification::class);
+    }
+}

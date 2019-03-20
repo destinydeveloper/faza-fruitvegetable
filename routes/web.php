@@ -28,6 +28,12 @@ Route::group([
     Route::get('/', function () {
         return view('user.home');
     })->name('home');
+    Route::get('/notifikasi', function(){
+        notification()->make("Judul", "Hanya percobaan saja", Auth()->user()->id, "google.com", "info");
+        $notifications = notification()->get();
+        return view('user.notification', compact('notifications'));
+    });
+
     // Manager User
     Route::get('/manager/user', 'ManagerUserController@index')->name('manager.user');
     Route::post('/manager/user/action', 'ManagerUserController@action')->name('manager.user.action');
@@ -51,4 +57,12 @@ Route::group([
 
     Route::get('/profil', 'ProfilController@index')->name('profil');
     Route::post('/profil', 'ProfilController@upload')->name('profil.upload');
+});
+
+
+
+
+Route::get('/dev', function(){
+    // notification()->make("Judul", "Hanya percobaan saja", Auth()->user()->id, "info");
+    return notification()->get();
 });
