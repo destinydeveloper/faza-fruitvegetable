@@ -128,3 +128,29 @@ Membuat akun :
 ```
 make($name, $username, $email, $password, $role);
 ```
+
+### Helpers Notification
+
+Menggunakan :
+```
+app(App\Helpers\Image::class)
+// or
+notifications()
+```
+
+Mengambil notifkasi : 
+```
+// get login account :
+account()->get();
+
+// get spesific id user :
+account()->get(1);
+````
+
+Membuat notifikasi
+```
+account()->make("Title", "Content", iduser, "url_if_notif_clicked", "info");
+account()->make("Title", "Content", iduser, "url_if_notif_clicked", "success");
+account()->make("Title", "Content", iduser, "url_if_notif_clicked", "warning");
+account()->make("Title", "Content", Auth()->user()->id, "url_if_notif_clicked", "danger");
+```
