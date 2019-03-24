@@ -39,8 +39,12 @@
                                         <div class="notification-content">@{{ item.content }}</div>
                                         <div class="notification-time">@{{ item.created_at }}</div>
                                     </div></a></li>
-                                <li>
-                                <a rel="nofollow" href="{{ route('user.notifikasi') }}" class="dropdown-item all-notifications text-center"> <strong>Lihat semua</strong></a></li>
+                                <div style="text-align:center;" v-if="notif === null || (Array.isArray(notif) && notif.length == 0)">
+                                    Tidak Ada Notifikasi.
+                                </div>
+                                <div v-else>
+                                    <li><a rel="nofollow" href="{{ route('user.notifikasi') }}" class="dropdown-item all-notifications text-center"> <strong>Lihat semua</strong></a></li>
+                                </div>
                             </div>
                         </ul>
                     </li>
@@ -102,7 +106,11 @@
                     notifApp.loading = true;
                     axios.post('', {action: 'getnavbar'}, {baseURL: notifApi}).then(function(res){
                         if (res.data.status == 'success') {
-                            notifApp.notif = res.data.result;
+                            if (res.data.result.length == 0) {
+                                notifApp.notif = null;
+                            } else {
+                                notifApp.notif = res.data.result;
+                            }
                         }
                     }).catch(function(error){
                     });

@@ -9,6 +9,10 @@
             <div class="card">
                 <div class="card-body" style="padding: 0;">
                     <div class="list-group" v-if="notif == null">
+                        @if (count($notifications) == 0)
+                            <div style="text-align:center;margin: 15px;">Tidak ada notifikasi.</div>
+                        @endif
+
                         @foreach ($notifications as $item)
                             <a href="{{ $item->url }}" class="list-group-item list-group-item-action
                                 @if(!$item->read) bg-primary text-white @endif
@@ -32,10 +36,12 @@
                         </a>
                     </div>
 
+                    @if (count($notifications) != 0)
                     <button style="border-radius: 0;" :disabled="loading" v-on:click="getNotif" class="btn btn-sm btn-block btn-primary" v-if="notif == null">
                         <span v-if="loading">Loading..</span>
                         <span v-else>Tampilkan Semua Notifikasi</span>
                     </button>
+                    @endif
                 </div>
             </div>
         </div>

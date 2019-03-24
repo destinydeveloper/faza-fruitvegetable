@@ -28,29 +28,37 @@ Route::group([
     Route::get('/', function () {
         return view('user.home');
     })->name('home');
+    Route::group(['middleware' => ['role:admin']], function(){
+        // Manager User
+        Route::get('/manager/user', 'ManagerUserController@index')->name('manager.user');
+        Route::post('/manager/user/action', 'ManagerUserController@action')->name('manager.user.action');
+        
+        // Manager  Gaji Karyawan
+        Route::get('/manager/gaji-karyawan', 'ManagerGajiKaryawanController@index')->name('manager.gajikaryawan');
+        Route::post('/manager/gaji-karyawan', 'ManagerGajiKaryawanController@action')->name('manager.gajikaryawan.action');
+    });
+
+    Route::group(['middleware' => ['role:admin|pengepak']], function(){
+        // Manager Barang
+        Route::get('/manager/barang', 'ManagerBarangController@index')->name('manager.barang');
+        Route::post('/manager/barang', 'ManagerBarangController@action')->name('manager.barang.action');
+    });
+
+    Route::group(['middleware' => ['role:admin|pengepak']], function(){
+        // Manager Barang Mentah
+        Route::get('/manager/barang-mentah', 'ManagerBarangMentahController@index')->name('manager.barang_mentah');
+        Route::post('/manager/barang-mentah', 'ManagerBarangMentahController@action')->name('manager.barang_mentah.action');
+    });
+
+    Route::group(['middleware' => ['role:admin|supervisor']], function(){
+        // Manager Input Barang Mentah
+        Route::get('/manager/input-barang-mentah', 'ManagerInputBarangMentahController@index')->name('manager.input_barang_mentah');
+        Route::post('/manager/input-barang-mentah', 'ManagerInputBarangMentahController@action')->name('manager.input_barang_mentah.action');
+    });
+
+    
     Route::get('/notifikasi', 'NotificationController@index')->name('notifikasi');
     Route::post('/notifikasi', 'NotificationController@action')->name('notifikasi.action');
-
-    // Manager User
-    Route::get('/manager/user', 'ManagerUserController@index')->name('manager.user');
-    Route::post('/manager/user/action', 'ManagerUserController@action')->name('manager.user.action');
-    
-    // Manager  Gaji Karyawan
-    Route::get('/manager/gaji-karyawan', 'ManagerGajiKaryawanController@index')->name('manager.gajikaryawan');
-    Route::post('/manager/gaji-karyawan', 'ManagerGajiKaryawanController@action')->name('manager.gajikaryawan.action');
-
-    // Manager Barang
-    Route::get('/manager/barang', 'ManagerBarangController@index')->name('manager.barang');
-    Route::post('/manager/barang', 'ManagerBarangController@action')->name('manager.barang.action');
-    
-    // Manager Barang Mentah
-    Route::get('/manager/barang-mentah', 'ManagerBarangMentahController@index')->name('manager.barang_mentah');
-    Route::post('/manager/barang-mentah', 'ManagerBarangMentahController@action')->name('manager.barang_mentah.action');
-    
-    // Manager Input Barang Mentah
-    Route::get('/manager/input-barang-mentah', 'ManagerInputBarangMentahController@index')->name('manager.input_barang_mentah');
-    Route::post('/manager/input-barang-mentah', 'ManagerInputBarangMentahController@action')->name('manager.input_barang_mentah.action');
-
 
     Route::get('/profil', 'ProfilController@index')->name('profil');
     Route::post('/profil', 'ProfilController@upload')->name('profil.upload');
