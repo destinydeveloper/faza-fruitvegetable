@@ -1,0 +1,315 @@
+
+.bg-wrapper, .left-menu {
+	position: fixed;
+}
+
+.fixed-top.is-active{
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: unset; 
+}
+.atap.is-active{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 500;
+}
+.bg-wrapper {
+	z-index: 600;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    background:rgba(0, 0, 0, 0.7);
+    opacity: 1;
+    -webkit-transition: opacity .3s,width 0s .3s,height 0s .3s;
+    transition: opacity .3s,width 0s .3s,height 0s .3s;
+    overflow: hidden;
+}
+
+.bg-wrapper.is-active {
+	width: 100%;
+    height: 100%;
+    opacity: 1;
+    -webkit-transition: opacity .3s;
+    transition: opacity .3s;
+
+}
+.btn-menu{
+    float: left;
+    cursor: pointer;
+    padding: 15px 9px;
+    margin-left: 15px;
+}
+.icon-bar{
+    background-color: #888;
+    display: block;
+    width: 22px;
+    height: 2px;
+    border-radius: 1px;
+    margin-top: 5px;
+}
+
+.menu-left-slider {
+    left: 0;
+    -webkit-transform: translateX(-100%); 
+    -ms-transform: translateX(-100%);
+    transform: translateX(-100%); 
+}
+
+.menu-left-slider.is-active {
+    -webkit-transform: translateX(0); */
+    -ms-transform: translateX(0);
+    transform: translateX(0);
+}
+.menu-slider {
+    -webkit-transition: -webkit-transform .3s;
+    position: fixed;
+    top: 0;
+    z-index: 700;
+    height: 100%;
+    width: 300px;
+    background-color: #fff;
+    overflow: auto;
+    font-size: 15px;
+}
+.underline {
+    border-bottom: solid 1px #727272;
+    margin: 1.5em 0;
+    height: 0;
+    width: 100%;
+    clear: both;
+    opacity: 0.5;
+}
+.clearfix {
+    content: "";
+    clear: both;
+    display: block;
+    visibility: hidden;
+    height: 0;
+    font-size: 0;
+}
+    /*@import url(https://fonts.googleapis.com/css?family=Montserrat);*/
+    body{
+      min-width: 320px;
+      font-family: montserrat, arial, verdana;
+    }
+    .bg-kuningdop{
+      background-color: #ffc107;
+    }
+    .bg-biru{
+      background-color: #03a9f4;
+    }
+    .btn-biru {
+      color: #fff;
+      background-color: #03a9f4;
+      border-color: #aaa;
+    }
+    .btn-shadow{
+      -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.14), 0 1px 7px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -1px rgba(0, 0, 0, 0.2);;
+    }
+    .nav-link.btn-biru{
+        color: #fff !important;
+    }
+    .nav-link.btn{
+      margin: auto;
+      margin-left: 2px;
+      margin-right: 2px;
+    }
+    .nav-link.btn.rounded-circle{
+      height: 50px;
+      width: 50px;
+      padding: 12px;
+    }
+      .nav-link .title{
+        display: inline-block;
+        margin-left: 20px;
+        font-size: 20px;
+
+      }
+        .carousel-item>img {
+          height: 400px;
+        }
+        div.footer {
+        color: white;
+        background-color:   #808080;
+        clear: left;
+        text-align: center;
+        float: left;
+        width: 100%;
+        height: auto;
+    }
+    #footer-menu{
+      text-decoration:none;
+      width:100%;
+      margin-left: unset;
+      margin-right: unset;
+      }
+    #footer-menu ul li a:hover{
+      color: red;
+    }
+    #footer-menu ul li ul li a:hover{
+      color: red;
+    }
+    #footer-menu ul{
+      text-decoration:none;
+      list-style:none;
+
+    }
+    #footer-menu ul li{
+      float:left;
+      padding:10px 30px 10px 0px;
+      width:100%;
+          text-align: left;
+      }
+    #footer-menu ul li a{
+      text-decoration:none;
+      color:white;
+      line-height: 25px;
+      /*font-size:16px;
+      font-family:cursive;*/
+      }
+    #footer-menu ul li ul{
+      margin-left:-40px;
+
+      }
+    #footer-menu ul li ul li{
+      float:none;
+      width:250px;
+      text-align:justify;
+      }
+    #icon-sosmed{
+      /*width:100%;
+      margin:-5px -12px;*/
+      }
+
+    .sosmed1 img{
+      width:100%;
+      height: 100%;
+      position: relative;
+      margin: auto;
+      }
+      .sosmed1:hover{
+        border: 1px solid #FFF;
+      }
+      .sosmed1#facebook:hover{
+        background-color: #49659f;
+      }
+            .sosmed1#google:hover{
+        background-color: #DC4E41;
+      }
+            .sosmed1#instagram:hover{
+        background-color: #b969a7;
+      }
+            .sosmed1#whatsapp:hover{
+        background-color: #30b944;
+      } 
+      .diskon_reseller{
+        color: red;
+      }
+.kerangka-user{
+    position: relative;
+    padding: 15px 32px;
+    margin-bottom: 8px;
+}
+.foto-user{
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+}
+.lisa{
+  list-style: none;
+  padding: 0px;
+  margin: 0px 0px 10px 5px;
+}
+.lisaa{
+  margin: 0px 0px 10px 5px;
+}
+.timo{
+      display: inline-block;
+    margin-left: 20px;
+    font-size: 18px;
+    
+}
+.lisa>li>a:hover,
+.lisa>li>ul>li>a:hover,
+{
+  background: orange;
+
+}
+
+.lisaa>a:hover{
+  background: orange;
+}
+    @media (min-width: 992px){
+      /*.navbar-expand-lg .navbar-nav .dropdown-menu {
+        position: fixed;
+        width: 100%;
+        left: 0px;
+        right: 0px;
+        top: 56px;
+        border-radius: 0px;
+        border: none;
+      }*/
+    }
+
+    @media (min-width: 769px){
+      .nav-link .title{
+        display: none;
+      }
+    }
+@media (max-width: 340px) {
+
+}
+
+@media screen and (min-width: 901px) {
+
+}
+@media screen and (max-width: 900px) {
+    .btn-menua {
+        margin-left: 8px;
+        display: block!important;
+    }
+    .btn-menub {
+        display: none!important;
+    }
+    .mod{
+        display: block !important;
+    }
+    .mob{
+      display: none !important;
+    }
+    .timo{
+    font-size: 15px;
+    line-height: 30px;
+    
+}
+.ahh{
+  font-size: 14px;
+}
+        
+}
+
+@media screen and (max-width: 718px) {
+
+}
+@media screen and (max-width: 600px) {
+
+}
+@media screen and (max-width: 544px) {
+    .menu-slider {
+        width: 260px;
+    }
+
+}
+@media screen and (max-width: 320px) {
+
+}
