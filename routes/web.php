@@ -28,11 +28,8 @@ Route::group([
     Route::get('/', function () {
         return view('user.home');
     })->name('home');
-    Route::get('/notifikasi', function(){
-        notification()->make("Judul", "Hanya percobaan saja", Auth()->user()->id, "google.com", "info");
-        $notifications = notification()->get();
-        return view('user.notification', compact('notifications'));
-    });
+    Route::get('/notifikasi', 'NotificationController@index')->name('notifikasi');
+    Route::post('/notifikasi', 'NotificationController@action')->name('notifikasi.action');
 
     // Manager User
     Route::get('/manager/user', 'ManagerUserController@index')->name('manager.user');
@@ -63,6 +60,14 @@ Route::group([
 
 
 Route::get('/dev', function(){
-    // notification()->make("Judul", "Hanya percobaan saja", Auth()->user()->id, "info");
-    return notification()->get();
+    $url = 'http://mfdonline.bps.go.id/index.php?link=hasil_pencarian';
+
+    $session = curl_init();
+    curl_setopt($session, CURLOPT_URL, $url);
+    curl_setopt($session, CURLOPT_RETURNTRANSFER, 1);
+    $hasil = curl_exec($session);
+    curl_close($session);
+
+    return $hasil;
+    // return view('coba');
 });

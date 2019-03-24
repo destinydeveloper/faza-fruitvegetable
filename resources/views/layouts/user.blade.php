@@ -22,7 +22,9 @@
             </header>
 
             <!-- Page Content-->
-            @yield('content')
+            <div id="app">
+                @yield('content')
+            </div>
 
             <!-- Page Footer-->
             <footer class="main-footer">

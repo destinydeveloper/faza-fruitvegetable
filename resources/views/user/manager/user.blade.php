@@ -26,9 +26,6 @@
     <script src="{{ asset('assets/vendor/datatables/datatables.min.js') }}"></script>
     {{-- Alertify --}}
     <script src="{{ asset('assets/vendor/alertify/alertify.min.js') }}"></script>
-    {{-- Vue & Axios --}}
-    <script src="{{ asset('assets/vendor/vue/vue.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/axios/axios.min.js') }}"></script>
     {{-- This Page Script --}}
     {{-- <script src="{{ asset('assets/dist/custom/admin_manager_user.min.js') }}"></script> --}}
 @endpush
@@ -181,10 +178,6 @@
     $('#sidebar-manager-user').addClass('active');
     // Configuration
     const loadTimeInterval = 200;
-    const assets = $("meta[name='assets']").attr("content");
-    axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    axios.defaults.baseURL = $("meta[name='api']").attr("content");
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = $("meta[name='csrf-token']").attr("content");
     // Jquery
     // Vue Instance
     var app = new Vue({

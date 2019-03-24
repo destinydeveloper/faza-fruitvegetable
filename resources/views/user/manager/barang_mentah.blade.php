@@ -25,9 +25,6 @@
     <script src="{{ asset('assets/vendor/datatables/datatables.min.js') }}"></script>
     {{-- Alertify --}}
     <script src="{{ asset('assets/vendor/alertify/alertify.min.js') }}"></script>
-    {{-- Vue & Axios --}}
-    <script src="{{ asset('assets/vendor/vue/vue.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/axios/axios.min.js') }}"></script>
     {{-- This Page Script --}}
 @endpush
 
@@ -98,10 +95,6 @@
     $('#sidebar-manager-barangmentah').addClass('active');
     // Configuration
     const loadTimeInterval = 200;
-    const assets = $("meta[name='assets']").attr("content");
-    axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    axios.defaults.baseURL = $("meta[name='api']").attr("content");
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = $("meta[name='csrf-token']").attr("content");
     // VueJs Instance
 
     var app = new Vue({

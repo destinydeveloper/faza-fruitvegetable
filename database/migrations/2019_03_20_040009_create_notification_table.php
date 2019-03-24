@@ -20,6 +20,7 @@ class CreateNotificationTable extends Migration
             $table->string("url");
             $table->longText("content")->nullable();
             $table->enum("type", ['success', 'info', 'warning', 'danger'])->default('info');
+            $table->enum("read", [0, 1])->default(0);
             $table->timestamps();
         });
     }

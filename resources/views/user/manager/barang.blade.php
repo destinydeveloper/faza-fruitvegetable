@@ -25,10 +25,6 @@
     <script src="{{ asset('assets/vendor/datatables/datatables.min.js') }}"></script>
     {{-- Alertify --}}
     <script src="{{ asset('assets/vendor/alertify/alertify.min.js') }}"></script>
-    {{-- Vue & Axios --}}
-    <script src="{{ asset('assets/vendor/vue/vue.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/axios/axios.min.js') }}"></script>
-    <script src="https://unpkg.com/vue-upload-multiple-image@1.0.2/dist/vue-upload-multiple-image.js"></script>
     {{-- This Page Script --}}
 @endpush
 
@@ -255,10 +251,6 @@
     $('#sidebar-manager-barang').addClass('active');
     // Configuration
     const loadTimeInterval = 200;
-    const assets = $("meta[name='assets']").attr("content");
-    axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-    axios.defaults.baseURL = $("meta[name='api']").attr("content");
-    axios.defaults.headers.common['X-CSRF-TOKEN'] = $("meta[name='csrf-token']").attr("content");
     // Vue Instance
     var app = new Vue({
         el: '#app',

@@ -7,7 +7,7 @@
                 <input type="search" placeholder="What are you looking for..." class="form-control">
             </form>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid" id="notif-app">
             <div class="navbar-holder d-flex align-items-center justify-content-between">
                 <!-- Navbar Header-->
                 <div class="navbar-header">
@@ -21,29 +21,27 @@
                     <!-- Search-->
                     <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
                     <!-- Notifications-->
-                    <li class="nav-item dropdown"> <a id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-bell-o"></i><span class="badge bg-red badge-corner">12</span></a>
+                    <li class="nav-item dropdown"> 
+                        <a v-on:click="getNotif" id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">
+                            <i class="fa fa-bell-o"></i>
+                            @if(notification()->getNotReadCount() != 0)
+                                <span class="badge bg-red badge-corner">{{ notification()->getNotReadCount() }}</span>
+                            @endif
+                        </a>
                         <ul aria-labelledby="notifications" class="dropdown-menu">
-                        <li><a rel="nofollow" href="#" class="dropdown-item"> 
-                            <div class="notification">
-                                <div class="notification-content"><i class="fa fa-envelope bg-green"></i>You have 6 new messages </div>
-                                <div class="notification-time"><small>4 minutes ago</small></div>
-                            </div></a></li>
-                        <li><a rel="nofollow" href="#" class="dropdown-item"> 
-                            <div class="notification">
-                                <div class="notification-content"><i class="fa fa-twitter bg-blue"></i>You have 2 followers</div>
-                                <div class="notification-time"><small>4 minutes ago</small></div>
-                            </div></a></li>
-                        <li><a rel="nofollow" href="#" class="dropdown-item"> 
-                            <div class="notification">
-                                <div class="notification-content"><i class="fa fa-upload bg-orange"></i>Server Rebooted</div>
-                                <div class="notification-time"><small>4 minutes ago</small></div>
-                            </div></a></li>
-                        <li><a rel="nofollow" href="#" class="dropdown-item"> 
-                            <div class="notification">
-                                <div class="notification-content"><i class="fa fa-twitter bg-blue"></i>You have 2 followers</div>
-                                <div class="notification-time"><small>10 minutes ago</small></div>
-                            </div></a></li>
-                        <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong>view all notifications                                            </strong></a></li>
+                            <div v-if="loading">
+                                <div style="text-align: center;">Getting Information...</div>
+                            </div>
+                            <div v-if-else="!notif === null">
+                                <li v-for="(item, i) in notif"><a  rel="nofollow" v-bind:href="item.url" class="dropdown-item"> 
+                                    <div class="notification">
+                                        <div class="notification-title"><strong>@{{ item.title }}</strong></div>
+                                        <div class="notification-content">@{{ item.content }}</div>
+                                        <div class="notification-time">@{{ item.created_at }}</div>
+                                    </div></a></li>
+                                <li>
+                                <a rel="nofollow" href="{{ route('user.notifikasi') }}" class="dropdown-item all-notifications text-center"> <strong>Lihat semua</strong></a></li>
+                            </div>
                         </ul>
                     </li>
                     <!-- Messages                        -->
@@ -82,3 +80,38 @@
         </div>
     </nav>
 </header>
+
+@push('meta')
+    <meta name="notif-api" content="{{ route('user.notifikasi.action') }}">    
+    <meta name="assets" content="{{ asset('assets') }}">
+@endpush
+
+@push('js')
+    <script>
+    const notifApi = $("meta[name='notif-api']").attr("content");
+    // Vue Instance
+    var notifApp = new Vue({
+        el: '#notif-app',
+        data: {
+            loading: true,
+            notif: null,
+        },
+        methods: {
+            getNotif: function(){
+                if (notifApp.notif == null) {
+                    notifApp.loading = true;
+                    axios.post('', {action: 'getnavbar'}, {baseURL: notifApi}).then(function(res){
+                        if (res.data.status == 'success') {
+                            notifApp.notif = res.data.result;
+                        }
+                    }).catch(function(error){
+                    });
+                    notifApp.loading = false;
+                }
+            }
+        },
+        mounted(){
+        }
+    });
+    </script>
+@endpush

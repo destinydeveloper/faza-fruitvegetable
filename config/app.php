@@ -182,6 +182,7 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        AzisHapidin\IndoRegion\IndoRegionServiceProvider::class,
     ],
 
     /*

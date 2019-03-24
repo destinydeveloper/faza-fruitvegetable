@@ -70,6 +70,21 @@ class ManagerBarangMentahController extends Controller
                 $barang = Barang::findOrFail($BarangMentah->barang->id);
                 $barang->increment('stok', $BarangMentah->stok);
                 $BarangMentah->delete();
+
+                $user = \App\User::with('roles')->whereHas('roles', function($q){
+                    return $q->whereIn('name', ['admin', 'pengepak']);
+                });        
+                $alluser = $user->get();
+                foreach($alluser as $user)
+                {
+                    notification()->stack(
+                        'Update Stok Barang Jadi', 
+                        'Beberapa Barang Mentah Telah Dikonfirmasi',
+                        $user->id, 
+                        url('user/manager/barang'),
+                        'info'
+                    );
+                }
                 
                 return response()->json(['status' => 'success', 'result' => $barang->id]);
                 break;

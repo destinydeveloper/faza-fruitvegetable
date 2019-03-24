@@ -22,7 +22,7 @@
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
 </head>
 <body>
-    <div id="app" class="page @yield('page-class')">
+    <div id="master-app" class="page @yield('page-class')">
         @yield('content-header')
         @yield('content-main')
         @yield('content-footer')
@@ -36,6 +36,16 @@
     {{-- <script src="{{ asset('assets/vendor/jquery-validation/jquery.validate.min.js') }}"></script> --}}
     {{-- <script src="{{ asset('assets/dist/js/charts-home.js') }}"></script>
     <script src="{{ asset('assets/vendor/chart.js/Chart.min.js') }}"></script> --}}
+    {{-- Vue & Axios --}}
+    <script src="{{ asset('assets/vendor/vue/vue.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/axios/axios.min.js') }}"></script>
+    <script>
+    // Configuration
+    const assets = $("meta[name='assets']").attr("content");
+    axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+    axios.defaults.baseURL = $("meta[name='api']").attr("content");
+    axios.defaults.headers.common['X-CSRF-TOKEN'] = $("meta[name='csrf-token']").attr("content");
+    </script>
     @stack('js')
 </body>
 </html>
