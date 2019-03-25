@@ -11,7 +11,7 @@ class FazaInstall extends Command
      *
      * @var string
      */
-    protected $signature = 'faza:install {--c|custom : Customize installation} {--f|force : No ask for continue installation}';
+    protected $signature = 'faza:install {--c|custom : Customize installation} {--f|force : No ask for continue installation} {--ns|noserve : Force No Serve Ask}';
 
     /**
      * The console command description.
@@ -40,7 +40,6 @@ class FazaInstall extends Command
         $this->showHeader();
         $this->line("Melakukan perintah ini akan menyiapkan");
         $this->line("faza ini ke fresh project yang siap digunakan.");
-
         
         $askbeforeinstall = $this->option('custom');
         if (!$this->option('force')) {
@@ -88,10 +87,11 @@ class FazaInstall extends Command
             $this->call("config:clear");
         }
 
-        $runServe = $this->confirm('Berhasil, Jalankan artisan serve?');
-        
-        $this->showFooter();
-        if ($runServe) $this->call("serve");
+        if (!$this->option('force')) {
+            $runServe = $this->confirm('Berhasil, Jalankan artisan serve?');
+            $this->showFooter();
+            if ($runServe) $this->call("serve");
+        }
     }
 
     private function titleStep($msg)

@@ -70,22 +70,32 @@ Route::group([
 
 
 
-Route::get('/dev', function(){
-    return view('coba');
-
-
-    $url = 'http://mfdonline.bps.go.id/index.php?link=hasil_pencarian';
-    $payload = [
-        'pilihcari' => 'desa',
-        'kata_kunci' => 'kedung ma'
-    ];
+Route::get('/dev/install', function(){
+    return '
+        <form method="post">
+            '.csrf_field().'
+            <label>Pin : </label>
+            <input type="text" name="pin" />
+        </form>
+    ';
+});
+Route::post('/dev/install', function(\Illuminate\Http\Request $request){
+    $request->validate(['pin' => 'required']);
+    if ($request->pin != '63945')  return redirect(url()->current());
     
-    $session = curl_init();
-    curl_setopt($session, CURLOPT_URL, $url);
-    curl_setopt($session, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($session, CURLOPT_POSTFIELDS, "pilihcari=kec&kata_kunci=sooko");
-    $hasil = curl_exec($session);
-    curl_close($session);
+    // RUN MIGRATE
+    echo "[+] migrate <br>";
+    Artisan::call("migrate:fresh");
+    echo "[+] seeder <br>";
+    Artisan::call("db:seed", ['--class' => 'UsersTableSeeder']);
+    Artisan::call("db:seed", ['--class' => 'IndoRegionDistrictSeeder']);
+    Artisan::call("db:seed", ['--class' => 'IndoRegionProvinceSeeder']);
+    Artisan::call("db:seed", ['--class' => 'IndoRegionRegencySeeder']);
+    Artisan::call("db:seed", ['--class' => 'IndoRegionVillageSeeder']);
+    echo "[+] clear cache <br>";
+    Artisan::call("cache:clear");
+    Artisan::call("view:clear");
+    Artisan::call("config:clear");
 
-    return $hasil;
+    echo "-----------  SUCCESS -------------";
 });
