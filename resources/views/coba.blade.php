@@ -27,7 +27,7 @@
                     @{{ item.name }}
                 </option>
             </select>
-            <select v-model="village">
+            <select v-on:change="getDetail()" v-model="village">
                 <option v-for="(item, i) in villages" v-bind:value="item.id">
                     @{{ item.name }}
                 </option>
@@ -69,7 +69,14 @@
                 axios.get('/village/'+app.district).then(function(res){
                     app.villages = res.data;
                 });
-            }
+            },
+            getDetail: function(){
+                axios.get('/detail/'+app.village).then(function(res){
+                    console.log(res);
+                }).catch(function(error){
+                    console.log(error.response);
+                })
+            },
         },
         mounted(){
             this.loadProvinces();

@@ -30,6 +30,9 @@ class CreateRelationTable extends Migration
         Schema::table('notifications', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+        Schema::table('alamat', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        });
     }
 
     /**
@@ -53,8 +56,11 @@ class CreateRelationTable extends Migration
         Schema::table('gaji_karyawan', function (Blueprint $table) {
             $table->dropForeign('gaji_karyawan_user_id_foreign');
         });
-        Schema::table('gaji_karyawan', function (Blueprint $table) {
+        Schema::table('notifications', function (Blueprint $table) {
             $table->dropForeign('notifications_user_id_foreign');
+        });
+        Schema::table('alamat', function (Blueprint $table) {
+            $table->dropForeign('alamat_user_id_foreign');
         });
     }
 }

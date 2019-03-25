@@ -54,9 +54,6 @@
 @endpush
 
 @push('js')
-    {{-- Vue & Axios --}}
-    <script src="{{ asset('assets/vendor/vue/vue.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/axios/axios.min.js') }}"></script>
 
     <script>
     $('#sidebar-notifikasi').addClass('active');

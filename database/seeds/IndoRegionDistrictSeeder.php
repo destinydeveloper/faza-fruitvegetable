@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use AzisHapidin\IndoRegion\RawDataGetter;
+use App\Helpers\RawDataGetter;
 
 class IndoRegionDistrictSeeder extends Seeder
 {
@@ -14,7 +14,8 @@ class IndoRegionDistrictSeeder extends Seeder
      */
     public function run()
     {
-        $districts = RawDataGetter::getDistricts();
+        echo "[+] Importing District - Wilayah Indonesia [MFD & MBS Badan Pusat Statistik] \n";
+        $districts = RawDataGetter::get('districts');
         DB::table('indoregion_districts')->insert($districts);
     }
 }

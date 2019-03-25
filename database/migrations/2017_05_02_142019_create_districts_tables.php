@@ -14,9 +14,9 @@ class CreateDistrictsTables extends Migration
      public function up()
      {
        Schema::create('indoregion_districts', function(Blueprint $table){
-           $table->char('id', 7);
-           $table->char('regency_id', 4);
-           $table->string('name', 50);
+            $table->string('id', 7);
+            $table->string('regency_id');
+            $table->string('name', 50);
        });
      }
 

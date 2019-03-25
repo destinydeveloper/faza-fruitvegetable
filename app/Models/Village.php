@@ -10,7 +10,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Model\District;
+use App\Models\District;
 
 /**
  * Village Model.
@@ -38,6 +38,6 @@ class Village extends Model
      */
     public function district()
     {
-        return $this->belongsTo(District::class);
+        return $this->belongsTo('App\Models\District');
     }
 }

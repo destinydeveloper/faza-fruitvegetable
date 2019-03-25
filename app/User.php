@@ -48,4 +48,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Notification');
     }
+
+    public function alamat()
+    {
+        return $this->hasMany('App\Models\Alamat');
+    }
 }

@@ -14,9 +14,9 @@ class CreateRegenciesTables extends Migration
     public function up()
     {
       Schema::create('indoregion_regencies', function(Blueprint $table){
-          $table->char('id', 4);
-          $table->char('province_id', 2);
-          $table->string('name', 50);
+            $table->string('id', 7);
+            $table->string('province_id');
+            $table->string('name', 50);
       });
     }
 

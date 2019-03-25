@@ -62,20 +62,30 @@ Route::group([
 
     Route::get('/profil', 'ProfilController@index')->name('profil');
     Route::post('/profil', 'ProfilController@upload')->name('profil.upload');
+
+    Route::get('/alamat', 'AlamatEditorController@index')->name('alamat');
+    Route::post('/alamat', 'AlamatEditorController@action')->name('alamat.action');
 });
 
 
 
 
 Route::get('/dev', function(){
-    $url = 'http://mfdonline.bps.go.id/index.php?link=hasil_pencarian';
+    return view('coba');
 
+
+    $url = 'http://mfdonline.bps.go.id/index.php?link=hasil_pencarian';
+    $payload = [
+        'pilihcari' => 'desa',
+        'kata_kunci' => 'kedung ma'
+    ];
+    
     $session = curl_init();
     curl_setopt($session, CURLOPT_URL, $url);
     curl_setopt($session, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($session, CURLOPT_POSTFIELDS, "pilihcari=kec&kata_kunci=sooko");
     $hasil = curl_exec($session);
     curl_close($session);
 
     return $hasil;
-    // return view('coba');
 });

@@ -34,6 +34,7 @@
     @endhasanyrole
     <span class="heading">Pengaturan</span>
     <ul class="list-unstyled">
+        <li id="sidebar-alamat"><a href="{{ route('user.alamat') }}"> <i class="fa fa-map"></i>Alamat Editor </a></li>
         <li id="sidebar-profil"><a href="{{ route('user.profil') }}"> <i class="fa fa-id-card"></i>Profil </a></li>
     </ul>
 </nav>

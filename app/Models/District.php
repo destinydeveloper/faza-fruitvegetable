@@ -10,8 +10,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Model\Regency;
-use App\Model\Village;
+use App\Models\Regency;
+use App\Models\Village;
 
 /**
  * District Model.

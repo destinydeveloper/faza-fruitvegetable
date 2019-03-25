@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use AzisHapidin\IndoRegion\RawDataGetter;
+use App\Helpers\RawDataGetter;
 
 class IndoRegionRegencySeeder extends Seeder
 {
@@ -14,7 +14,8 @@ class IndoRegionRegencySeeder extends Seeder
      */
     public function run()
     {
-        $regencies = RawDataGetter::getRegencies();
+        echo "[+] Importing Regency - Wilayah Indonesia [MFD & MBS Badan Pusat Statistik] \n";
+        $regencies = RawDataGetter::get('regencies');
         DB::table('indoregion_regencies')->insert($regencies);
     }
 }

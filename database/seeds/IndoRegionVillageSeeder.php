@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use AzisHapidin\IndoRegion\RawDataGetter;
+use App\Helpers\RawDataGetter;
+use App\Models\Village;
 
 class IndoRegionVillageSeeder extends Seeder
 {
@@ -14,7 +15,8 @@ class IndoRegionVillageSeeder extends Seeder
      */
      public function run()
      {
-        $villages = RawDataGetter::getVillages();
+        echo "[+] Importing Village - Wilayah Indonesia [MFD & MBS Badan Pusat Statistik] \n";
+        $villages = RawDataGetter::get('villages');
         DB::transaction(function() use($villages) {
             $collection = collect($villages);
             $parts = $collection->chunk(1000);
