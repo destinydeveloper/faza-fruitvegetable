@@ -173,3 +173,11 @@ use App\Helpers\RawDataGetter;
 // getting csv - App\Faza\csv\tes.csv
 $tes = RawDataGetter::get('tes');
 ```
+
+
+
+
+# Credits
+* Laravel 5.8
+* Wilayah Indonesia - Badan Pusat Statistik (BPS) Indonesia
+* Bootstrapious 
