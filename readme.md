@@ -33,6 +33,13 @@
     - gambar
 * Faza Auth
     - gaji_karyawan
+    - notifications
+    - alamat
+* Indonesian Region - By Badan Pusat Statistik
+    - indoregion_provinces
+    - indoregion_regencies
+    - indoregion_districts
+    - indoregion_villages
 
 
 # Docs - Guide
@@ -129,7 +136,7 @@ Membuat akun :
 make($name, $username, $email, $password, $role);
 ```
 
-### Helpers Notification
+### Helper - Notification
 
 Menggunakan :
 ```
@@ -153,4 +160,16 @@ account()->make("Title", "Content", iduser, "url_if_notif_clicked", "info");
 account()->make("Title", "Content", iduser, "url_if_notif_clicked", "success");
 account()->make("Title", "Content", iduser, "url_if_notif_clicked", "warning");
 account()->make("Title", "Content", Auth()->user()->id, "url_if_notif_clicked", "danger");
+```
+
+### Helper - RawDataGetter
+
+Use : 
+```
+use App\Helpers\RawDataGetter;
+```
+
+```
+// getting csv - App\Faza\csv\tes.csv
+$tes = RawDataGetter::get('tes');
 ```
