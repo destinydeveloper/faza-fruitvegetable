@@ -71,7 +71,7 @@
             <div class="modal-body">
                 <form class="form" v-on:submit.prevent="">
                     <div class="form-group">
-                        <label>Nama Penerima</label>
+                        <label>Atas Nama</label>
                         <input v-model="penerima" type="text" class="form-control">
                     </div>
                     <div class="form-group">
