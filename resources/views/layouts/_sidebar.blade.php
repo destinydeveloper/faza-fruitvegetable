@@ -9,8 +9,8 @@
     </div>
     <span class="heading">Main</span>
     <ul class="list-unstyled">
-            <li id="sidebar-home"><a href="{{ route('user.home') }}"> <i class="fa fa-home"></i>Home </a></li>
-            <li id="sidebar-notifikasi"><a href="{{ route('user.notifikasi') }}"> <i class="fa fa-bell"></i>Notifikasi </a></li>
+        <li id="sidebar-home"><a href="{{ Auth()->user()->hasRole('pelanggan') ? route('homepage') : route('user.home') }}"> <i class="fa fa-home"></i>Home </a></li>
+        <li id="sidebar-notifikasi"><a href="{{ route('user.notifikasi') }}"> <i class="fa fa-bell"></i>Notifikasi </a></li>
     </ul>
     @hasanyrole('admin|pengepak|supervisor')
     <span class="heading">Manager</span>

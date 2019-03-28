@@ -17,7 +17,7 @@ class Notification {
         if (!$skip == null)  $getNotif->skip($skip);
         $getNotif = $getNotif->get();
         
-        if ($getNotif->count() != 0 && $getNotif[0]->read == 0) $set_read = $notif->update(['read' => 1]);
+        if ($getNotif->count() != 0 && $getNotif[0]->read == '0') $set_read = $notif->update(['read' => '1']);
         
 
         return $getNotif;
@@ -27,7 +27,7 @@ class Notification {
     {
         if ($user == null) $user = Auth()->user()->id;
         $notif = NotificationModel::whereUserId(Auth()->user()->id)
-                    ->whereRead(0);
+                    ->whereRead('0');
         return $notif->count();
     }
     

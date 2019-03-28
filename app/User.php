@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Alamat');
     }
+
+    public function keranjang()
+    {
+        return $this->hasMany('App\Models\Keranjang');
+    }
 }

@@ -18,8 +18,6 @@
                 </div>
                 <!-- Navbar Menu -->
                 <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
-                    <!-- Search-->
-                    <li class="nav-item d-flex align-items-center"><a id="search" href="#"><i class="icon-search"></i></a></li>
                     <!-- Notifications-->
                     <li class="nav-item dropdown"> 
                         <a v-on:click="getNotif" id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">
@@ -48,36 +46,23 @@
                             </div>
                         </ul>
                     </li>
-                    <!-- Messages                        -->
-                    <li class="nav-item dropdown"> <a id="messages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-envelope-o"></i><span class="badge bg-orange badge-corner">10</span></a>
-                        <ul aria-labelledby="notifications" class="dropdown-menu">
-                        <li><a rel="nofollow" href="#" class="dropdown-item d-flex"> 
-                            <div class="msg-profile"> <img src="{{ asset('assets/dist/img/avatar-1.jpg') }}" alt="..." class="img-fluid rounded-circle"></div>
-                            <div class="msg-body">
-                                <h3 class="h5">Jason Doe</h3><span>Sent You Message</span>
-                            </div></a></li>
-                        <li><a rel="nofollow" href="#" class="dropdown-item d-flex"> 
-                            <div class="msg-profile"> <img src="{{ asset('assets/dist/img/avatar-2.jpg') }}" alt="..." class="img-fluid rounded-circle"></div>
-                            <div class="msg-body">
-                                <h3 class="h5">Frank Williams</h3><span>Sent You Message</span>
-                            </div></a></li>
-                        <li><a rel="nofollow" href="#" class="dropdown-item d-flex"> 
-                            <div class="msg-profile"> <img src="{{ asset('assets/dist/img/avatar-3.jpg') }}" alt="..." class="img-fluid rounded-circle"></div>
-                            <div class="msg-body">
-                                <h3 class="h5">Ashley Wood</h3><span>Sent You Message</span>
-                            </div></a></li>
-                        <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong>Read all messages   </strong></a></li>
-                        </ul>
-                    </li>
+                    
                     <!-- Languages dropdown    -->
-                    <li class="nav-item dropdown"><a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><img src="{{ asset('assets/dist/img/flags/16/GB.png') }}" alt="English"><span class="d-none d-sm-inline-block">English</span></a>
+                    <li class="nav-item dropdown">
+                        <a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><img class="img-fluid rounded-circle" style="max-height: 32px;" src="{{ Auth()->user()->avatar === null ? asset('assets/dist/img/avatar.png') : asset('assets/images/100x100/'.Auth()->user()->avatar->path) }}">
+                            <span class="d-none d-sm-inline-block">{{ Auth()->user()->nama }}</span>
+                        </a>
                         <ul aria-labelledby="languages" class="dropdown-menu">
-                        <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="{{ asset('assets/dist/img/flags/16/DE.png') }}" alt="English" class="mr-2">German</a></li>
-                        <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="{{ asset('assets/dist/img/flags/16/FR.png') }}" alt="English" class="mr-2">French                                         </a></li>
+                            <li>
+                                <a onclick="event.preventDefault();document.getElementById('logout-form').submit();" rel="nofollow" href="#" class="dropdown-item">
+                                    <i class="fa fa-sign-out" style="color: #000!important;background: transparent !important;"></i>
+                                    Logout
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <!-- Logout    -->
-                    <li class="nav-item"><a onclick="event.preventDefault();document.getElementById('logout-form').submit();" href="{{ route('logout') }}" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a></li>
+                    <!-- <li class="nav-item"><a onclick="event.preventDefault();document.getElementById('logout-form').submit();" href="{{ route('logout') }}" class="nav-link logout"> <span class="d-none d-sm-inline">Logout</span><i class="fa fa-sign-out"></i></a></li> -->
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
                 </ul>
             </div>

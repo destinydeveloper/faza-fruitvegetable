@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -67,7 +64,7 @@
                 <div class="container">
                   <div class="row" style="margin: auto !important;max-width: 450px;">
                     <div class="col s12 l12 card card-login mx-auto cardlah" style="line-height: 30px;">
-                  <div class="head"><img src="{{ asset('material/img/bg.jpg') }}" style="height: 75px"><br>Faza Login</div> 
+                  <div class="head"><br>Faza Login</div> 
                     </div>
                   <div class="card card-login mx-auto col l12 s12" style="margin-top:0px;padding:  0;">
                     <div class="card-body" style="padding: 10px;">
@@ -101,8 +98,7 @@
                                         <div class="input-field col s12 m12 l12">
                                             <label style="position: relative;">
                                                 <input type="checkbox" {{ old('remember') ? 'checked' : '' }}/>
-                                                <span>Re-Remember</span>
-                                                {{ __('Remember Me') }}
+                                                <span>Remember</span>
                                             </label>
                                         </div>
                                     </div>
@@ -110,14 +106,13 @@
                       <div class="row" style="margin: 0">
                             <div class="input-field col s12">
                                     <input type="submit" class="btn btn-block blue text-dark col s12" style="" value="Masuk">
-                                    {{ __('Login') }}
                             </div>
                           </div>
                       </form>
                       <br>
                       <div class="row black-text">
                           <div class="col s8">
-                                Belum Punya Akun ?, <a class=" large mt-3 blue-text" href="register.php">Daftar Baru!</a>
+                                Belum Punya Akun ? <a class=" large mt-3 blue-text" href="register.php">Daftar</a>
                           </div>
                           @if (Route::has('password.request'))
                           <div class="col s4 right-align">

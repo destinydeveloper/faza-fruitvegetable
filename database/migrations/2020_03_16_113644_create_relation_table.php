@@ -33,6 +33,10 @@ class CreateRelationTable extends Migration
         Schema::table('alamat', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
+        Schema::table('keranjang', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('barang_id')->references('id')->on('barang');
+        });
     }
 
     /**
@@ -61,6 +65,10 @@ class CreateRelationTable extends Migration
         });
         Schema::table('alamat', function (Blueprint $table) {
             $table->dropForeign('alamat_user_id_foreign');
+        });
+        Schema::table('keranjang', function (Blueprint $table) {
+            $table->dropForeign('keranjang_user_id_foreign');
+            $table->dropForeign('keranjang_barang_id_foreign');
         });
     }
 }

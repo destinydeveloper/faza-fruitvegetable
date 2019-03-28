@@ -313,7 +313,7 @@
                 }).catch(function(error){
                     error = error.response;
                     app.loadDone();
-                    if (error.status == 422 && error.statusText == "Unprocessable Entity"){
+                    if (error.status == 422){
                         let errors  = error.data.errors;
                         Object.keys(errors).map(function(item, index){
                             alertify.error(errors[item][0]);
@@ -359,7 +359,7 @@
                 }).catch(function(error){
                     error = error.response;
                     app.loadDone();
-                    if (error.status == 422 && error.statusText == "Unprocessable Entity"){
+                    if (error.status == 422){
                         let errors  = error.data.errors;
                         Object.keys(errors).map(function(item, index){
                             alertify.error(errors[item][0]);

@@ -379,7 +379,7 @@
                 }).catch(function(error){
                     error = error.response;
                     app.loadDone();
-                    if (error.status == 422 && error.statusText == "Unprocessable Entity"){
+                    if (error.status == 422){
                         let errors  = error.data.errors;
                         Object.keys(errors).map(function(item, index){
                             alertify.error(errors[item][0]);
@@ -479,7 +479,8 @@
             reloadPeviewImageEdit(){
                 //previewImageNew
                 $('#previewImageEdit').html('');
-                for (var i = app.imagesEdit.length - 1; i >= 0; i--) {
+                // for (var i = app.imagesEdit.length - 1; i >= 0; i--) {
+                for (var i = 0; i <= app.imagesEdit.length - 1; i++) {
                     var action = "app.imagesEdit.splice("+i+", 1);app.reloadPeviewImageEdit();";
                     var html = $('<div class="thumb-image" style="margin-bottom: 10px;position: relative;"><button onclick="'+action+'" class="btn btn-danger btn-sm" style="border-radius: 50%;position: absolute;margin: 5px;"><i class="fa fa-times"></i></button><img class="image" style="max-height: 100px;" id="imgPreviewThumbnailEdit'+i+'"></div>');
                     $('#previewImageEdit').append(html);
@@ -532,7 +533,7 @@
                 }).catch(function(error){
                     error = error.response;
                     app.loadDone();
-                    if (error.status == 422 && error.statusText == "Unprocessable Entity"){
+                    if (error.status == 422){
                         let errors  = error.data.errors;
                         Object.keys(errors).map(function(item, index){
                             alertify.error(errors[item][0]);

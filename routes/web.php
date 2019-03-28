@@ -13,11 +13,9 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('homepage');
 
 Auth::routes();
-// Route::get('/home', 'HomeController@index')->name('home');
-
 
 
 Route::group([
@@ -25,9 +23,8 @@ Route::group([
     'as' => 'user.',
     'middleware' => 'auth'
 ], function () {
-    Route::get('/', function () {
-        return view('user.home');
-    })->name('home');
+    Route::get('/', 'UserHomeController@index')->name('home');
+    
     Route::group(['middleware' => ['role:admin']], function(){
         // Manager User
         Route::get('/manager/user', 'ManagerUserController@index')->name('manager.user');
@@ -70,6 +67,14 @@ Route::group([
 
 
 
+
+Route::get('/dev', function(){
+    // dd( keranjang()->add(1, 10) );
+    return keranjang()->get();
+});
+
+
+// wwwwwwwwwwwwwwwwwwwwwwwwwwww
 Route::get('/dev/install', function(){
     return '
         <form method="post">

@@ -21,3 +21,15 @@ if (! function_exists('notification')) {
         return app(\App\Helpers\Notification::class);
     }
 }
+if (! function_exists('keranjang')) {
+    function keranjang()
+    {
+        return app(\App\Helpers\Keranjang::class);
+    }
+}
+if (! function_exists('transaksi')) {
+    function transaksi()
+    {
+        return app(\App\Helpers\Transaksi::class);
+    }
+}
