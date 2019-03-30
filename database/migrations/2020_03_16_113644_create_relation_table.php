@@ -35,7 +35,7 @@ class CreateRelationTable extends Migration
         });
         Schema::table('keranjang', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('barang_id')->references('id')->on('barang');
+            $table->foreign('barang_id')->references('id')->on('barang')->onDelete('set null');
         });
     }
 

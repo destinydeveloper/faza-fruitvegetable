@@ -14,7 +14,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        // load helper
         require_once app_path() . '/Helpers/load.php';
+        // load ekspedisi plugin
+        require_once app_path() . '/Ekspedisi/load.php';
         Schema::defaultStringLength(191);
     }
 

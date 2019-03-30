@@ -12,6 +12,28 @@
         <li id="sidebar-home"><a href="{{ Auth()->user()->hasRole('pelanggan') ? route('homepage') : route('user.home') }}"> <i class="fa fa-home"></i>Home </a></li>
         <li id="sidebar-notifikasi"><a href="{{ route('user.notifikasi') }}"> <i class="fa fa-bell"></i>Notifikasi </a></li>
     </ul>
+
+    @hasanyrole('admin|pengepak|kurir')
+    <span class="heading">Transaksi</span>
+    <ul class="list-unstyled">
+        @hasanyrole('admin|pengepak')
+            <li id="sidebar-transaksi-permintaan"><a href="{{ route('user.manager.user') }}"><i class="fa fa-envelope-open"></i>Permintaan Transaksi</a></li>
+        @endhasanyrole
+        
+        @hasanyrole('admin|kurir')
+            <li id="sidebar-transaksi-siap"><a href="{{ route('user.manager.user') }}"><i class="fa fa-truck"></i>Barang Siap Keluar</a></li>
+            <li id="sidebar-transaksi-track"><a href="{{ route('user.manager.user') }}"><i class="fa fa-map-marker"></i>Trace & Track</a></li>
+        @endhasanyrole
+
+        @hasanyrole('admin')
+            <li id="sidebar-transaksi-track"><a href="{{ route('user.manager.user') }}">
+                <i class="fa fa-handshake-o"></i>
+                Barang Diterima
+            </a></li>
+        @endhasanyrole
+    </ul>
+    @endhasanyrole
+
     @hasanyrole('admin|pengepak|supervisor')
     <span class="heading">Manager</span>
     <ul class="list-unstyled">

@@ -345,7 +345,8 @@
                     $('#imgPreviewThumbnailNew'+i).attr('src', url);
                 }
             },
-            handleCatch(error) {
+            handleCatch(error){
+                console.log(error);
                 app.loadDone();
                 if (error.status == 500) {
                     alertify.error('Server Error, Try again later');
