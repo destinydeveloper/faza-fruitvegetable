@@ -174,7 +174,79 @@ use App\Helpers\RawDataGetter;
 $tes = RawDataGetter::get('tes');
 ```
 
+### Helper - Keranjang
 
+lihat semua barang di keranjang :
+```
+// get
+$keranjang = keranjang()->get();
+
+// output 
+[
+    ...
+    [
+        id: 1,
+        barang_id: 1,
+        barang_nama: "tomat",
+        barang_stok: 100,
+        stok: 5,
+        error: ""
+    ]
+    ...
+]
+```
+
+Handle Error :
+```
+$keranjang = keranjang()->get();
+foreach($keranjang as $barang)
+{
+    if ($barang->error != "") echo "Error : " . $barang->error;
+}
+```
+
+Tambah Barang Ke Keranjang
+```
+// var
+keranjang()->add($id_barang, $stok, $catatan = null);
+
+// example
+keranjang()->add(10, 5);
+keranjang()->add(10, 5, "Warna Briu gan...");
+```
+
+Update 
+```
+// var
+keranjang()->update($id_keranjang, $stok, $catatan);
+
+// example
+keranjang()->update(13, 6);
+```
+
+Delete
+```
+// example
+keranjang()->remove(10);
+```
+
+### Helper - Ekspedisi
+
+Semua Ekspedisi Tersedia :
+```
+$ekspedisi = ekspedisi()->get();
+```
+
+Cek Ongkir
+```
+// var
+$jne = ekspedisi()->name('jne|tiki|pos');
+$result = $jne->calculate($origin, $destination, $weight);
+
+// example
+$jne = ekspedisi()->name('jne');
+$result = $jne->calculate("KABUPATEN MALANG", "KOTTA MOJOKERTO", 100);
+```
 
 
 # Credits
