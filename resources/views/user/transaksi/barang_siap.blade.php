@@ -1,6 +1,6 @@
 @extends('layouts.user')
-@section('title', 'User \ Transaksi \ Permintaan')
-@section('page-header', 'Permintaan Transaksi')
+@section('title', 'User \ Transaksi \ Barang Siap Keluar')
+@section('page-header', 'Barang Siap Transaksi')
 
 
 @section('content')
@@ -12,8 +12,7 @@
                         <label style="margin-right: 10px;" for="filter">Filter : </label>
                         <select v-on:change="loadTable()" v-model="filter" class="form-control" id="filter">
                             <option value="semua">Semua</option>
-                            <option value="belum">Belum Dibayar</option>
-                            <option value="sudah">Sudah Dibayar</option>
+                            <option value="kirim">Kirim Barang</option>
                             <option value="cod">COD</option>
                         </select>
                         <span style="margin-left: 10px;">
@@ -28,9 +27,8 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Kode</th>
                                 <th scope="col">User</th>
-                                <th scope="col">Status</th>
+                                <th scope="col">Metode</th>
                                 <th scope="col">Barang</th>
-                                <th scope="col">Waktu</th>
                                 <th scope="col">...</th>
                             </tr>
                         </thead>
@@ -39,19 +37,18 @@
                                 <td>1</td>
                                 <td>F4Z4/0824/BAS14</td>
                                 <td>VianDwi</td>
-                                <td>Belum Dibayar</td>
+                                <td>Kirim Barang</td>
                                 <td>
                                     <button class="btn btn-xs btn-primary">Lihat Detail</button>
                                 </td>
-                                <td>12-12-12 20:01:12</td>
                                 <td>
-                                    <button class="btn btn-xs btn-success" title="Terima Permintaan" data-toggle="tooltip" data-placement="top" title="Terima Permintaan">
+                                    <button class="btn btn-xs btn-danger" title="Batalkan Konfirmasi" data-toggle="tooltip" data-placement="top" title="Tolak Konfirmasi">
+                                        <i class="fa fa-fw fa-chevron-left"></i>
+                                    </button>
+                                    <button class="btn btn-xs btn-success" title="Kirim ke Penerima" data-toggle="tooltip" data-placement="top" title="Kirim ke Penerima">
                                         <i class="fa fa-fw fa-chevron-right"></i>
                                     </button>
-                                    <button class="btn btn-xs btn-danger" title="Tolak Permintaan" data-toggle="tooltip" data-placement="top" title="Tolak Permintaan">
-                                        <i class="fa fa-fw fa-trash"></i>
-                                    </button>
-                                    <button class="btn btn-xs btn-info" title="Detail Permintaan"  data-toggle="tooltip" data-placement="top" title="Detail Permintaan">
+                                    <button class="btn btn-xs btn-info" title="Detail Transaksi"  data-toggle="tooltip" data-placement="top" title="Detail Transaksi">
                                         <i class="fa fa-fw fa-info"></i>
                                     </button>
                                 </td>
@@ -65,12 +62,12 @@
 @stop
 
 @push('meta')
-    <meta name="api" content="{{ route('user.transaksi.permintaan') }}">    
+    <meta name="api" content="{{ route('user.transaksi.barang_siap') }}">    
     <meta name="assets" content="{{ asset('assets') }}">    
 @endpush
 
 @push('js')
     <script>
-    $('#sidebar-transaksi-permintaan').addClass('active');
+    $('#sidebar-transaksi-siap').addClass('active');
     </script>
 @endpush

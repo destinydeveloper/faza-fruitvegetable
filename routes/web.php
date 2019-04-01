@@ -55,10 +55,17 @@ Route::group([
         });
     });
 
-
     Route::group(['prefix' => '/transaksi'], function(){
-        Route::get('/', function(){
-            return "hello";
+        Route::group(['middleware' => ['role:admin|pengepak']], function(){
+            Route::get('/permintaan', 'TransaksiPermintaanController@index')->name('transaksi.permintaan');
+            Route::get('/barang-siap', 'TransaksiBarangSiapController@index')->name('transaksi.barang_siap');
+        });
+
+        Route::group(['middleware' => ['role:admin|kurir']], function(){
+            Route::get('/trace-track', 'TransaksiTraceTrackController@index')->name('transaksi.trace_track');
+        });
+        Route::group(['middleware' => ['role:admin|kurir|pengepak']], function(){
+            Route::get('/barang-diterima', 'TransaksiBarangDiterimaController@index')->name('transaksi.barang_diterima');
         });
     });
 

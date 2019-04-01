@@ -17,16 +17,16 @@
     <span class="heading">Transaksi</span>
     <ul class="list-unstyled">
         @hasanyrole('admin|pengepak')
-            <li id="sidebar-transaksi-permintaan"><a href="{{ route('user.manager.user') }}"><i class="fa fa-envelope-open"></i>Permintaan Transaksi</a></li>
+            <li id="sidebar-transaksi-permintaan"><a href="{{ route('user.transaksi.permintaan') }}"><i class="fa fa-envelope-open"></i>Permintaan Transaksi</a></li>
+            <li id="sidebar-transaksi-siap"><a href="{{ route('user.transaksi.barang_siap') }}"><i class="fa fa-truck"></i>Barang Siap Keluar</a></li>
         @endhasanyrole
         
         @hasanyrole('admin|kurir')
-            <li id="sidebar-transaksi-siap"><a href="{{ route('user.manager.user') }}"><i class="fa fa-truck"></i>Barang Siap Keluar</a></li>
-            <li id="sidebar-transaksi-track"><a href="{{ route('user.manager.user') }}"><i class="fa fa-map-marker"></i>Trace & Track</a></li>
+            <li id="sidebar-transaksi-track"><a href="{{ route('user.transaksi.trace_track') }}"><i class="fa fa-map-marker"></i>Trace & Track</a></li>
         @endhasanyrole
 
-        @hasanyrole('admin')
-            <li id="sidebar-transaksi-track"><a href="{{ route('user.manager.user') }}">
+        @hasanyrole('admin|kurir|pengepak')
+            <li id="sidebar-transaksi-diterima"><a href="{{ route('user.transaksi.barang_diterima') }}">
                 <i class="fa fa-handshake-o"></i>
                 Barang Diterima
             </a></li>
