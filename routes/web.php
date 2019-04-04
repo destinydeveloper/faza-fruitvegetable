@@ -95,10 +95,37 @@ Route::get('/dev/ekspedisi', function(){
 });
 
 Route::get('/dev', function(){
-    // Keranjang()->update(5, 10);
+    // $transaksi = \App\Models\Transaksi::create([
+    //     'user_id' => auth()->user()->id,
+    //     'alamat_id' => 1,
+    //     'kode' => 'FAZA/ADMIN/14124125ABAD21',
+    //     'metode' => 'kirim barang',
+    //     'status' => 'Menunggu Konfirmasi',
+    //     'log_track' => ''
+    // ]);
+    // $transaksiBarang = \App\Models\Transaksi::create([
+
+    // $transaksi = \App\Models\Transaksi::findOrFail(1);
+    // $transaksi->
+
+    // \App\Models\TransaksiBarang::create([
+    //     'transaksi_id' => 1,
+    //     'barang_id' => 2,
+    //     'stok' => 10,
+    //     'catatan' => ''
+    // ]);
+
+    // return \App\Models\Transaksi::with('barangs', 'barangs.barang')->find(3s);
+    // $delete = \App\Models\Transaksi::find(1)->delete();
+    // dd($delete);
+    // return Keranjang()->get();
     $transaksi = Keranjang()->toTransaksi();
     if ( $transaksi === true) return "berhasil";
     return $transaksi;
+
+    // Keranjang()->add(1, 10);
+    // Keranjang()->add(2, 20);
+    // return Keranjang()->get();
 });
 
 

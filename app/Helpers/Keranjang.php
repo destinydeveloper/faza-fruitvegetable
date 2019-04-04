@@ -5,6 +5,8 @@ namespace App\Helpers;
 use App\User;
 use App\Models\Keranjang as modelKeranjang;
 use App\Models\Barang;
+use App\Models\Transaksi;
+use App\Models\TransaksiBarang;
 
 class Keranjang {
     protected $error = [];
@@ -44,14 +46,18 @@ class Keranjang {
             ->find(Auth()->user()->id)->keranjang;
 
         return $this->validation($keranjang);
-
-        return $keranjang;
     }
 
     public function remove($id)
     {
         $barang = modelKeranjang::find($id);
         if ($barang == null) return false;
+        return $barang->delete();
+    }
+
+    public function destroy()
+    {
+        $barang = modelKeranjang::whereUserId(Auth()->user()->id);
         return $barang->delete();
     }
 
@@ -74,6 +80,10 @@ class Keranjang {
         $keranjang = $this->get();
         $error = [];
         
+        if (count($keranjang) == 0) {
+            array_push($error, "Tidak ada barang dikeranjang");
+            return "Tidak ada barang dikeranjang";
+        }
 
         foreach($keranjang as $item)
         {
@@ -87,7 +97,35 @@ class Keranjang {
             }
         }
 
-        return count($error) == 0 ? true : $error;
+        if (count($error) > 0) return $error;
+        
+        $transaksi = Transaksi::create([
+            'user_id' => auth()->user()->id,
+            'alamat_id' => 1,
+            'kode' => $this->makeInvoiceKode(),
+            'metode' => 'kirim barang',
+            'status' => 'Menunggu Konfirmasi',
+            'log_track' => ''
+        ]);
+        $transaksi_id = $transaksi->id;
+
+
+        $new = [];
+        foreach($keranjang as $item)
+        {
+            $new[] = [
+                'transaksi_id' => $transaksi_id,
+                'barang_id' => $item["barang_id"],
+                'stok' => $item["stok"],
+                'catatan' => $item["catatan"],
+                'harga' => $item["harga_per_stok"],
+            ];
+        }
+
+
+        $transaksi_barang = TransaksiBarang::insert($new);
+        $this->destroy();
+        return true;
     }
 
     public function error()
@@ -116,9 +154,11 @@ class Keranjang {
                 array_push($result, [
                     'id' => $item->id,
                     'stok' => $item->stok,
+                    'catatan' => $item->catatan,
                     'barang_id' => $item->barang->id,
                     'barang_nama' => $item->barang->nama,
                     'barang_stok' => $item->barang->stok,
+                    'harga_per_stok' => $item->barang->harga,
                     'error' => $error
                 ]);
             
@@ -129,5 +169,20 @@ class Keranjang {
 
         }
         return $result;
+    }
+
+
+    public function makeInvoiceKode()
+    {
+        // Available alpha caracters
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+        // generate a pin based on 2 * 7 digits + a random character
+        $pin = mt_rand(1000000, 9999999)
+            . mt_rand(1000000, 9999999)
+            . $characters[rand(0, strlen($characters) - 1)];
+
+        // shuffle the result
+        return str_shuffle($pin);
     }
 }

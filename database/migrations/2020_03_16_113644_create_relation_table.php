@@ -37,6 +37,14 @@ class CreateRelationTable extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('barang_id')->references('id')->on('barang')->onDelete('set null');
         });
+        Schema::table('transaksi', function (Blueprint $table) {
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('alamat_id')->references('id')->on('alamat')->onDelete('cascade');
+        });
+        Schema::table('transaksi_barang', function (Blueprint $table) {
+            $table->foreign('transaksi_id')->references('id')->on('transaksi')->onDelete('cascade');
+            $table->foreign('barang_id')->references('id')->on('barang')->onDelete('cascade');
+        });
     }
 
     /**
@@ -69,6 +77,14 @@ class CreateRelationTable extends Migration
         Schema::table('keranjang', function (Blueprint $table) {
             $table->dropForeign('keranjang_user_id_foreign');
             $table->dropForeign('keranjang_barang_id_foreign');
+        });
+        Schema::table('transaksi', function (Blueprint $table) {
+            $table->dropForeign('transaksi_user_id_foreign');
+            $table->dropForeign('transaksi_alamat_id_foreign');
+        });
+        Schema::table('transaksi_barang', function (Blueprint $table) {
+            $table->dropForeign('transaksi_barang_transaksi_id_foreign');
+            $table->dropForeign('transaksi_barang_barang_id_foreign');
         });
     }
 }
