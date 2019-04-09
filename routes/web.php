@@ -116,16 +116,16 @@ Route::get('/dev', function(){
     //     'catatan' => ''
     // ]);
 
+    Keranjang()->add(1, 50);
+    Keranjang()->add(2, 100);
     // return \App\Models\Transaksi::with('barangs', 'barangs.barang')->find(3s);
     // $delete = \App\Models\Transaksi::find(1)->delete();
     // dd($delete);
     // return Keranjang()->get();
-    // $transaksi = Keranjang()->toTransaksi('kirim barang', 1);
-    // if ( $transaksi === true) return "berhasil";
-    // return $transaksi;
+    $transaksi = Keranjang()->toTransaksi('cod', 1);
+    if ( $transaksi === true) return "berhasil";
+    return $transaksi;
 
-    // Keranjang()->add(1, 10);
-    // Keranjang()->add(2, 20);
     // $bayar = \App\Models\TransaksiBayar::create([
     //     'transaksi_id' => 1,
     //     'nominal' => 3000,

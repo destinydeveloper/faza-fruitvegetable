@@ -30,29 +30,34 @@ class TransaksiPermintaanController extends Controller
                 $query = Transaksi::query();
                 break;
             case 'belum':
-                $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')->doesntHave('bayar');
+                $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
+                    ->where('metode', 'kirim barang')
+                    ->doesntHave('bayar');
                 break;
             case 'sudah':
-                $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')->has('bayar');
+                $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
+                    ->where('metode', 'kirim barang')
+                    ->has('bayar');
                 break;
             case 'cod':
-                $query = Transaksi::with('transaksi')
+                $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
                     ->where('metode', 'cod');
                 break;
         }
 
 
-        return DataTables::of($query)
+        return DataTables::of($query->orderBy('created_at', 'DESC'))
         ->addColumn('no', function($u){
             static $no = 1;
             return $no++;
         })
         ->addColumn('action', function($u){
             $transaksi_id = $u->id;
+            $transaksi_kode = $u->kode;
+            $delete = "$transaksi_id, '$transaksi_kode'";
             return '
                 <button onclick="app.konfirmasi('.$transaksi_id.')" title="Konfirmasi" class="btn btn-xs btn-success"><i class="fa fa-chevron-right"></i></button>
-                <button onclick="app.detail()" title="Lihat" class="btn btn-xs btn-primary"><i class="fa fa-search"></i></button>
-                <button onclick="app.detail()" title="Tolak" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>
+                <button onclick="app.delete('.$delete.')" title="Tolak" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>
             ';
         })
         ->make(true);
@@ -67,7 +72,18 @@ class TransaksiPermintaanController extends Controller
             case 'detail':
                 $request->validate([ 'id' => 'required|integer' ]);
                 return response()->json([
-                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar')->findOrFail($request->input('id'))
+                    'status' => 'success',
+                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat')
+                                ->findOrFail($request->input('id'))
+                ]);
+                break;
+
+            case 'delete':
+                $request->validate([ 'id' => 'required|integer' ]);
+                $delete = Transaksi::find($request->input('id'))->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'result' => $request->input('id')
                 ]);
                 break;
         }

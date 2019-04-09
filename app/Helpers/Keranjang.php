@@ -142,6 +142,22 @@ class Keranjang {
         # hapus keranjang
         $this->destroy();
 
+        # buat notif ke admin
+        $user = \App\User::with('roles')->whereHas('roles', function($q){
+            return $q->whereIn('name', ['admin', 'pengepak']);
+        });        
+        $alluser = $user->get();
+        foreach($alluser as $user)
+        {
+            notification()->stack(
+                'Konfirmasi Transaksi', 
+                'Ada Transaksi Baru Dari Pelanggan',
+                $user->id, 
+                url('user/transaksi/permintaan'),
+                'info'
+            );
+        }
+
         # return true - berhasil
         return true;
     }

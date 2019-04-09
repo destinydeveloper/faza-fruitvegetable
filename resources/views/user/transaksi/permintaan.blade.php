@@ -61,7 +61,7 @@
 
     <!-- Modal -->
     <div class="modal fade" id="konfirmasiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">Konfirmasi Transaksi Ini?</h5>
@@ -74,7 +74,7 @@
                     <li class="nav-item">
                         <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Transaksi</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" v-if="transaksi.length != 0 && transaksi.metode == 'kirim barang'">
                         <a class="nav-link" id="bayar-tab" data-toggle="tab" href="#bayar" role="tab" aria-controls="bayar" aria-selected="false">Bayar</a>
                     </li>
                     <li class="nav-item">
@@ -98,6 +98,10 @@
                             <tr>
                                 <th>Metode</th>
                                 <td>@{{ transaksi.metode }}</td>
+                            </tr>
+                            <tr>
+                                <th>Waktu</th>
+                                <td>@{{ transaksi.created_at }}</td>
                             </tr>
                         </table>
                     </div>
@@ -125,30 +129,59 @@
                                 <th scope="col">Barang</th>
                                 <th scope="col">Harga</th>
                                 <th scope="col">Stok</th>
+                                <th scope="col">Catatan</th>
                             </thead>
                             <tbody>
                                 <tr v-for="(item, i) in transaksi.barangs">
                                     <td>@{{ (i++)+1 }}</td>
                                     <td>@{{ item.barang.nama }}</td>
-                                    <td>@{{ item.harga }}</td>
+                                    <td>@{{ rupiah(item.harga) }}</td>
                                     <td>@{{ item.stok }}</td>
+                                    <td>@{{ item.catatan }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
-                        <table class="table">
+                        <h5 style="margin-top: 15px;">User</h5>
+                        <table class="table" v-if="transaksi.length != 0">
                             <tr>
                                 <th>ID</th>
-                                <td>124124</td>
+                                <td>@{{ transaksi.user.id }}</td>
                             </tr>
                             <tr>
                                 <th>Nama</th>
-                                <td>Alfian Dwi Nugraha</td>
+                                <td>@{{ transaksi.user.nama }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>@{{ transaksi.user.email }}</td>
+                            </tr>
+                        </table>
+
+                        <hr>
+
+                        <h5>Dikirim Ke</h5>
+                        <table class="table" v-if="transaksi.length != 0">
+                            <tr>
+                                <th>Atas Nama</th>
+                                <td>@{{ transaksi.alamat.penerima }}</td>
+                            </tr>
+                            <tr>
+                                <th>No Telp</th>
+                                <td>@{{ transaksi.alamat.no_telp }}</td>
+                            </tr>
+                            <tr>
+                                <th>Kodepos</th>
+                                <td>@{{ transaksi.alamat.kodepos }}</td>
                             </tr>
                             <tr>
                                 <th>Alamat</th>
-                                <td>warawrawrwar</td>
+                                <td>@{{ transaksi.alamat.alamat }}</td>
+                            </tr>
+                            <tr>
+                                <th>Alamat Lengkap</th>
+                                <td>@{{ transaksi.alamat.alamat_lengkap }}</td>
                             </tr>
                         </table>
                     </div>
@@ -184,6 +217,12 @@
             transaksi_barang_count: 0
         },
         methods: {
+            rupiah(angka) {
+                var rupiah = '';		
+                var angkarev = angka.toString().split('').reverse().join('');
+                for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+                return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+            },
             loadStart(){
                 NProgress.start();
                 NProgress.set(0.4);
@@ -234,13 +273,35 @@
                 axios.post('', { action: 'detail', 'id': id }).then(function(res){
                     app.loadDone();
                     console.log(res);
-                    app.transaksi = res.data;
-                    $('#konfirmasiModal').modal('show');
+                    if (res.data.status == 'success') {
+                        app.transaksi = res.data.result;
+                        $('#konfirmasiModal').modal('show');
+                    } else {
+                        alertify.error(res.data.error);
+                    }
                 }).catch(function(error){
                     error = error.response;
                     app.loadDone();
                     app.handleCatch(error);
                 });
+            },
+            delete(id, kode) {
+                let html = '<div style="text-align: center;">Yakin Akan Menghapus Transaksi <span class="text-primary">' + kode + '</span>?</div>';
+                alertify.confirm('Konfirmasi Hapus', html, function(){
+                    app.loadStart();
+                    axios.post('', { action: 'delete', 'id': id }).then(function(res){
+                        app.loadDone();
+                        if (res.data.status == 'success') {
+                            alertify.success('Berhasil menghapus');
+                        }
+                        app.refreshTable();
+                    }).catch(function(error){
+                        error = error.response;
+                        app.loadDone();
+                        app.handleCatch(error);
+                    });
+                },function(){
+                }).set({labels:{ok:'Hapus', cancel: 'Batal'}});
             },
             handleCatch(error){
                 console.log(error);
