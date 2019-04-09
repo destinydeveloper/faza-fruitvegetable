@@ -7,6 +7,7 @@ use App\Models\Keranjang as modelKeranjang;
 use App\Models\Barang;
 use App\Models\Transaksi;
 use App\Models\TransaksiBarang;
+use App\Models\Alamat;
 
 class Keranjang {
     protected $error = [];
@@ -30,8 +31,7 @@ class Keranjang {
                 'stok' => $stok,
                 'catatan' => $catatan,
             ]);
-        } else { 
-            // dd($check->stok);
+        } else {
             $stok_update = intval($check->stok) + $stok;
             if ($stok_update > $check->barang->stok) $stok_update = $check->barang->stok;
             return $this->update($check->id, $stok_update, $catatan); 
@@ -75,16 +75,32 @@ class Keranjang {
         ]);
     }
 
-    public function toTransaksi()
+    public function toTransaksi($method = "kirim barang", $alamat)
     {
         $keranjang = $this->get();
         $error = [];
         
+        # cek metode pembelian
+        $method_accept = ["kirim barang", "cod"];
+        if (!in_array($method, $method_accept)) {
+            array_push($error, "metode tidak valid");
+            if (count($error) > 0) return ['error' => $error];
+        }
+        
+        # cek keranjang
         if (count($keranjang) == 0) {
             array_push($error, "Tidak ada barang dikeranjang");
-            return "Tidak ada barang dikeranjang";
+            if (count($error) > 0) return ['error' => $error];
+        }
+        
+        # cek alamat
+        $cek_alamat = Alamat::find($alamat);
+        if ($cek_alamat == null or $cek_alamat === null) {
+            array_push($error, "Alamat tidak valid");
+            if (count($error) > 0) return ['error' => $error];
         }
 
+        # cek ada error kah di keranjang
         foreach($keranjang as $item)
         {
             if ($item["error"] != "") {
@@ -96,20 +112,20 @@ class Keranjang {
                 ]);
             }
         }
-
-        if (count($error) > 0) return $error;
+        if (count($error) > 0) return ['error' => $error];
         
+        # buat transaksi
         $transaksi = Transaksi::create([
             'user_id' => auth()->user()->id,
-            'alamat_id' => 1,
+            'alamat_id' => $alamat,
             'kode' => $this->makeInvoiceKode(),
-            'metode' => 'kirim barang',
+            'metode' => $method,
             'status' => 'Menunggu Konfirmasi',
             'log_track' => ''
         ]);
         $transaksi_id = $transaksi->id;
 
-
+        # buat detail untuk transaksi
         $new = [];
         foreach($keranjang as $item)
         {
@@ -121,10 +137,12 @@ class Keranjang {
                 'harga' => $item["harga_per_stok"],
             ];
         }
-
-
         $transaksi_barang = TransaksiBarang::insert($new);
+
+        # hapus keranjang
         $this->destroy();
+
+        # return true - berhasil
         return true;
     }
 

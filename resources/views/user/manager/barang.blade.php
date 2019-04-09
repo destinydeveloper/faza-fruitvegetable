@@ -346,7 +346,6 @@
                 }
             },
             handleCatch(error){
-                console.log(error);
                 app.loadDone();
                 if (error.status == 500) {
                     alertify.error('Server Error, Try again later');
@@ -388,6 +387,9 @@
                     } else { app.handleCatch(error); }
                 });
             },
+            randomInt() {
+                return Math.random();
+            },
             detail(id) {
                 app.loadStart();
                 axios.post('', { action: 'detail', 'id': id }).then(function(res){
@@ -396,7 +398,7 @@
                     let gambar = '';
 
                     barang.gambar.forEach(function(item){
-                        gambar = gambar + '<img style="max-height: 100px;margin: 5px;" src="'+assets+'/images/original/'+item.path+'">';
+                        gambar = gambar + '<img style="max-height: 100px;margin: 5px;" src="'+assets+'/images/original/'+item.path+'?cache='+app.randomInt()+'">';
                     });
 
                     if (barang.gambar.length == 0 || barang.gambar === undefined) {

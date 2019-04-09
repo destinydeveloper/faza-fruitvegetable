@@ -45,6 +45,9 @@
     {{-- Body:end --}}
 @stop
 
+@push('css')
+@endpush
+
 @push('js')
     <script src="{{ asset('assets/vendor/jquery.cookie/jquery.cookie.js') }}"> </script>
     <script src="{{ asset('assets/dist/js/front.js') }}"></script>    

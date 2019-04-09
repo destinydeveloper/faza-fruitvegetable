@@ -17,7 +17,7 @@ class CreateBarangTable extends Migration
             $table->increments('id')->unsigned();
             $table->string('nama');
             $table->integer('berat');
-            $table->integer('harga');
+            $table->double('harga');
             $table->enum('jenis', ['sayur', 'buah']);
             $table->longText('catatan')->nullable();
             $table->integer('stok')->default(0);

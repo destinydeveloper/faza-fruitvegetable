@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTransaksiBarangTable extends Migration
+class CreateTransaksiBayarTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class CreateTransaksiBarangTable extends Migration
      */
     public function up()
     {
-        Schema::create('transaksi_barang', function (Blueprint $table) {
+        Schema::create('transaksi_bayar', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('transaksi_id')->unsigned();
-            $table->integer('barang_id')->unsigned();
-            $table->integer('stok');
-            $table->text('catatan')->nullable();
-            $table->double('harga');
+            $table->double('nominal');
+            $table->longText('catatan')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class CreateTransaksiBarangTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transaksi_barang');
+        Schema::dropIfExists('transaksi_bayar');
     }
 }

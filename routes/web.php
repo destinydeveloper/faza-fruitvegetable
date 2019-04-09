@@ -58,6 +58,7 @@ Route::group([
     Route::group(['prefix' => '/transaksi'], function(){
         Route::group(['middleware' => ['role:admin|pengepak']], function(){
             Route::get('/permintaan', 'TransaksiPermintaanController@index')->name('transaksi.permintaan');
+            Route::post('/permintaan', 'TransaksiPermintaanController@action')->name('transaksi.permintaan.action');
             Route::get('/barang-siap', 'TransaksiBarangSiapController@index')->name('transaksi.barang_siap');
         });
 
@@ -119,13 +120,23 @@ Route::get('/dev', function(){
     // $delete = \App\Models\Transaksi::find(1)->delete();
     // dd($delete);
     // return Keranjang()->get();
-    $transaksi = Keranjang()->toTransaksi();
-    if ( $transaksi === true) return "berhasil";
-    return $transaksi;
+    // $transaksi = Keranjang()->toTransaksi('kirim barang', 1);
+    // if ( $transaksi === true) return "berhasil";
+    // return $transaksi;
 
     // Keranjang()->add(1, 10);
     // Keranjang()->add(2, 20);
-    // return Keranjang()->get();
+    // $bayar = \App\Models\TransaksiBayar::create([
+    //     'transaksi_id' => 1,
+    //     'nominal' => 3000,
+    //     'catatan' => "BCA"
+    // ]);
+    // dd($bayar);
+    $transaksi = \App\Models\Transaksi::with('barangs', 'barangs.barang', 'bayar');
+    // return $transaksi->find(1)->barangs->sum('harga');
+    return $transaksi->find(1);
+
+    return Keranjang()->get();
 });
 
 
@@ -145,17 +156,17 @@ Route::post('/dev/install', function(\Illuminate\Http\Request $request){
     
     // RUN MIGRATE
     echo "[+] migrate <br>";
-    Artisan::call("migrate:fresh");
+    Artisan::call("migrate:fresh");echo "<br>";
     echo "[+] seeder <br>";
-    Artisan::call("db:seed", ['--class' => 'UsersTableSeeder']);
-    Artisan::call("db:seed", ['--class' => 'IndoRegionDistrictSeeder']);
-    Artisan::call("db:seed", ['--class' => 'IndoRegionProvinceSeeder']);
-    Artisan::call("db:seed", ['--class' => 'IndoRegionRegencySeeder']);
-    Artisan::call("db:seed", ['--class' => 'IndoRegionVillageSeeder']);
+    Artisan::call("db:seed", ['--class' => 'UsersTableSeeder']);echo "<br>";
+    Artisan::call("db:seed", ['--class' => 'IndoRegionDistrictSeeder']);echo "<br>";
+    Artisan::call("db:seed", ['--class' => 'IndoRegionProvinceSeeder']);echo "<br>";
+    Artisan::call("db:seed", ['--class' => 'IndoRegionRegencySeeder']);echo "<br>";
+    Artisan::call("db:seed", ['--class' => 'IndoRegionVillageSeeder']);echo "<br>";
     echo "[+] clear cache <br>";
-    Artisan::call("cache:clear");
-    Artisan::call("view:clear");
-    Artisan::call("config:clear");
+    Artisan::call("cache:clear");echo "<br>";
+    Artisan::call("view:clear");echo "<br>";
+    Artisan::call("config:clear");echo "<br>";
 
     echo "-----------  SUCCESS -------------";
 });
