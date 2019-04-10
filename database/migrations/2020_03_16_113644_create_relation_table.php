@@ -48,6 +48,9 @@ class CreateRelationTable extends Migration
         Schema::table('transaksi_bayar', function (Blueprint $table) {
             $table->foreign('transaksi_id')->references('id')->on('transaksi')->onDelete('cascade');
         });
+        Schema::table('transaksi_konfirmasi', function (Blueprint $table) {
+            $table->foreign('transaksi_id')->references('id')->on('transaksi')->onDelete('cascade');
+        });
     }
 
     /**
@@ -90,7 +93,10 @@ class CreateRelationTable extends Migration
             $table->dropForeign('transaksi_barang_barang_id_foreign');
         });
         Schema::table('transaksi_bayar', function (Blueprint $table) {
-            $table->dropForeign('transaksi_barang_transaksi_id_foreign');
+            $table->dropForeign('transaksi_bayar_transaksi_id_foreign');
+        });
+        Schema::table('transaksi_konfirmasi', function (Blueprint $table) {
+            $table->dropForeign('transaksi_konfirmasi_transaksi_id_foreign');
         });
     }
 }

@@ -12,7 +12,7 @@ use App\Models\TransaksiBayar;
 
 class TransaksiPermintaanController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request) 
     {
         // return $this->getAll($request);
         if ($request->ajax()) return $this->getAll($request);
@@ -23,6 +23,7 @@ class TransaksiPermintaanController extends Controller
     {
         if (!$request->has('filter')) return $this->errResponse("Filter not found");
         $filter = $request->input('filter');
+        $query = null;
         // $filter = 'sudah';
         switch($filter)
         {
@@ -34,11 +35,13 @@ class TransaksiPermintaanController extends Controller
                     ->where('metode', 'kirim barang')
                     ->doesntHave('bayar');
                 break;
+
             case 'sudah':
                 $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
                     ->where('metode', 'kirim barang')
                     ->has('bayar');
                 break;
+
             case 'cod':
                 $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
                     ->where('metode', 'cod');
@@ -86,9 +89,20 @@ class TransaksiPermintaanController extends Controller
                     'result' => $request->input('id')
                 ]);
                 break;
+            
+            case 'konfirmasi':
+                $request->validate([ 'id' => 'required|integer', 'metode' => 'required|string' ]);
+                if ($request->metode == 'kirim barang') {
+                    return "a";
+                } elseif ($request->metode == 'cod') {
+                    return "b";
+                } else {
+                    return abort(404);
+                }
+                break;
         }
 
-        return $request->all();
+        return abort(404);
     }
 
 

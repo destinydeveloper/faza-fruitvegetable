@@ -18,7 +18,11 @@
     <ul class="list-unstyled">
         @hasanyrole('admin|pengepak')
             <li id="sidebar-transaksi-permintaan"><a href="{{ route('user.transaksi.permintaan') }}"><i class="fa fa-envelope-open"></i>Permintaan Transaksi</a></li>
-            <li id="sidebar-transaksi-siap"><a href="{{ route('user.transaksi.barang_siap') }}"><i class="fa fa-truck"></i>Barang Siap Keluar</a></li>
+            <li id="sidebar-transaksi-siap"><a href="{{ route('user.transaksi.barang_siap') }}"><i class="fa fa-truck"></i>Barang Siap Kirim</a></li>
+        @endhasanyrole
+        
+        @hasanyrole('admin|kurir|pengepak')
+            <li id="sidebar-transaksi-cod"><a href="{{ route('user.transaksi.permintaan') }}"><i class="fa fa-wheelchair-alt"></i>Cash On Delivery</a></li>
         @endhasanyrole
         
         @hasanyrole('admin|kurir')

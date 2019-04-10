@@ -117,7 +117,7 @@
                             <div class="form">
                                 <div class="form-group">
                                     <label>Nominal</label>
-                                    <input type="text" class="form-control">
+                                    <input v-model="nominal" type="text" class="form-control">
                                 </div>
                             </div>
                         </div>
@@ -190,7 +190,7 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Konfirmasi</button>
+            <button v-on:click="konfirmasiTransaksi" type="button" class="btn btn-primary" data-dismiss="modal">Konfirmasi</button>
             </div>
         </div>
         </div>
@@ -214,7 +214,9 @@
             filter: 'semua',
             detail: [],
             transaksi: [],
-            transaksi_barang_count: 0
+            transaksi_barang_count: 0,
+            nominal: 0,
+            id: null
         },
         methods: {
             rupiah(angka) {
@@ -268,12 +270,29 @@
             refreshTable(){
                 this.table.ajax.reload( null, false );
             },
+            konfirmasiTransaksi(){
+                let params = {
+                    action: 'konfirmasi',
+                    id: app.id,
+                    metode: app.transaksi.metode,
+                    nominal: app.nominal,
+                };
+                axios.post('', params).then(function(res){
+                    console.log(res);
+                }).catch(function(error){
+                    error = error.response;
+                    app.loadDone();
+                    app.handleCatch(error);
+                });
+            },
             konfirmasi(id){
+                app.id = null;
+                app.nominal = 0;
                 app.loadStart();
                 axios.post('', { action: 'detail', 'id': id }).then(function(res){
                     app.loadDone();
-                    console.log(res);
                     if (res.data.status == 'success') {
+                        app.id = res.data.result.id;
                         app.transaksi = res.data.result;
                         $('#konfirmasiModal').modal('show');
                     } else {
