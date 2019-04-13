@@ -27,6 +27,11 @@ class Transaksi extends Model
         return $this->hasOne('App\Models\TransaksiBayar');
     }
 
+    public function konfirmasi()
+    {
+        return $this->hasOne('App\Models\TransaksiKonfirmasi');
+    }
+
     public function user()
     {
         return $this->belongsTo('App\User');

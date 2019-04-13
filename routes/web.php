@@ -60,6 +60,7 @@ Route::group([
             Route::get('/permintaan', 'TransaksiPermintaanController@index')->name('transaksi.permintaan');
             Route::post('/permintaan', 'TransaksiPermintaanController@action')->name('transaksi.permintaan.action');
             Route::get('/barang-siap', 'TransaksiBarangSiapController@index')->name('transaksi.barang_siap');
+            Route::post('/barang-siap', 'TransaksiBarangSiapController@action')->name('transaksi.barang_siap.action');
         });
 
         Route::group(['middleware' => ['role:admin|kurir']], function(){
@@ -67,6 +68,8 @@ Route::group([
         });
         Route::group(['middleware' => ['role:admin|kurir|pengepak']], function(){
             Route::get('/barang-diterima', 'TransaksiBarangDiterimaController@index')->name('transaksi.barang_diterima');
+            Route::post('/barang-diterima', 'TransaksiBarangDiterimaController@action')->name('transaksi.barang_diterima.action');
+            Route::get('/cod', 'TransaksiCodController@index')->name('transaksi.cod');
         });
     });
 

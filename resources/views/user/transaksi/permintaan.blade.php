@@ -105,7 +105,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="tab-pane fade" id="bayar" role="tabpanel" aria-labelledby="bayar-tab">
+                    <div class="tab-pane fade" id="bayar" role="tabpanel" aria-labelledby="bayar-tab" v-if="transaksi.length != 0 && transaksi.metode == 'kirim barang'">
                         <div style="margin-top: 15px;">
                             <div class="form">
                                 <div class="form-group">
@@ -118,6 +118,10 @@
                                 <div class="form-group">
                                     <label>Nominal</label>
                                     <input v-model="nominal" type="text" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Catatan</label>
+                                    <textarea v-model="catatan" class="form-control"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -216,7 +220,8 @@
             transaksi: [],
             transaksi_barang_count: 0,
             nominal: 0,
-            id: null
+            id: null,
+            catatan: '',
         },
         methods: {
             rupiah(angka) {
@@ -276,9 +281,14 @@
                     id: app.id,
                     metode: app.transaksi.metode,
                     nominal: app.nominal,
+                    catatan: app.catatan,
                 };
                 axios.post('', params).then(function(res){
                     console.log(res);
+                    if (res.data.status == "success")
+                    {
+                        app.refreshTable();
+                    }
                 }).catch(function(error){
                     error = error.response;
                     app.loadDone();

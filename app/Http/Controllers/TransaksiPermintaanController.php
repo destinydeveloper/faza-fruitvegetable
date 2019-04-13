@@ -8,6 +8,7 @@ use DataTables;
 use App\Models\Transaksi;
 use App\Models\TransaksiBarang;
 use App\Models\TransaksiBayar;
+use App\Models\TransaksiKonfirmasi;
 
 
 class TransaksiPermintaanController extends Controller
@@ -23,28 +24,26 @@ class TransaksiPermintaanController extends Controller
     {
         if (!$request->has('filter')) return $this->errResponse("Filter not found");
         $filter = $request->input('filter');
-        $query = null;
+        $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
+            ->doesntHave('konfirmasi');
         // $filter = 'sudah';
         switch($filter)
         {
             case 'semua':
-                $query = Transaksi::query();
                 break;
             case 'belum':
-                $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
+                $query = $query
                     ->where('metode', 'kirim barang')
                     ->doesntHave('bayar');
                 break;
 
             case 'sudah':
-                $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
-                    ->where('metode', 'kirim barang')
+                $query = $query->where('metode', 'kirim barang')
                     ->has('bayar');
                 break;
 
             case 'cod':
-                $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
-                    ->where('metode', 'cod');
+                $query = $query->where('metode', 'cod');
                 break;
         }
 
@@ -53,6 +52,9 @@ class TransaksiPermintaanController extends Controller
         ->addColumn('no', function($u){
             static $no = 1;
             return $no++;
+        })
+        ->addColumn('status', function($u){
+            return $u->bayar != null ? "Sudah Dibayar" : ($u->metode == 'kirim barang' ? "Belum Dibayar" : '-');
         })
         ->addColumn('action', function($u){
             $transaksi_id = $u->id;
@@ -92,10 +94,24 @@ class TransaksiPermintaanController extends Controller
             
             case 'konfirmasi':
                 $request->validate([ 'id' => 'required|integer', 'metode' => 'required|string' ]);
+                $id = $request->id;
                 if ($request->metode == 'kirim barang') {
-                    return "a";
+                    $konfirmasi = TransaksiKonfirmasi::create([ 'transaksi_id' => $id ]);
+                    $bayar = TransaksiBayar::create([
+                        'transaksi_id' => $id,
+                        'nominal' => $request->nominal,
+                        'catatan' => $request->catatan,
+                    ]);
+                    return response()->json([
+                        'status' => 'success',
+                        'result' => $id
+                    ]);
                 } elseif ($request->metode == 'cod') {
-                    return "b";
+                    $konfirmasi = TransaksiKonfirmasi::create([ 'transaksi_id' => $id ]);
+                    return response()->json([
+                        'status' => 'success',
+                        'result' => $id
+                    ]);
                 } else {
                     return abort(404);
                 }

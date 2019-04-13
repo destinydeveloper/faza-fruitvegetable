@@ -22,7 +22,7 @@
         @endhasanyrole
         
         @hasanyrole('admin|kurir|pengepak')
-            <li id="sidebar-transaksi-cod"><a href="{{ route('user.transaksi.permintaan') }}"><i class="fa fa-wheelchair-alt"></i>Cash On Delivery</a></li>
+            <li id="sidebar-transaksi-cod"><a href="{{ route('user.transaksi.cod') }}"><i class="fa fa-wheelchair-alt"></i>Cash On Delivery</a></li>
         @endhasanyrole
         
         @hasanyrole('admin|kurir')
