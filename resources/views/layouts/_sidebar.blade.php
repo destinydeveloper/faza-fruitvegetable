@@ -12,7 +12,7 @@
         <li id="sidebar-home"><a href="{{ Auth()->user()->hasRole('pelanggan') ? route('homepage') : route('user.home') }}"> <i class="fa fa-home"></i>Home </a></li>
         <li id="sidebar-notifikasi"><a href="{{ route('user.notifikasi') }}"> <i class="fa fa-bell"></i>Notifikasi </a></li>
     </ul>
-
+    
     @hasanyrole('admin|pengepak|kurir')
     <span class="heading">Transaksi</span>
     <ul class="list-unstyled">
@@ -58,6 +58,14 @@
         @endhasanyrole
     </ul>
     @endhasanyrole
+
+    @hasanyrole('admin|investor')
+    <span class="heading">Laporan</span>
+    <ul class="list-unstyled">
+        <li id="sidebar-laporan-transaksi"><a href="{{ route('user.laporan.transaksi') }}"><i class="fa fa-envelope-open"></i>Semua Transaksi</a></li>
+    </ul>
+    @endhasanyrole
+
     <span class="heading">Pengaturan</span>
     <ul class="list-unstyled">
         <li id="sidebar-alamat"><a href="{{ route('user.alamat') }}"> <i class="fa fa-map"></i>Alamat Editor </a></li>

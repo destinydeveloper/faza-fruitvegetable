@@ -73,6 +73,17 @@ Route::group([
         });
     });
 
+
+
+
+    # BUAT INVESTOR
+    Route::group(['middleware' => ['role:admin|investor']], function(){
+        Route::group(['prefix' => '/laporan'], function(){
+            // faza.com/laporan/transaksi
+            Route::get('/transaksi', 'LaporanTransaksiController@index')->name('laporan.transaksi');            
+        });
+    });
+
     
     Route::get('/notifikasi', 'NotificationController@index')->name('notifikasi');
     Route::post('/notifikasi', 'NotificationController@action')->name('notifikasi.action');
@@ -119,13 +130,13 @@ Route::get('/dev', function(){
     //     'catatan' => ''
     // ]);
 
-    Keranjang()->add(1, 50);
-    Keranjang()->add(2, 100);
+    Keranjang()->add(1, 10);
+    Keranjang()->add(2, 5);
     // return \App\Models\Transaksi::with('barangs', 'barangs.barang')->find(3s);
     // $delete = \App\Models\Transaksi::find(1)->delete();
     // dd($delete);
     // return Keranjang()->get();
-    $transaksi = Keranjang()->toTransaksi('cod', 1);
+    $transaksi = Keranjang()->toTransaksi('kirim barang', 1);
     if ( $transaksi === true) return "berhasil";
     return $transaksi;
 
