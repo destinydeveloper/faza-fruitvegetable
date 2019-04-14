@@ -333,7 +333,6 @@
                 }).set({labels:{ok:'Hapus', cancel: 'Batal'}});
             },
             handleCatch(error){
-                console.log(error);
                 app.loadDone();
                 if (error.status == 500) {
                     alertify.error('Server Error, Try again later');

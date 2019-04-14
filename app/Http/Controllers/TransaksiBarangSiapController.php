@@ -46,4 +46,31 @@ class TransaksiBarangSiapController extends Controller
             })
             ->make(true);
     }
+
+    public function action(Request $request)
+    {
+        if (!$request->has('action')) return abort(404);
+
+        switch($request->input('action'))
+        {
+            case 'detail':
+                $request->validate([ 'id' => 'required|integer' ]);
+                return response()->json([
+                    'status' => 'success',
+                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat')
+                                ->findOrFail($request->input('id'))
+                ]);
+                break;
+
+            case 'delete':
+                $request->validate([ 'id' => 'required|integer' ]);
+                $delete = Transaksi::find($request->input('id'))->delete();
+                return response()->json([
+                    'status' => 'success',
+                    'result' => $request->input('id')
+                ]);
+                break;
+        }
+        return abort(404);
+    }
 }
