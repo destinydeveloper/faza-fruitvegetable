@@ -55,6 +55,16 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label>Harga</label>
+                                    <div class="input-group mb-3">
+                                        <div class="input-group-append">
+                                                <span class="input-group-text">Harga Setiap 1 @{{ satuan_stok }}</span>
+                                                <span class="input-group-text">Rp.</span>
+                                        </div>
+                                        <input v-model="harga" class="form-control" type="text" name="harga">
+                                    </div>
+                                </div>
                                 <button v-on:click.prevent="addNew()" class="btn btn-primary btn-block">Input</button>
                             </form>
                         </div>
@@ -71,7 +81,7 @@
                             <h5 class="mb-1">@{{ item.barang.nama }}</h5>
                             <small>@{{ item.created_at }}</small>
                         </div>
-                        @{{ item.stok }} @{{ item.barang.satuan_stok }}
+                        @{{ item.stok }} @{{ item.barang.satuan_stok }} | Rp. @{{ item.harga }}
                     </a>
                 </div>
             </div>
@@ -143,6 +153,7 @@
             timeout: null,
             isLoading: false,
             satuan_stok: 'Stok',
+            harga: 0,
 
             stok: 0,
             riwayat: []
@@ -221,7 +232,7 @@
             },
             addNew(){
                 app.loadStart();
-                axios.post('', {action: 'addnew', 'barang': this.barang.id, stok: this.stok}).then(function(res){
+                axios.post('', {action: 'addnew', 'barang': this.barang.id, stok: this.stok, harga: this.harga}).then(function(res){
                     if (res.data.status == 'success') {
                         alertify.success("Berhasil menambahkan.");
                         app.getRiwayat();

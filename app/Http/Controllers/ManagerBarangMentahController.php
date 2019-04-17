@@ -28,9 +28,7 @@ class ManagerBarangMentahController extends Controller
                 $nama = "'".$u->barang->nama ."'";
                 $username = "'".$u->user->nama ."'";
                 return '
-                    <button onclick="app.add('.$id.', '.$nama.')" title="Pindahkan Ke Barang" class="btn btn-xs btn-success"><i class="fa fa-chevron-right "></i></button>
-                    <button onclick="app.edit('.$id.')" title="Edit" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></button>
-                    <button onclick="app.delete('.$id.', '.$nama.', '.$username.')" title="Hapus" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+                    <button onclick="app.add('.$id.', '.$nama.')" title="Pindahkan Ke Barang" class="btn btn-xs btn-success"><i class="fa fa-chevron-right "></i></button>                    <button onclick="app.delete('.$id.', '.$nama.', '.$username.')" title="Hapus" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
                 ';
             })
             ->make(true);
