@@ -25,7 +25,7 @@ class TransaksiPermintaanController extends Controller
         if (!$request->has('filter')) return $this->errResponse("Filter not found");
         $filter = $request->input('filter');
         $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
-            ->doesntHave('konfirmasi');
+            ->doesntHave('dikonfirmasi');
         // $filter = 'sudah';
         switch($filter)
         {
@@ -61,8 +61,8 @@ class TransaksiPermintaanController extends Controller
             $transaksi_kode = $u->kode;
             $delete = "$transaksi_id, '$transaksi_kode'";
             return '
-                <button onclick="app.konfirmasi('.$transaksi_id.')" title="Konfirmasi" class="btn btn-xs btn-success"><i class="fa fa-chevron-right"></i></button>
-                <button onclick="app.delete('.$delete.')" title="Tolak" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>
+                <button onclick="app.konfirmasi('.$transaksi_id.')" data-toggle="tooltip" data-placement="top" title="Konfirmasi" title="Konfirmasi" class="btn btn-xs btn-success"><i class="fa fa-chevron-right"></i></button>
+                <button onclick="app.delete('.$delete.')" data-toggle="tooltip" data-placement="top" title="Tolak" title="Tolak" class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>
             ';
         })
         ->make(true);

@@ -65,11 +65,13 @@ Route::group([
 
         Route::group(['middleware' => ['role:admin|kurir']], function(){
             Route::get('/trace-track', 'TransaksiTraceTrackController@index')->name('transaksi.trace_track');
+            Route::post('/trace-track', 'TransaksiTraceTrackController@action')->name('transaksi.trace_track.action');
         });
         Route::group(['middleware' => ['role:admin|kurir|pengepak']], function(){
             Route::get('/barang-diterima', 'TransaksiBarangDiterimaController@index')->name('transaksi.barang_diterima');
             Route::post('/barang-diterima', 'TransaksiBarangDiterimaController@action')->name('transaksi.barang_diterima.action');
             Route::get('/cod', 'TransaksiCodController@index')->name('transaksi.cod');
+            Route::post('/cod', 'TransaksiCodController@action')->name('transaksi.cod.action');
         });
     });
 
@@ -129,6 +131,14 @@ Route::get('/dev', function(){
     //     'stok' => 10,
     //     'catatan' => ''
     // ]);
+    
+    return \App\Models\TransaksiTrack::create([
+        "transaksi_id" => 4,
+        "status" => "Proses Pengemasan"
+    ]);
+    // return \App\Models\Transaksi::with('track')
+    //     ->has('track')
+    //     ->get();
 
     Keranjang()->add(1, 10);
     Keranjang()->add(2, 5);

@@ -21,7 +21,8 @@ class TransaksiBarangSiapController extends Controller
     {
         $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
             ->whereMetode('kirim barang')
-            ->has('konfirmasi');
+            ->doesntHave('track')
+            ->has('dikonfirmasi');
         
         return DataTables::of($query->orderBy('created_at', 'DESC'))
             ->addColumn('no', function($u){

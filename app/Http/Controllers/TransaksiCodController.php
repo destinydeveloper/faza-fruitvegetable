@@ -8,6 +8,7 @@ use DataTables;
 use App\Models\Transaksi;
 use App\Models\TransaksiBarang;
 use App\Models\TransaksiBayar;
+use App\Models\TransaksiBerhasil;
 
 class TransaksiCodController extends Controller
 {
@@ -22,7 +23,8 @@ class TransaksiCodController extends Controller
         $filter = $request->input('filter');
         $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
             ->whereMetode('cod')
-            ->has('konfirmasi');
+            ->has('dikonfirmasi')
+            ->doesntHave('berhasil');
         
         return DataTables::of($query->orderBy('created_at', 'DESC'))
             ->addColumn('no', function($u){
@@ -40,5 +42,38 @@ class TransaksiCodController extends Controller
                 ';
             })
             ->make(true);
+    }
+
+
+    public function action(Request $request)
+    {
+        if (!$request->has('action')) return abort(404);
+
+        switch($request->input('action'))
+        {
+            case 'detail':
+                $request->validate([ 'id' => 'required|integer' ]);
+                return response()->json([
+                    'status' => 'success',
+                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat', 'track')
+                                ->findOrFail($request->input('id'))
+                ]);
+                break;
+            
+            case 'selesai':
+                $create = TransaksiBerhasil::create([
+                    'transaksi_id' => $request->input('id'),
+                    'pengantar' => $request->input('pengantar'),
+                    'penerima' => $request->input('penerima'),
+                ]);
+                
+                return response()->json([
+                    'status' => 'success',
+                    'result' => $create
+                ]);  
+                break;
+        }
+
+        return abort(404);
     }
 }

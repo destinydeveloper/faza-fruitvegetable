@@ -10,7 +10,7 @@ class Transaksi extends Model
     protected $fillable = [
         'user_id', 'alamat_id', 'kode', 'metode', 'status', 'log_track'
     ];
-    protected $appends = ['total'];
+    protected $appends = ['total', 'konfirmasi'];
 
     public function barangs()
     {
@@ -27,9 +27,15 @@ class Transaksi extends Model
         return $this->hasOne('App\Models\TransaksiBayar');
     }
 
-    public function konfirmasi()
+    public function dikonfirmasi()
     {
         return $this->hasOne('App\Models\TransaksiKonfirmasi');
+    }
+
+    public function getKonfirmasiAttribute()
+    {
+        $dikonfirmasi = $this->dikonfirmasi;
+        return $dikonfirmasi == null ? false : true;
     }
 
     public function user()
@@ -40,5 +46,15 @@ class Transaksi extends Model
     public function alamat()
     {
         return $this->belongsTo('App\Models\Alamat');
+    }
+
+    public function track()
+    {
+        return $this->hasMany('App\Models\TransaksiTrack');
+    }
+
+    public function berhasil()
+    {
+        return $this->hasOne('App\Models\TransaksiBerhasil');
     }
 }
