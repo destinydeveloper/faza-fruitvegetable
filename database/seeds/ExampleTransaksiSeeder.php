@@ -55,7 +55,7 @@ class ExampleTransaksiSeeder extends Seeder
         ]);
 
         // konfirmasi barang mentah
-        $BarangMentah = Bar angMentah::findOrFail(1);
+        $BarangMentah = BarsangMentah::findOrFail(1);
         $transaksiMasuk = TransaksiMasuk::create([
             'barang_id' => $BarangMentah->barang_id,
             'stok' => $BarangMentah->stok,
