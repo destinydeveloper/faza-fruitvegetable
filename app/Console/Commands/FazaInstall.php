@@ -62,6 +62,13 @@ class FazaInstall extends Command
                 $this->call("db:seed", ['--class' => 'IndoRegionRegencySeeder']);
                 $this->call("db:seed", ['--class' => 'IndoRegionVillageSeeder']);
             }
+            
+
+            if ($this->confirm('Lakukan Seeder Untuk Sample Transaksi?')) {
+                $this->titleStep("Run Command - Seeder [ExamlpeTransaksi]");
+                $this->call("db:seed", ['--class' => 'ExampleTransaksiSeeder']);
+            }
+
 
             if ($this->confirm('Bersihkan semua cache? ')) {
                 $this->titleStep("Run Command - Clear Cache");
@@ -80,6 +87,8 @@ class FazaInstall extends Command
             $this->call("db:seed", ['--class' => 'IndoRegionProvinceSeeder']);
             $this->call("db:seed", ['--class' => 'IndoRegionRegencySeeder']);
             $this->call("db:seed", ['--class' => 'IndoRegionVillageSeeder']);
+            $this->titleStep("Run Command - Seeder [ExamlpeTransaksi]");
+            $this->call("db:seed", ['--class' => 'ExampleTransaksiSeeder']);
             $this->titleStep("Run Command - Clear Cache");
             $this->call("clear");
             $this->call("cache:clear");

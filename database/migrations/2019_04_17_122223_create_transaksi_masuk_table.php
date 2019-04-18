@@ -17,7 +17,7 @@ class CreateTransaksiMasukTable extends Migration
             $table->increments('id');
             $table->integer('barang_id')->unsigned();
             $table->integer('stok');
-            $table->double('harga');
+            $table->double('total');
             $table->timestamps();
         });
     }

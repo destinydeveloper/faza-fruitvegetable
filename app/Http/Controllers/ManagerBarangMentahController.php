@@ -7,6 +7,7 @@ use DataTables;
 
 use App\Models\BarangMentah;
 use App\Models\Barang;
+use App\Models\TransaksiMasuk;
 
 class ManagerBarangMentahController extends Controller
 {
@@ -67,6 +68,12 @@ class ManagerBarangMentahController extends Controller
                 $BarangMentah = BarangMentah::with('barang')->findOrFail($request->input('id'));
                 $barang = Barang::findOrFail($BarangMentah->barang->id);
                 $barang->increment('stok', $BarangMentah->stok);
+
+                $transaksiMasuk = TransaksiMasuk::create([
+                    'barang_id' => $BarangMentah->barang_id,
+                    'stok' => $BarangMentah->stok,
+                    'total' => $BarangMentah->total,
+                ]);
                 $BarangMentah->delete();
 
                 $user = \App\User::with('roles')->whereHas('roles', function($q){

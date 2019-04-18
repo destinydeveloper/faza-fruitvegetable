@@ -132,23 +132,23 @@ Route::get('/dev', function(){
     //     'catatan' => ''
     // ]);
     
-    return \App\Models\TransaksiTrack::create([
-        "transaksi_id" => 4,
-        "status" => "Proses Pengemasan"
-    ]);
+    // return \App\Models\TransaksiTrack::create([
+    //     "transaksi_id" => 4,
+    //     "status" => "Proses Pengemasan"
+    // ]);
     // return \App\Models\Transaksi::with('track')
     //     ->has('track')
     //     ->get();
 
     Keranjang()->add(1, 10);
     Keranjang()->add(2, 5);
+    $transaksi = Keranjang()->toTransaksi('kirim barang', 1);
+    if ( $transaksi === true) return "berhasil";
+    return $transaksi;
     // return \App\Models\Transaksi::with('barangs', 'barangs.barang')->find(3s);
     // $delete = \App\Models\Transaksi::find(1)->delete();
     // dd($delete);
     // return Keranjang()->get();
-    $transaksi = Keranjang()->toTransaksi('kirim barang', 1);
-    if ( $transaksi === true) return "berhasil";
-    return $transaksi;
 
     // $bayar = \App\Models\TransaksiBayar::create([
     //     'transaksi_id' => 1,
@@ -156,11 +156,11 @@ Route::get('/dev', function(){
     //     'catatan' => "BCA"
     // ]);
     // dd($bayar);
-    $transaksi = \App\Models\Transaksi::with('barangs', 'barangs.barang', 'bayar');
+    // $transaksi = \App\Models\Transaksi::with('barangs', 'barangs.barang', 'bayar');
     // return $transaksi->find(1)->barangs->sum('harga');
-    return $transaksi->find(1);
+    // return $transaksi->find(1);
 
-    return Keranjang()->get();
+    // return Keranjang()->get();
 });
 
 
