@@ -60,6 +60,7 @@ class Images {
             $row = explode('x', $row);
             $canvas = Image::canvas($row[0], $row[1]);
             $img = Image::make($file);
+            $img->fit($row[0], $row[1]);
             $resizeImage  = $img->resize($row[0], $row[1], function($constraint) {
                 $constraint->aspectRatio();
                 $constraint->upsize();
@@ -134,6 +135,7 @@ class Images {
                 $row = explode('x', $row);
                 $canvas = Image::canvas($row[0], $row[1]);
                 $img = Image::make($file);
+                $img->fit($row[0], $row[1]);
                 $resizeImage  = $img->resize($row[0], $row[1], function($constraint) {
                     $constraint->aspectRatio();
                     $constraint->upsize();

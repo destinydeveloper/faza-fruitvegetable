@@ -65,8 +65,11 @@ class ManagerBarangController extends Controller
         switch($request->input('action'))
         {
             case 'update':
+                // return $request->all();
+
                 $request->validate([
                     'nama' => 'required',
+                    'id' => 'required|integer',
                     'jenis' => 'required|in:sayur,buah',
                     'harga' => 'required|integer',
                     'berat' => 'required|integer',
@@ -93,6 +96,8 @@ class ManagerBarangController extends Controller
                     }
                     
                     $GambarBarang = GambarBarang::destroy($images_db_id);
+                } else {
+                    GambarBarang::whereBarangId($request->input('id'))->delete();
                 }
 
                 $gambar = [];

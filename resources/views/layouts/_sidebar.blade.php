@@ -35,6 +35,13 @@
                 Barang Diterima
             </a></li>
         @endhasanyrole
+
+        @hasanyrole('admin')
+        <li id="sidebar-transaksi-batal"><a href="{{ route('user.transaksi.batal') }}">
+            <i class="fa fa-times"></i>
+            Barang Dibatalkan
+        </a></li>
+        @endhasanyrole
     </ul>
     @endhasanyrole
 

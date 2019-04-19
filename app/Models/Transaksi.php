@@ -57,4 +57,9 @@ class Transaksi extends Model
     {
         return $this->hasOne('App\Models\TransaksiBerhasil');
     }
+
+    public function batal()
+    {
+        return $this->hasOne('App\Models\TransaksiBatal');
+    }
 }

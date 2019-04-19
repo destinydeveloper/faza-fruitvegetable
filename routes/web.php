@@ -10,10 +10,11 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-})->name('homepage');
+Route::get('/', 'PelangganController@index')->name('homepage');
+Route::get('/barang/{barang_id}', 'PelangganController@barang_detail')->name('barang.detail');
+Route::get('/search/{q}', 'PelangganController@search');
+Route::get('/sayur', 'PelangganController@sayur')->name('barang.sayur');
+Route::get('/buah', 'PelangganController@buah')->name('barang.buah');
 
 Auth::routes();
 
@@ -56,6 +57,10 @@ Route::group([
     });
 
     Route::group(['prefix' => '/transaksi'], function(){
+        Route::group(['middleware' => ['role:admin']], function(){
+            Route::get('/barang-batal', 'TransaksiBatalController@index')->name('transaksi.batal');
+            Route::post('/barang-batal', 'TransaksiBatalController@action')->name('transaksi.batal.action');
+        });
         Route::group(['middleware' => ['role:admin|pengepak']], function(){
             Route::get('/permintaan', 'TransaksiPermintaanController@index')->name('transaksi.permintaan');
             Route::post('/permintaan', 'TransaksiPermintaanController@action')->name('transaksi.permintaan.action');
@@ -112,6 +117,9 @@ Route::get('/dev/ekspedisi', function(){
 });
 
 Route::get('/dev', function(){
+
+    // return Transaksi::has('berhasil')->get();
+
     // $transaksi = \App\Models\Transaksi::create([
     //     'user_id' => auth()->user()->id,
     //     'alamat_id' => 1,
@@ -133,7 +141,7 @@ Route::get('/dev', function(){
     // ]);
     
     // return \App\Models\TransaksiTrack::create([
-    //     "transaksi_id" => 4,
+    //     "transaksi_id" => 1,
     //     "status" => "Proses Pengemasan"
     // ]);
     // return \App\Models\Transaksi::with('track')

@@ -22,6 +22,7 @@ class TransaksiTraceTrackController extends Controller
     {
         $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
             ->has('track')
+            ->doesntHave('batal')
             ->doesntHave('berhasil');
         
         return DataTables::of($query->orderBy('created_at', 'DESC'))

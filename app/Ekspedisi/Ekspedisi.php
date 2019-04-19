@@ -32,7 +32,7 @@ class Ekspedisi {
         {
             $result[$item_k] = $this->name($item_k)->info();
         }
-        return $result;
+        return (object) json_decode(json_encode($result));
     }
 
 

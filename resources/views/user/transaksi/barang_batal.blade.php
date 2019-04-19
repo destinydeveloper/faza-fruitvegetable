@@ -1,6 +1,6 @@
 @extends('layouts.user')
-@section('title', 'User \ Transaksi \ Barang Siap Keluar')
-@section('page-header', 'Barang Siap Transaksi')
+@section('title', 'User \ Transaksi \ Barang Dibatalkan')
+@section('page-header', 'Barang Dibatalkan')
 
 
 @push('css')
@@ -29,56 +29,57 @@
         <div class="container-fluid">
             <div class="card">
                 <div class="card-body">
-                    <form v-on:submit.prevent="" class="form-inline" style="margin-bottom: 15px;">
-                        {{-- <label style="margin-right: 10px;" for="filter">Filter : </label>
-                        <select v-on:change="loadTable()" v-model="filter" class="form-control" id="filter">
-                            <option value="semua">Semua</option>
-                            <option value="kirim">Kirim Barang</option>
-                            <option value="cod">COD</option>
-                        </select> --}}
-                        <span style="margin-left: 10px;">
-                            <button v-on:click="refreshTable()" title="Refresh" class="btn btn-sm btn-warning">
-                                <i class="fa fa-refresh"></i>
-                            </button>
-                        </span>
-                    </form>
-                    <table class="table table-sm table-hover display nowrap" style="width:100%" id="transaksi-table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Kode</th>
-                                <th scope="col">userId</th>
-                                <th scope="col">...</th>
-                            </tr>
-                        </thead>
-                        {{-- <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>F4Z4/0824/BAS14</td>
-                                <td>VianDwi</td>
-                                <td>Kirim Barang</td>
-                                <td>
-                                    <button class="btn btn-xs btn-primary">Lihat Detail</button>
-                                </td>
-                                <td>
-                                    <button class="btn btn-xs btn-danger" title="Batalkan Konfirmasi" data-toggle="tooltip" data-placement="top" title="Tolak Konfirmasi">
-                                        <i class="fa fa-fw fa-chevron-left"></i>
-                                    </button>
-                                    <button class="btn btn-xs btn-success" title="Kirim ke Penerima" data-toggle="tooltip" data-placement="top" title="Kirim ke Penerima">
-                                        <i class="fa fa-fw fa-chevron-right"></i>
-                                    </button>
-                                    <button class="btn btn-xs btn-info" title="Detail Transaksi"  data-toggle="tooltip" data-placement="top" title="Detail Transaksi">
-                                        <i class="fa fa-fw fa-info"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody> --}}
-                    </table>
+
+                        <form v-on:submit.prevent="" class="form-inline" style="margin-bottom: 15px;">
+                            {{-- <label style="margin-right: 10px;" for="filter">Filter : </label>
+                            <select v-on:change="loadTable()" v-model="filter" class="form-control" id="filter">
+                                <option value="semua">Semua</option>
+                                <option value="kirim">Kirim Barang</option>
+                                <option value="cod">COD</option>
+                            </select> --}}
+                            <span style="margin-left: 10px;">
+                                <button v-on:click="refreshTable()" title="Refresh" class="btn btn-sm btn-warning">
+                                    <i class="fa fa-refresh"></i>
+                                </button>
+                            </span>
+                        </form>
+                        <table class="table table-sm table-hover display nowrap" style="width:100%" id="transaksi-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Kode</th>
+                                    <th scope="col">userId</th>
+                                    <th scope="col">...</th>
+                                </tr>
+                            </thead>
+                            {{-- <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>F4Z4/0824/BAS14</td>
+                                    <td>VianDwi</td>
+                                    <td>Kirim Barang</td>
+                                    <td>
+                                        <button class="btn btn-xs btn-primary">Lihat Detail</button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-xs btn-danger" title="Batalkan Konfirmasi" data-toggle="tooltip" data-placement="top" title="Tolak Konfirmasi">
+                                            <i class="fa fa-fw fa-chevron-left"></i>
+                                        </button>
+                                        <button class="btn btn-xs btn-success" title="Kirim ke Penerima" data-toggle="tooltip" data-placement="top" title="Kirim ke Penerima">
+                                            <i class="fa fa-fw fa-chevron-right"></i>
+                                        </button>
+                                        <button class="btn btn-xs btn-info" title="Detail Transaksi"  data-toggle="tooltip" data-placement="top" title="Detail Transaksi">
+                                            <i class="fa fa-fw fa-info"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody> --}}
+                        </table>
+
                 </div>
             </div>
         </div>
     </section>
-
     <!-- Modal -->
     <div class="modal fade" id="konfirmasiModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -134,7 +135,7 @@
                                 </div>
                             </div>
                             <hr>
-                            <div class="form">
+                            <div class="form" v-if="data.bayar != undefined">
                                 <div class="form-group">
                                     <label>Nominal</label>
                                     <input v-bind:value="data.bayar.nominal" type="text" class="form-control" readonly>
@@ -220,14 +221,16 @@
     </div>
 @stop
 
+
+
 @push('meta')
-    <meta name="api" content="{{ route('user.transaksi.barang_siap') }}">    
+    <meta name="api" content="{{ route('user.transaksi.batal') }}">    
     <meta name="assets" content="{{ asset('assets') }}">    
 @endpush
 
 @push('js')
     <script>
-    $('#sidebar-transaksi-siap').addClass('active');
+    $('#sidebar-transaksi-batal').addClass('active');
     const loadTimeInterval = 200;
     // Vue
     var app = new Vue({
@@ -304,42 +307,6 @@
                     app.loadDone();
                     app.handleCatch(error);
                 });
-            },
-            delete(id, kode) {
-                let html = '<div style="text-align: center;">Yakin Akan Menghapus Transaksi <span class="text-primary">' + kode + '</span>?</div>';
-                alertify.confirm('Konfirmasi Hapus', html, function(){
-                    app.loadStart();
-                    axios.post('', { action: 'delete', 'id': id }).then(function(res){
-                        app.loadDone();
-                        if (res.data.status == 'success') {
-                            alertify.success('Berhasil menghapus');
-                        }
-                        app.refreshTable();
-                    }).catch(function(error){
-                        error = error.response;
-                        app.loadDone();
-                        app.handleCatch(error);
-                    });
-                },function(){
-                }).set({labels:{ok:'Hapus', cancel: 'Batal'}});
-            },
-            kirim(id, kode) {
-                let html = '<div style="text-align: center;">Yakin Akan Mengirim Transaksi <span class="text-primary">' + kode + '</span>?</div>';
-                alertify.confirm('Konfirmasi Kirim', html, function(){
-                    app.loadStart();
-                    axios.post('', { action: 'kirim', 'id': id }).then(function(res){
-                        app.loadDone();
-                        if (res.data.status == 'success') {
-                            alertify.success('Berhasil');
-                        }
-                        app.refreshTable();
-                    }).catch(function(error){
-                        error = error.response;
-                        app.loadDone();
-                        app.handleCatch(error);
-                    });
-                },function(){
-                }).set({labels:{ok:'Konfirmasi', cancel: 'Batal'}});
             },
             handleCatch(error){
                 console.log(error);

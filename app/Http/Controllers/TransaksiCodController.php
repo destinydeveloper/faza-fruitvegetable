@@ -24,6 +24,7 @@ class TransaksiCodController extends Controller
         $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
             ->whereMetode('cod')
             ->has('dikonfirmasi')
+            ->doesntHave('batal')
             ->doesntHave('berhasil');
         
         return DataTables::of($query->orderBy('created_at', 'DESC'))

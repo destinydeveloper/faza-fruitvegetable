@@ -9,6 +9,7 @@ use App\Models\Transaksi;
 use App\Models\TransaksiBarang;
 use App\Models\TransaksiBayar;
 use App\Models\TransaksiKonfirmasi;
+use App\Models\TransaksiBatal;
 
 
 class TransaksiPermintaanController extends Controller
@@ -25,6 +26,7 @@ class TransaksiPermintaanController extends Controller
         if (!$request->has('filter')) return $this->errResponse("Filter not found");
         $filter = $request->input('filter');
         $query = Transaksi::with('bayar', 'barangs', 'barangs.barang')
+            ->doesntHave('batal')
             ->doesntHave('dikonfirmasi');
         // $filter = 'sudah';
         switch($filter)
@@ -85,7 +87,11 @@ class TransaksiPermintaanController extends Controller
 
             case 'delete':
                 $request->validate([ 'id' => 'required|integer' ]);
-                $delete = Transaksi::find($request->input('id'))->delete();
+                $transaksi = Transaksi::find($request->input('id'));
+                $delete = TransaksiBatal::create([
+                    'transaksi_id' => $request->input('id'),
+                    'catatan' => "transaksi tidak disetujui"
+                ]);
                 return response()->json([
                     'status' => 'success',
                     'result' => $request->input('id')
