@@ -42,7 +42,7 @@ class Keranjang {
 
     public function get()
     {
-        $keranjang = User::with('keranjang', 'keranjang.barang')
+        $keranjang = User::with('keranjang', 'keranjang.barang', 'keranjang.barang.gambar')
             ->find(Auth()->user()->id)->keranjang;
 
         return $this->validation($keranjang);
@@ -193,6 +193,7 @@ class Keranjang {
                     'barang_nama' => $item->barang->nama,
                     'barang_stok' => $item->barang->stok,
                     'harga_per_stok' => $item->barang->harga,
+                    'barang' => $item->barang,
                     'error' => $error
                 ]);
             
@@ -202,7 +203,7 @@ class Keranjang {
             }
 
         }
-        return $result;
+        return (object) json_decode(json_encode($result));
     }
 
 

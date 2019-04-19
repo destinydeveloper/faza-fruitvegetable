@@ -114,7 +114,7 @@ class ManagerBarangController extends Controller
                 ]);
                 
                 if ($request->has('images')) {
-                    $gambar = Images::multipleUpload('images');
+                    $gambar = Images::multipleUpload('images', null, null, "150x150", true);
                     $createGambar = [];
                     if (count((array) $gambar) > 0) {
 

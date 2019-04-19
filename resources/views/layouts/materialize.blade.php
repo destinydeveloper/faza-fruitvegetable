@@ -22,6 +22,7 @@
     <script src="{{ asset('material/js/materialize.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/vue/vue.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/axios/axios.min.js') }}"></script>
+    
     @stack('js')
 </body>
 </html>

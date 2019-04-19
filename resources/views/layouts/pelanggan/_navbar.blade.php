@@ -146,7 +146,7 @@
 @push('js')
     <script>
         var searchApp = new Vue({
-            el: '#master-app',
+            el: '#header',
             data: { q: "{{ isset($q) ? $q : '' }}" },
             methods: {
                 search: function(){

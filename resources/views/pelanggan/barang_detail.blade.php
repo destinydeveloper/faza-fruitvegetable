@@ -10,7 +10,7 @@
         <div class="section" style="background: white;margin-bottom: 15px;">
             <!-- statr products list -->
             <div class="row">
-                <div class="col l2 s12 m2 colmob" style="overflow:hidden; text-align: center;">
+                <div class="col l3 s12 m12 colmob" style="overflow:hidden; text-align: center;">
                     <div class="row">
                     <div class="col l12" style="text-align: center; content-align: center;">
                         <a href="{{ count($barang->gambar) == 0 ? asset('assets/dist/img/no-image.png') : asset('assets/images/original/' . $barang->gambar[0]->path) }}" class="MagicZoom" id="jeans" data-options="zoomMode: magnifier; zoomOn: click; zoomPosition: left; expand: off; expandZoomMode: magnifier;"><img src="{{ count($barang->gambar) == 0 ? asset('assets/dist/img/no-image.png') : asset('assets/images/original/' . $barang->gambar[0]->path) }}" width="100%" height="300px" style="max-height: 300px !important;min-height: 300px !important;"></a>
@@ -24,7 +24,7 @@
                     @endif
                     </div>
                 </div>
-                <div class="col l10 s12 colmob">
+                <div class="col l9 s12 m12  colmob">
                     <ul class="collection with-header" style="border:none;">
                         <li class="collection-header" style="margin: 0px 30px;padding: 10px;"><h4 style="margin:0px;"><b>{{ $barang->nama }}</b></h4></li>
                         <li class="collection-item">
@@ -74,11 +74,11 @@
                                     <div class="col l2 s8 center-align" style="padding:0px;margin-right:10px;">
                                         <div class="input-field input-group" style="padding:0px;margin:0px;">
                                             <button class="btn waves-effect waves-light form-control sub" type="submit" id="sub" style="font-weight: bold;margin: 0px;padding: 0px;">-</button>
-                                            <input type="number" min=1 value="1" class="form-control center-align" id="1"  style="font-weight: bold;margin: 0px;padding: 0px;height: auto;">
+                                            <input id="stok" type="number" min="1" max="5" value="1" class="form-control center-align" id="1"  style="font-weight: bold;margin: 0px;padding: 0px;height: auto;">
                                             <button class="btn waves-effect waves-light form-control add" type="submit" id="add" style="font-weight: bold;margin: 0px;padding: 0px;">+</button>
                                         </div>
                                     </div>
-                                    <a class="waves-effect waves-light btn"><i class="material-icons">add_shopping_cart</i></a>
+                                    <a  class="waves-effect waves-light btn"><i class="material-icons">add_shopping_cart</i></a>
                                 </div>
                             </div>
                         </li>
@@ -89,12 +89,19 @@
                         <a href="{{ url()->previous() }}" class="waves-effect waves-light btn left acfix" style="width: 50%;">Kembali</a>
                     </div>
                     <div class="col l6 m6 s6 ">
-                        <a class="waves-effect waves-light btn right acfix" style="width: 50%;">Beli</a>
+                        <button v-on:click="tambah" class="waves-effect waves-light btn right acfix" style="width: 50%;">Beli</button>
+                        <form id="beliForm" method="POST" action="{{ route('keranjang') }}">
+                            @csrf
+                            <input type="hidden" name="action" value="beli">
+                            <input type="hidden" name="id" value="{{ $barang->id }}">
+                            <input type="hidden" name="stok" v-model="stok">
+                        </form>
                     </div>
               </div>
             </div>
             <!--/ end items list -->
         </div>
+    </div>
 @stop
 
 @push('js')
@@ -112,6 +119,19 @@
             }
         });
 	}); 
+
+    var app = new Vue({
+        el: '#app',
+        data: { stok: 1 },
+        methods: {
+            tambah: function(){
+                $('#beliForm input[name="stok"]').val( $('#stok').val() );
+                $('#beliForm').submit();
+            }
+        },
+        mounted(){
+        }
+    });
     </script>
 @endpush
 

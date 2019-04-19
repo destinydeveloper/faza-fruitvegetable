@@ -15,6 +15,8 @@ Route::get('/barang/{barang_id}', 'PelangganController@barang_detail')->name('ba
 Route::get('/search/{q}', 'PelangganController@search');
 Route::get('/sayur', 'PelangganController@sayur')->name('barang.sayur');
 Route::get('/buah', 'PelangganController@buah')->name('barang.buah');
+Route::get('/keranjang', 'PelangganKeranjangController@index')->name('keranjang');
+Route::post('/keranjang', 'PelangganKeranjangController@action')->name('keranjang.action');
 
 Auth::routes();
 
