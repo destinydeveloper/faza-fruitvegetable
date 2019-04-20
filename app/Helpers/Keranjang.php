@@ -39,10 +39,16 @@ class Keranjang {
 
         return $keranjang;
     }
+    
+    public function count()
+    {
+        return modelKeranjang::whereUserId(Auth()->user()->id)->count();
+    }
 
     public function get()
     {
         $keranjang = User::with('keranjang', 'keranjang.barang', 'keranjang.barang.gambar')
+            // ->orderBy('keranjang.created_at', 'DESC')
             ->find(Auth()->user()->id)->keranjang;
 
         return $this->validation($keranjang);

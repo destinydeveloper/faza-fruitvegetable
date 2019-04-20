@@ -11,35 +11,47 @@
             <!-- statr products list -->
             <div class="row">
                 <div class="col l8">
-                    <div class="row">
-                    @foreach ($keranjang as $item)
-                    <div class="col s12 m12">
-                        <div class="card horizontal">
-                            <div class="card-image">
-                            <img src="{{ count($item->barang->gambar) == 0 ? asset('assets/dist/img/no-image.png') : asset('assets/images/150x150/' . $item->barang->gambar[0]->path) }}">
-                            </div>
-                            <div class="card-stacked">
-                            <div class="card-content">
-                                <p>
-                                    <b>{{ $item->barang->nama }}</b>
-                                </p>
-                            </div>
-                            <div class="card-action">
-                                <div class="col l2 s8 center-align" style="padding:0px;margin-right: 10px;">
-                                    <div class="input-field input-group" style="padding:0px;margin:0px;">
-                                    <button class="btn waves-effect waves-light form-control sub" type="submit" id="sub" style="font-weight: bold;margin: 0px;padding: 0px;">-</button>
-                                    <input type="number" min=1 value="{{ $item->stok }}" class="form-control center-align" id="1"  style="font-weight: bold;margin: 0px;padding: 0px;height: auto;">
-                                    <button class="btn waves-effect waves-light form-control add" type="submit" id="add" style="font-weight: bold;margin: 0px;padding: 0px;">+</button>
-                                    </div>
-                                </div>
-                                <button title="Hapus" class="btn red waves-effect waves-light">x</button>
-                                <span style="float: right;" class="harga">RP. 10.0000.000</span> 
-                            </div>
+                    <div class="row" v-if="loading">
+                        <div class="card">
+                            <div class="card-content" style="text-align: center;">
+                                Loading...
                             </div>
                         </div>
-                    </div>    
-                    @endforeach       
-                    </div>                 
+                    </div>
+                    <div class="row" v-if="!Object.keys(keranjang).length > 0 && loading == false">
+                        <div class="card">
+                            <div class="card-content" style="text-align: center;">
+                                Tidak ada barang satupun.
+                            </div>
+                        </div>
+                    </div>     
+                    <div class="row" v-if="Object.keys(keranjang).length > 0">
+                        <div class="col s12 m12" v-for="(item, i) in keranjang" :key="item.index">
+                            <div class="card horizontal">
+                                <div class="card-image">
+                                <img v-bind:src="'{{ asset('assets/images/150x150') }}/' + item.barang.gambar[0].path">
+                                </div>
+                                <div class="card-stacked">
+                                <div class="card-content">
+                                    <p>
+                                        <b>@{{ item.barang.nama }}</b>
+                                    </p>
+                                </div>
+                                <div class="card-action">
+                                    <div class="col l2 s8 center-align" style="padding:0px;margin-right: 10px;">
+                                        <div class="input-field input-group" style="padding:0px;margin:0px;">
+                                        <button class="btn waves-effect waves-light form-control sub" type="submit" id="sub" style="font-weight: bold;margin: 0px;padding: 0px;">-</button>
+                                        <input v-bind:data-keranjang="i" v-bind:data-id="item.id" v-bind:data-max="item.barang_stok" @change="changeStok(e)" type="number" min="1" v-bind:value="item.stok" class="form-control center-align" style="font-weight: bold;margin: 0px;padding: 0px;height: auto;">
+                                        <button class="btn waves-effect waves-light form-control add" type="submit" id="add" style="font-weight: bold;margin: 0px;padding: 0px;">+</button>
+                                        </div>
+                                    </div>
+                                    <button :disabled="loadingDel" v-on:click="app.delete(item.id)" title="Hapus" class="btn red waves-effect waves-light">x</button>
+                                    <span style="float: right;" class="harga">@{{ rupiah(item.barang.harga) }} | @{{ rupiah(parseInt(item.barang.harga) * item.stok) }}</span> 
+                                </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>      
                 </div>
                 <div class="col l4 m4 s12">
                     <div class="card">
@@ -47,15 +59,24 @@
                         <span class="card-title">Total Pembayaran</span>
                         <hr>
                         <div style="margin-top: 15px;">
-                            <span>Total Harga</span>
-                            <span style="float: right;"><b>Rp 10000</b></span>
+                            <div style="text-align: center;" v-if="loading">
+                                Loading...
+                            </div>
+                            <div v-else>
+                                <span>Total Harga</span>
+                                <span style="float: right;"><b><span>@{{ rupiah(total) }}</span></b></span>
+                            </div>
                         </div>
                         </div>
                         <div class="card-action">
-                            <a class="waves-effect waves-light btn">Beli</a>
-                            <a class="waves-effect waves-light btn-flat">Lanjut Belanja</a>
+                            <a href="{{ route('transaksi') }}" :disabled="loading == true || !Object.keys(keranjang).length > 0" class="waves-effect waves-light btn">Beli</a>
+                            <a href="{{ route('homepage') }}" class="waves-effect waves-light btn-flat">Lanjut Belanja</a>
                         </div>
                     </div>
+                    <a v-on:click="destroy" :disabled="loadingDel" v-if="Object.keys(keranjang).length > 0" style="margin-bottom: 15px;width: 100%;" class="waves-effect waves-light btn-small red">
+                        <i class="material-icons left">remove_circle</i>
+                        Hapus Semua Keranjang
+                    </a>
                 </div>
             </div>
         </div>
@@ -63,6 +84,175 @@
     <!--end container-->
 @stop
 
+@push('meta')
+    <meta name="api" content="{{ route('keranjang') }}">    
+@endpush
+
+@push('js')
+    <script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            keranjang: [],
+            loading: true,
+            loadingDel: false,
+        },
+        computed: {
+            total(){
+                let ttl = 0;
+                // app.keranjang.forEach(function(item){
+                //     ttl = ttl + (item.barang.harga * item.stok);
+                // });
+                for (let i = 0; i < Object.keys(app.keranjang).length; i++) {
+                    ttl = ttl + (parseInt(app.keranjang[i].barang.harga) * parseInt(app.keranjang[i].stok));
+                }
+                return ttl;
+            }
+        },
+        methods: {
+            loadStart(){
+                NProgress.start();
+                NProgress.set(0.4);
+            },
+            loadDone(){
+                setTimeout(function(){NProgress.done();}, loadTimeInterval);
+            },
+            rupiah(angka) {
+                var rupiah = '';		
+                var angkarev = angka.toString().split('').reverse().join('');
+                for(var i = 0; i < angkarev.length; i++) if(i%3 == 0) rupiah += angkarev.substr(i,3)+'.';
+                return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
+            },
+            getKeranjang: function(){
+                app.loadStart();
+                app.loading = true;                
+                axios.get('/').then(function(res){
+                    app.loading = false;
+                    if (res.data.status == 'success') {
+                        app.keranjang = res.data.result;
+                    } else {
+                    }
+                    app.loadDone();
+
+                    $(document).ready(function() {
+                        $('.add').click(function () {
+                            let max = $(this).prev().data("max");
+                            let keranjang = $(this).prev().data("keranjang");
+                            let id = $(this).prev().data("id");
+
+                            if ($(this).prev().val() == max) {
+                                alertify.error("Maksimal stok tercapai");
+                                return false;
+                            }
+                            if ($(this).prev().val() < 99) {
+                                $(this).prev().val(+$(this).prev().val() + 1);
+                            }
+
+                            let stok = $(this).prev().val();
+                            app.keranjang[keranjang].stok = stok;
+                            app.updateStok(id, stok);
+                        });
+                        $('.sub').click(function () {
+                            let keranjang = $(this).next().data("keranjang");
+                            let id = $(this).next().data("id");
+                            if ($(this).next().val() > 1) {
+                                if ($(this).next().val() > 1) $(this).next().val(+$(this).next().val() - 1);
+                            } else {
+                                alertify.error("Minimal stok tercapai");
+                                return false;
+                            }
+                            let stok = $(this).next().val();
+                            app.keranjang[keranjang].stok = stok;
+                            app.updateStok(id, stok);
+                        });
+                    });
+                });
+            },
+            delete(id){
+                app.loadStart();
+                app.loadingDel = true;  
+                axios.post('/', {action: 'delete', 'id': id}).then(function(res){
+                    if (res.data.status == 'success') {
+                        app.getKeranjang();
+                    } else {
+                    }
+                    app.loadingDel = false;
+                    app.loadDone()
+                }).catch(function(error){
+                    error = error.response;
+                    app.loadDone();
+                    app.loading = false;
+                    app.loadingDel = false;
+                    if (error.status == 422){
+                        let errors  = error.data.errors;
+                        Object.keys(errors).map(function(item, index){
+                            alertify.error(errors[item][0]);
+                        });
+                    } else { app.handleCatch(error); }
+                });
+            },
+            destroy(){
+                app.loadStart();
+                app.loadingDel = true;  
+                axios.post('/', {action: 'destroy'}).then(function(res){
+                    if (res.data.status == 'success') {
+                        app.getKeranjang();
+                    } else {
+                    }
+                    app.loadingDel = false;
+                    app.loadDone()
+                }).catch(function(error){
+                    error = error.response;
+                    app.loadDone();
+                    app.loading = false;
+                    app.loadingDel = false;
+                    if (error.status == 422){
+                        let errors  = error.data.errors;
+                        Object.keys(errors).map(function(item, index){
+                            alertify.error(errors[item][0]);
+                        });
+                    } else { app.handleCatch(error); }
+                });
+            },
+            updateStok(id, stok){
+                app.loadStart();
+                axios.post('/', {action: 'updateStok', 'id': id, 'stok': stok}).then(function(res){
+                    if (res.data.status == 'success') {
+                    } else {
+                        alertify.error("Failed: update stock");
+                    }
+                    app.loadDone()
+                }).catch(function(error){
+                    error = error.response;
+                    app.loadDone();
+                    app.loading = false;
+                    app.loadingDel = false;
+                    if (error.status == 422){
+                        let errors  = error.data.errors;
+                        Object.keys(errors).map(function(item, index){
+                            alertify.error(errors[item][0]);
+                        });
+                    } else { app.handleCatch(error); }
+                });
+            },
+            handleCatch(error) {
+                app.loadDone();
+                console.log(error);
+                if (error.status == 500) {
+                    alertify.error('Server Error, Try again later');
+                } else if (error.status == 422) {
+                    alertify.error('Form invalid, Check input form');
+                } else {
+                    alertify.error('['+error.status+'] Error : '+'['+error.statusText+']');
+                }
+            },
+        },
+        mounted(){
+            setTimeout(function(){app.getKeranjang();}, 1500);
+        }
+    });
+    </script>
+@endpush
 
 @push('css')
     <style>
@@ -103,21 +293,4 @@
        width: 100%;
        }
     </style>
-@endpush
-
-@push('js')
-    <script>
-    $(document).ready(function() {
-        $('.add').click(function () {
-            if ($(this).prev().val() < 99) {
-            $(this).prev().val(+$(this).prev().val() + 1);
-		}
-        });
-        $('.sub').click(function () {
-            if ($(this).next().val() > 1) {
-            if ($(this).next().val() > 1) $(this).next().val(+$(this).next().val() - 1);
-            }
-        });
-	}); 
-    </script>
 @endpush

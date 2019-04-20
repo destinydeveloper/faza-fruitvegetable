@@ -78,7 +78,7 @@
                                             <button class="btn waves-effect waves-light form-control add" type="submit" id="add" style="font-weight: bold;margin: 0px;padding: 0px;">+</button>
                                         </div>
                                     </div>
-                                    <a  class="waves-effect waves-light btn"><i class="material-icons">add_shopping_cart</i></a>
+                                    <a v-on:click="tambah" class="waves-effect waves-light btn"><i class="material-icons">add_shopping_cart</i></a>
                                 </div>
                             </div>
                         </li>
@@ -89,7 +89,7 @@
                         <a href="{{ url()->previous() }}" class="waves-effect waves-light btn left acfix" style="width: 50%;">Kembali</a>
                     </div>
                     <div class="col l6 m6 s6 ">
-                        <button v-on:click="tambah" class="waves-effect waves-light btn right acfix" style="width: 50%;">Beli</button>
+                        <button v-on:click="beli" class="waves-effect waves-light btn right acfix" style="width: 50%;">Beli</button>
                         <form id="beliForm" method="POST" action="{{ route('keranjang') }}">
                             @csrf
                             <input type="hidden" name="action" value="beli">
@@ -103,6 +103,10 @@
         </div>
     </div>
 @stop
+
+@push('meta')
+    <meta name="api" content="{{ route('keranjang') }}">    
+@endpush
 
 @push('js')
     <script src="{{ asset('assets/dist/js/magiczoomplus.js') }}" type="text/javascript"></script>
@@ -124,10 +128,49 @@
         el: '#app',
         data: { stok: 1 },
         methods: {
-            tambah: function(){
+            loadStart(){
+                NProgress.start();
+                NProgress.set(0.4);
+            },
+            loadDone(){
+                setTimeout(function(){NProgress.done();}, loadTimeInterval);
+            },
+            beli: function(){
                 $('#beliForm input[name="stok"]').val( $('#stok').val() );
                 $('#beliForm').submit();
-            }
+            },
+            tambah: function(){
+                app.loadStart();
+                axios.post('', {action: 'tambah', 'id': {{ $barang->id }}, 'stok': $('#stok').val()}).then(function(res){
+                    if (res.data.status == 'success') {
+                        var notification = alertify.notify('Menambahkan barang ke keranjang, klik untuk lihat', 'success', 5);
+                        notification.callback = function (isClicked) {  if(isClicked) window.location.href = "{{ route('keranjang') }}";  };
+                    } else {
+                        alertify.error("Failed: Cannt added shopping cart");
+                    }
+                    app.loadDone();
+                }).catch(function(error){
+                    error = error.response;
+                    app.loadDone();
+                    if (error.status == 422){
+                        let errors  = error.data.errors;
+                        Object.keys(errors).map(function(item, index){
+                            alertify.error(errors[item][0]);
+                        });
+                    } else { app.handleCatch(error); }
+                });
+            },
+            handleCatch(error) {
+                app.loadDone();
+                console.log(error);
+                if (error.status == 500) {
+                    alertify.error('Server Error, Try again later');
+                } else if (error.status == 422) {
+                    alertify.error('Form invalid, Check input form');
+                } else {
+                    alertify.error('['+error.status+'] Error : '+'['+error.statusText+']');
+                }
+            },
         },
         mounted(){
         }

@@ -254,7 +254,6 @@
             },
             handleCatch(error) {
                 app.loadDone();
-                console.log(error);
                 if (error.status == 500) {
                     alertify.error('Server Error, Try again later');
                 } else if (error.status == 422) {

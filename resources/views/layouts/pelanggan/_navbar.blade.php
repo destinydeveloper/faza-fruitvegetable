@@ -19,11 +19,15 @@
                     <div class="col l2">
                         <ul class="hide-on-med-and-down">
                             @auth
-                            <li><a href="sass.html" style="position:relative;"><i class="material-icons">shopping_cart</i><span class="btn red white-text btn-floating bad1">4</span></a></li>
-                            <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons">account_box</i></a></li>
+                            <li><a href="{{ route('keranjang') }}" style="position:relative;"><i class="material-icons">shopping_cart</i><span class="btn red white-text btn-floating bad1">{{ keranjang()->count() }}</span></a></li>
+                            <li><a class="dropdown-trigger" href="#!" data-target="dropdown1">
+                                    <i class="material-icons" style="display: inline;">account_box</i>
+                                </a>
+                            </li>
                             @else
-                            <li><a title="Login" class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons">keyboard_tab</i></a></li>
-                            <li><a title="Register" class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons">create</i></a></li>
+                            <li><a title="Keranjang" href="{{ route('login') }}" style="position:relative;"><i class="material-icons">shopping_cart</i></a></li>
+                            <li><a title="Login" class="dropdown-trigger" href="{{ route('login') }}"><i class="material-icons">keyboard_tab</i></a></li>
+                            <li><a title="Register" class="dropdown-trigger" href="{{ route('register') }}"><i class="material-icons">create</i></a></li>
                             @endauth
                         </ul>
                     </div>
@@ -37,10 +41,10 @@
                     <li><a onclick="event.preventDefault();document.getElementById('logout-form').submit();" href="#!"><i class="material-icons" style="margin:0px;">keyboard_tab</i>Logout</a></li>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
                     @else
-                    <li><a href="{{ route('login') }}"><i class="material-icons" style="margin:0px;">keyboard_tab</i>Login</a></li>
+                    {{-- <li><a href="{{ route('login') }}"><i class="material-icons" style="margin:0px;">keyboard_tab</i>Login</a></li>
                     <li><a href="{{ route('register') }}"><i class="material-icons" style="margin:0px;">create</i>Register</a></li>
                     <li class="divider"></li>
-                    <li><a href="#!"><i class="material-icons" style="margin:0px;">help</i>Bantuan?</a></li>
+                    <li><a href="#!"><i class="material-icons" style="margin:0px;">help</i>Bantuan?</a></li> --}}
                     @endauth
                 </ul>
             </div>
@@ -82,7 +86,7 @@
             <li class="bold"><a class="waves-effect waves-cyan" style="position:relative;"><span class="card-title activator " style="margin:0px;position: absolute;top:8px;width: 100%;"><i class="material-icons left" style="margin:0px;width:100%;color: rgb(117, 117, 117);">dashboard</i><p class="kat1">Kategori</p></span></a>
             </li>
             <li>  </li>
-            <li class="bold"><a href="sass.html" style="position:relative;"><i class="material-icons" style="margin:0px;">shopping_cart</i><span class="btn red white-text btn-floating bad1">4</span>Keranjang</a>
+            <li class="bold"><a href="sass.html" style="position:relative;"><i class="material-icons" style="margin:0px;">shopping_cart</i><span class="btn red white-text btn-floating bad1">{{ keranjang()->count() }}</span>Keranjang</a>
             </li>
         </ul>
         </div>
