@@ -133,39 +133,43 @@
                     } else {
                     }
                     app.loadDone();
+                        $(".add").prop('onclick', null).off('click');
+                        $(".sub").prop('onclick', null).off('click');
+                        // $(".add").attr('onclick','myFunction()');
+                        // $(".sub").attr('onclick','myFunction()');
 
-                    $(document).ready(function() {
-                        $('.add').click(function () {
-                            let max = $(this).prev().data("max");
-                            let keranjang = $(this).prev().data("keranjang");
-                            let id = $(this).prev().data("id");
+                        setTimeout(function(){
+                            $('.add').click(function () {
+                                let max = $(this).prev().data("max");
+                                let keranjang = $(this).prev().data("keranjang");
+                                let id = $(this).prev().data("id");
 
-                            if ($(this).prev().val() == max) {
-                                alertify.error("Maksimal stok tercapai");
-                                return false;
-                            }
-                            if ($(this).prev().val() < 99) {
-                                $(this).prev().val(+$(this).prev().val() + 1);
-                            }
+                                if ($(this).prev().val() == max) {
+                                    alertify.error("Maksimal stok tercapai");
+                                    return false;
+                                }
+                                if ($(this).prev().val() < 99) {
+                                    $(this).prev().val(+$(this).prev().val() + 1);
+                                }
 
-                            let stok = $(this).prev().val();
-                            app.keranjang[keranjang].stok = stok;
-                            app.updateStok(id, stok);
-                        });
-                        $('.sub').click(function () {
-                            let keranjang = $(this).next().data("keranjang");
-                            let id = $(this).next().data("id");
-                            if ($(this).next().val() > 1) {
-                                if ($(this).next().val() > 1) $(this).next().val(+$(this).next().val() - 1);
-                            } else {
-                                alertify.error("Minimal stok tercapai");
-                                return false;
-                            }
-                            let stok = $(this).next().val();
-                            app.keranjang[keranjang].stok = stok;
-                            app.updateStok(id, stok);
-                        });
-                    });
+                                let stok = $(this).prev().val();
+                                app.keranjang[keranjang].stok = stok;
+                                app.updateStok(id, stok);
+                            });
+                            $('.sub').click(function () {
+                                let keranjang = $(this).next().data("keranjang");
+                                let id = $(this).next().data("id");
+                                if ($(this).next().val() > 1) {
+                                    if ($(this).next().val() > 1) $(this).next().val(+$(this).next().val() - 1);
+                                } else {
+                                    alertify.error("Minimal stok tercapai");
+                                    return false;
+                                }
+                                let stok = $(this).next().val();
+                                app.keranjang[keranjang].stok = stok;
+                                app.updateStok(id, stok);
+                            });
+                        }, 200);
                 });
             },
             delete(id){
