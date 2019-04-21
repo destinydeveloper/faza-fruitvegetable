@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="assets" content="{{ asset('assets') }}">    
     @stack('meta')
-    <style>body{display: none;}</style>
+    <style>#master-app{display: none;}</style>
     <link rel="shortcut icon" href="{{ asset('assets/dist/img/favicon.ico') }}">
     <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('material/css/materialize.min.css') }}">
     <link rel="stylesheet" type="text/css" media="screen" href="{{ asset('material/fonts/material-icons.css') }}">
@@ -19,6 +19,11 @@
     @stack('css')
 </head>
 <body>
+    <div id="preloader-app">
+        <div style="position: absolute;width: 100%;text-align: center;top: 45%;-moz-transform: translate(-50%, -50%)-webkit-transform: translate(-50%, -50%)-ms-transform: translate(-50%, -50%)-o-transform: translate(-50%, -50%)transform: translate(-50%, -50%);">
+            <div class="preloader-wrapper big active"><div class="spinner-layer spinner-blue-only"><div class="circle-clipper left"><div class="circle"></div></div><div class="gap-patch"><div class="circle"></div></div><div class="circle-clipper right"><div class="circle"></div></div></div></div>
+        </div>
+    </div>
     <div id="master-app" class="page @yield('page-class')">
         @yield('content-header')
         @yield('content-main')
@@ -34,6 +39,6 @@
     <script src="{{ asset('assets/vendor/vue/vue.min.js') }}"></script>
     <script>const assets = $("meta[name='assets']").attr("content");const loadTimeInterval = 200;axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';axios.defaults.baseURL = $("meta[name='api']").attr("content");axios.defaults.headers.common['X-CSRF-TOKEN'] = $("meta[name='csrf-token']").attr("content");</script>
     @stack('js')
-    <script>$('body').fadeIn(1500);</script>
+    <script>$('#preloader-app').fadeOut(1500);$('#master-app').fadeIn(1500);</script>
 </body>
 </html>

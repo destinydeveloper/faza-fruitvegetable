@@ -25,9 +25,9 @@
                                 </a>
                             </li>
                             @else
-                            <li><a title="Keranjang" href="{{ route('login') }}" style="position:relative;"><i class="material-icons">shopping_cart</i></a></li>
-                            <li><a title="Login" class="dropdown-trigger" href="{{ route('login') }}"><i class="material-icons">keyboard_tab</i></a></li>
-                            <li><a title="Register" class="dropdown-trigger" href="{{ route('register') }}"><i class="material-icons">create</i></a></li>
+                            <li><a onclick="let login = alertify.notify('Anda perlu login terlebih dahulu, Klik untuk login', 'error', 3);login.callback = function(isClicked) { if(isClicked) window.location.href = '{{ route('login') }}'; };" title="Keranjang" whref="{{ route('login') }}" style="position:relative;"><i class="material-icons">shopping_cart</i></a></li>
+                            <li><a title="Login" href="{{ route('login') }}"><i class="material-icons">keyboard_tab</i></a></li>
+                            <li><a title="Register" href="{{ route('register') }}"><i class="material-icons">create</i></a></li>
                             @endauth
                         </ul>
                     </div>
@@ -41,10 +41,10 @@
                     <li><a onclick="event.preventDefault();document.getElementById('logout-form').submit();" href="#!"><i class="material-icons" style="margin:0px;">keyboard_tab</i>Logout</a></li>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">@csrf</form>
                     @else
-                    {{-- <li><a href="{{ route('login') }}"><i class="material-icons" style="margin:0px;">keyboard_tab</i>Login</a></li>
+                    <li><a href="{{ route('login') }}"><i class="material-icons" style="margin:0px;">keyboard_tab</i>Login</a></li>
                     <li><a href="{{ route('register') }}"><i class="material-icons" style="margin:0px;">create</i>Register</a></li>
                     <li class="divider"></li>
-                    <li><a href="#!"><i class="material-icons" style="margin:0px;">help</i>Bantuan?</a></li> --}}
+                    <li><a href="#!"><i class="material-icons" style="margin:0px;">help</i>Bantuan?</a></li>
                     @endauth
                 </ul>
             </div>
@@ -86,7 +86,7 @@
             <li class="bold"><a class="waves-effect waves-cyan" style="position:relative;"><span class="card-title activator " style="margin:0px;position: absolute;top:8px;width: 100%;"><i class="material-icons left" style="margin:0px;width:100%;color: rgb(117, 117, 117);">dashboard</i><p class="kat1">Kategori</p></span></a>
             </li>
             <li>  </li>
-            <li class="bold"><a href="sass.html" style="position:relative;"><i class="material-icons" style="margin:0px;">shopping_cart</i><span class="btn red white-text btn-floating bad1">{{ keranjang()->count() }}</span>Keranjang</a>
+            <li class="bold"><a href="{{ route('keranjang') }}" style="position:relative;"><i class="material-icons" style="margin:0px;">shopping_cart</i>Keranjang</a>
             </li>
         </ul>
         </div>
@@ -158,7 +158,6 @@
                     qCheck = qCheck.replace(" ", "");
                     if (qCheck == "") {
                         return false;
-                        // window.location.href = "{{ url('/') }}/";
                     } else {
                         window.location.href = "{{ url('/') }}/search/" + searchApp.q;
                     }

@@ -136,8 +136,13 @@
                 setTimeout(function(){NProgress.done();}, loadTimeInterval);
             },
             beli: function(){
+                @auth
                 $('#beliForm input[name="stok"]').val( $('#stok').val() );
                 $('#beliForm').submit();
+                @else
+                let login = alertify.notify("Anda perlu login terlebih dahulu, Klik untuk login", "error", 3);
+                login.callback = function(isClicked) { if(isClicked) window.location.href = "{{ route('login') }}"; };
+                @endauth
             },
             tambah: function(){
                 app.loadStart();

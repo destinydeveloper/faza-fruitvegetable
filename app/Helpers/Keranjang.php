@@ -183,13 +183,14 @@ class Keranjang {
 
             // cek barang null
             if($item->barang != null) {
+                
+                // cek stok
+                if ($item->stok > $item->barang->stok) $error = "itemStockExceeded";
 
                 // check status
                 if ($item->barang->status == "0") {
                     $error = 'itemHidden';
                 }
-                // cek stok
-                if ($item->stok > $item->barang->stok) $error = "itemStockExceeded";
 
                 array_push($result, [
                     'id' => $item->id,

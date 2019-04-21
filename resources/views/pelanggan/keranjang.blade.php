@@ -12,9 +12,11 @@
             <div class="row">
                 <div class="col l8">
                     <div class="row" v-if="loading">
-                        <div class="card">
-                            <div class="card-content" style="text-align: center;">
-                                Loading...
+                        <div class="col s12 m12">
+                            <div class="card horizontal">
+                                <div class="card-content" style="text-align: center;width: 100%;">
+                                    Loading...
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -24,20 +26,41 @@
                                 Tidak ada barang satupun.
                             </div>
                         </div>
-                    </div>     
+                    </div>
+                    <div v-if="error" class="row" style="margin-bottom: 5px;">
+                        <div class="col s12 m12">
+                            <div class="card horizontal yellow darken-4 white-text">
+                                <div class="card-content" style="text-align: center !important;">
+                                    <span>
+                                        <i class="material-icons left">error</i>
+                                        Terdapat produk yang tidak dapat diproses.
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row" v-if="Object.keys(keranjang).length > 0">
                         <div class="col s12 m12" v-for="(item, i) in keranjang" :key="item.index">
                             <div class="card horizontal">
                                 <div class="card-image">
-                                <img v-bind:src="'{{ asset('assets/images/150x150') }}/' + item.barang.gambar[0].path">
+                                    <img v-if="item.barang.gambar.length > 0" v-bind:src="'{{ asset('assets/images/150x150') }}/' + item.barang.gambar[0].path">
+                                    <img v-else src="{{ asset('assets/dist/img/no-image-150.png') }}">
                                 </div>
                                 <div class="card-stacked">
                                 <div class="card-content">
                                     <p>
-                                        <b>@{{ item.barang.nama }}</b>
+                                        <b>@{{ item.barang.nama }}</b><br>
+                                        <div v-if="item.error == 'itemHidden'">
+                                            Produk Ini Sedang Tidak Ada, Mohon Hapus Produk Ini Dari Keranjang Dan Cari Produk Lainya.
+                                            <br><button :disabled="loadingDel" v-on:click="app.delete(item.id)" title="Hapus" class="btn red waves-effect waves-light">x</button>
+                                        </div>
+                                        <div v-if="item.error == 'itemStockExceeded'">
+                                            Produk Ini Memiliki Stok Terbatas dan Anda Melebihinya, Mohon Hapus Dari Keranjang Lalu Beli Produk Ini Lagi.
+                                            <br><button :disabled="loadingDel" v-on:click="app.delete(item.id)" title="Hapus" class="btn red waves-effect waves-light">x</button>
+                                        </div>
                                     </p>
                                 </div>
-                                <div class="card-action">
+                                <div class="card-action" v-if="item.error == ''">
                                     <div class="col l2 s8 center-align" style="padding:0px;margin-right: 10px;">
                                         <div class="input-field input-group" style="padding:0px;margin:0px;">
                                         <button class="btn waves-effect waves-light form-control sub" type="submit" id="sub" style="font-weight: bold;margin: 0px;padding: 0px;">-</button>
@@ -50,6 +73,9 @@
                                 </div>
                                 </div>
                             </div>
+                            {{-- <div class="card horizontal">
+                                
+                            </div> --}}
                         </div> 
                     </div>      
                 </div>
@@ -69,7 +95,7 @@
                         </div>
                         </div>
                         <div class="card-action">
-                            <a href="{{ route('transaksi') }}" :disabled="loading == true || !Object.keys(keranjang).length > 0" class="waves-effect waves-light btn">Beli</a>
+                            <a href="{{ route('keranjang.pengiriman') }}" :disabled="loading == true || error == true || !Object.keys(keranjang).length > 0" class="waves-effect waves-light btn">Beli</a>
                             <a href="{{ route('homepage') }}" class="waves-effect waves-light btn-flat">Lanjut Belanja</a>
                         </div>
                     </div>
@@ -96,6 +122,7 @@
             keranjang: [],
             loading: true,
             loadingDel: false,
+            error: false,
         },
         computed: {
             total(){
@@ -124,19 +151,23 @@
                 return 'Rp. '+rupiah.split('',rupiah.length-1).reverse().join('');
             },
             getKeranjang: function(){
+                app.error = false;
                 app.loadStart();
                 app.loading = true;                
                 axios.get('/').then(function(res){
                     app.loading = false;
                     if (res.data.status == 'success') {
+                        console.log(res.data);
                         app.keranjang = res.data.result;
+
+                        $.each(app.keranjang, function(i){
+                            if (app.keranjang[i].error != "") app.error = true;
+                        });
                     } else {
                     }
                     app.loadDone();
                         $(".add").prop('onclick', null).off('click');
                         $(".sub").prop('onclick', null).off('click');
-                        // $(".add").attr('onclick','myFunction()');
-                        // $(".sub").attr('onclick','myFunction()');
 
                         setTimeout(function(){
                             $('.add').click(function () {

@@ -24,6 +24,12 @@
             <div class="card">
                 <div class="card-body">
                     <div style="margin-bottom: 25px;">
+                        @if(Session::has('last_shipment'))
+                            <button v-on:click="window.location.href='{{ Session('last_shipment') }}';" class="btn btn-sm btn-secondary">
+                                <i class="fa fa-fw fa-chevron-left"></i>
+                                Kembali Ke Transaksi
+                            </button>
+                        @endif
                         <button v-on:click="$('#exampleModal').modal('show');" class="btn btn-sm btn-success">
                             <i class="fa fa-plus"></i>
                             Buat Alamat

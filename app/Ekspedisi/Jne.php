@@ -99,12 +99,12 @@ class Jne implements BaseEkspedisi{
         ];
 
         $ongkir = $this->cURL("https://api.rajaongkir.com/starter/cost", $option)[0];
-        
-        dd([
+
+        return [
             'ongkir' => $ongkir,
             'origin' => $origin_data,
             'destination' => $destination_data,
-        ]);
+        ];
     }
 
 
