@@ -37,6 +37,10 @@ Route::group([
 ], function () {
     Route::get('/', 'UserHomeController@index')->name('home');
     
+    Route::group(['middleware' => ['role:admin|pengepak|supervisor|kurir']], function(){
+        Route::get('/biaya-operasional', 'BiayaOperasionalController@index')->name('biaya_operasional');
+    });
+
     Route::group(['prefix' => 'manager'], function(){
         Route::group(['middleware' => ['role:admin']], function(){
             // Manager User
