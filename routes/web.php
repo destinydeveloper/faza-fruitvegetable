@@ -39,6 +39,7 @@ Route::group([
     
     Route::group(['middleware' => ['role:admin|pengepak|supervisor|kurir']], function(){
         Route::get('/biaya-operasional', 'BiayaOperasionalController@index')->name('biaya_operasional');
+        Route::post('/biaya-operasional', 'BiayaOperasionalController@action')->name('biaya_operasional.action');
     });
 
     Route::group(['prefix' => 'manager'], function(){
@@ -127,8 +128,8 @@ Route::get('/dev/ekspedisi', function(){
     // return $ekspedisi;
 
     // contoh cek ongkos kirim - ($pengirim, $tujuan, $berat)
-    // $jne = Ekspedisi()->name('tiki');
-    // return $jne->calculate("KABUPATEN MALANG", "KOTA MOJOKERTO", 100);
+    $jne = Ekspedisi()->name('jne');
+    dd( $jne->calculate("KABUPATEN MALANG", "KOTA JAKARTA PUSAT", 1) );
 });
 
 Route::get('/dev', function(){
@@ -163,8 +164,8 @@ Route::get('/dev', function(){
     //     ->has('track')
     //     ->get();
 
-    Keranjang()->add(1, 10);
-    Keranjang()->add(2, 5);
+    // Keranjang()->add(1, 10);
+    // Keranjang()->add(2, 5);
     $transaksi = Keranjang()->toTransaksi('kirim barang', 1);
     if ( $transaksi === true) return "berhasil";
     return $transaksi;

@@ -45,7 +45,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Berat</td>
-                                                <td>{{ $barang->berat }} {{ $barang->satuan_berat }}</td>
+                                                <td>{{ $barang->berat }} kg</td>
                                             </tr>
                                             <tr>
                                                 <td>Jenis</td>
@@ -172,6 +172,9 @@
                     alertify.error('Server Error, Try again later');
                 } else if (error.status == 422) {
                     alertify.error('Form invalid, Check input form');
+                } else if (error.status== 401) {
+                    let login = alertify.notify("Anda perlu login terlebih dahulu, Klik untuk login", "error", 3);
+                    login.callback = function(isClicked) { if(isClicked) window.location.href = "{{ route('login') }}"; };
                 } else {
                     alertify.error('['+error.status+'] Error : '+'['+error.statusText+']');
                 }

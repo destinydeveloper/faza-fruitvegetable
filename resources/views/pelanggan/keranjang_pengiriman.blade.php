@@ -115,7 +115,7 @@
                                                 </div>
                                                 <div>
                                                     <span>Berat</span>
-                                                    <span style="float: right;"><b><span>@{{ item.barang.berat }} gram</span></b></span>
+                                                    <span style="float: right;"><b><span>@{{ item.barang.berat }} kg</span></b></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -141,7 +141,7 @@
                                 </div>
                                 <div>
                                     <span>Total Berat</span>
-                                    <span style="float: right;"><b><span>@{{ totalberat }} gram</span></b></span>
+                                    <span style="float: right;"><b><span>@{{ totalberat }} kg</span></b></span>
                                 </div>
                             </div>
                         </div>
@@ -219,7 +219,7 @@
                 let ttl = 0;
                 let keranjang = this.keranjang;
                 for (let i = 0; i < Object.keys(keranjang).length; i++) {
-                    ttl = ttl + (parseInt(keranjang[i].barang.berat));
+                    ttl = ttl + ( (parseInt(keranjang[i].barang.berat)) * (parseInt(keranjang[i].stok)) );
                 }
                 return ttl;
             },
@@ -274,7 +274,7 @@
                         app.layananEkspedisi = res.data.result.ongkir.costs;
                     }
                     
-                    console.log(app.layananEkspedisi);
+                    console.log(res.data);
                 }).catch(function(error){
                     error = error.response;
                     app.loadDone();
