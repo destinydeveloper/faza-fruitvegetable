@@ -104,8 +104,27 @@
                                 <td>@{{ transaksi.created_at }}</td>
                             </tr>
                         </table>
+
+                        <table class="table" v-if="transaksi.ekspedisi != null">
+                            <tr>
+                                <th>Nama Ekspedisi</th>
+                                <td>@{{ transaksi.ekspedisi.nama }}</td>
+                            </tr>
+                            <tr>
+                                <th>Layanan</th>
+                                <td>@{{ transaksi.ekspedisi.layanan }}</td>
+                            </tr>
+                            <tr>
+                                <th>Ongkir</th>
+                                <td>@{{ rupiah(transaksi.ekspedisi.ongkir) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Tujuan</th>
+                                <td>@{{ transaksi.ekspedisi.tujuan }}</td>
+                            </tr>
+                        </table>
                     </div>
-                    <div class="tab-pane fade" id="bayar" role="tabpanel" aria-labelledby="bayar-tab">
+                    <div class="tab-pane fade" id="bayar" role="tabpanel" aria-labelledby="bayar-tab" v-if="transaksi.length != 0 && transaksi.metode == 'kirim barang'">
                         <div style="margin-top: 15px;">
                             <div class="form">
                                 <div class="form-group">
@@ -117,7 +136,11 @@
                             <div class="form">
                                 <div class="form-group">
                                     <label>Nominal</label>
-                                    <input type="text" class="form-control">
+                                    <input v-model="nominal" type="text" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Catatan</label>
+                                    <textarea v-model="catatan" class="form-control"></textarea>
                                 </div>
                             </div>
                         </div>
@@ -190,7 +213,7 @@
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Konfirmasi</button>
+            <button v-on:click="konfirmasiTransaksi" type="button" class="btn btn-primary" data-dismiss="modal">Konfirmasi</button>
             </div>
         </div>
         </div>
@@ -214,7 +237,10 @@
             filter: 'semua',
             detail: [],
             transaksi: [],
-            transaksi_barang_count: 0
+            transaksi_barang_count: 0,
+            nominal: 0,
+            id: null,
+            catatan: '',
         },
         methods: {
             rupiah(angka) {
@@ -268,12 +294,34 @@
             refreshTable(){
                 this.table.ajax.reload( null, false );
             },
+            konfirmasiTransaksi(){
+                let params = {
+                    action: 'konfirmasi',
+                    id: app.id,
+                    metode: app.transaksi.metode,
+                    nominal: app.nominal,
+                    catatan: app.catatan,
+                };
+                axios.post('', params).then(function(res){
+                    console.log(res);
+                    if (res.data.status == "success")
+                    {
+                        app.refreshTable();
+                    }
+                }).catch(function(error){
+                    error = error.response;
+                    app.loadDone();
+                    app.handleCatch(error);
+                });
+            },
             konfirmasi(id){
+                app.id = null;
+                app.nominal = 0;
                 app.loadStart();
                 axios.post('', { action: 'detail', 'id': id }).then(function(res){
                     app.loadDone();
-                    console.log(res);
                     if (res.data.status == 'success') {
+                        app.id = res.data.result.id;
                         app.transaksi = res.data.result;
                         $('#konfirmasiModal').modal('show');
                     } else {
@@ -304,7 +352,6 @@
                 }).set({labels:{ok:'Hapus', cancel: 'Batal'}});
             },
             handleCatch(error){
-                console.log(error);
                 app.loadDone();
                 if (error.status == 500) {
                     alertify.error('Server Error, Try again later');

@@ -10,10 +10,22 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('/', 'PelangganController@index')->name('homepage');
+Route::get('/barang/{barang_id}', 'PelangganController@barang_detail')->name('barang.detail');
+Route::get('/search/{q}', 'PelangganController@search');
+Route::get('/sayur', 'PelangganController@sayur')->name('barang.sayur');
+Route::get('/buah', 'PelangganController@buah')->name('barang.buah');
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('homepage');
+Route::group([
+    'middleware' => 'auth'
+], function () {
+    Route::get('/keranjang', 'PelangganKeranjangController@index')->name('keranjang');
+    Route::post('/keranjang', 'PelangganKeranjangController@action')->name('keranjang.action');
+    Route::get('/keranjang/pengiriman', 'PelangganKeranjangPengirimanController@index')->name('keranjang.pengiriman');
+    Route::post('/keranjang/pengiriman', 'PelangganKeranjangPengirimanController@action')->name('keranjang.pengiriman.action');
+    Route::get('/transaksi', 'PelangganTransaksiController@index')->name('transaksi');
+});
+
 
 Auth::routes();
 
@@ -25,8 +37,13 @@ Route::group([
 ], function () {
     Route::get('/', 'UserHomeController@index')->name('home');
 
-    Route::group(['prefix' => 'manager'], function() {
-        Route::group(['middleware' => ['role:admin']], function() {
+    Route::group(['middleware' => ['role:admin|pengepak|supervisor|kurir']], function(){
+        Route::get('/biaya-operasional', 'BiayaOperasionalController@index')->name('biaya_operasional');
+        Route::post('/biaya-operasional', 'BiayaOperasionalController@action')->name('biaya_operasional.action');
+    });
+
+    Route::group(['prefix' => 'manager'], function(){
+        Route::group(['middleware' => ['role:admin']], function(){
             // Manager User
             Route::get('/user', 'ManagerUserController@index')->name('manager.user');
             Route::post('/user/action', 'ManagerUserController@action')->name('manager.user.action');
@@ -56,17 +73,34 @@ Route::group([
     });
 
     Route::group(['prefix' => '/transaksi'], function(){
+        Route::group(['middleware' => ['role:admin']], function(){
+            Route::get('/barang-batal', 'TransaksiBatalController@index')->name('transaksi.batal');
+            Route::post('/barang-batal', 'TransaksiBatalController@action')->name('transaksi.batal.action');
+        });
         Route::group(['middleware' => ['role:admin|pengepak']], function(){
             Route::get('/permintaan', 'TransaksiPermintaanController@index')->name('transaksi.permintaan');
             Route::post('/permintaan', 'TransaksiPermintaanController@action')->name('transaksi.permintaan.action');
             Route::get('/barang-siap', 'TransaksiBarangSiapController@index')->name('transaksi.barang_siap');
+            Route::post('/barang-siap', 'TransaksiBarangSiapController@action')->name('transaksi.barang_siap.action');
         });
 
         Route::group(['middleware' => ['role:admin|kurir']], function(){
             Route::get('/trace-track', 'TransaksiTraceTrackController@index')->name('transaksi.trace_track');
+            Route::post('/trace-track', 'TransaksiTraceTrackController@action')->name('transaksi.trace_track.action');
         });
         Route::group(['middleware' => ['role:admin|kurir|pengepak']], function(){
             Route::get('/barang-diterima', 'TransaksiBarangDiterimaController@index')->name('transaksi.barang_diterima');
+            Route::post('/barang-diterima', 'TransaksiBarangDiterimaController@action')->name('transaksi.barang_diterima.action');
+            Route::get('/cod', 'TransaksiCodController@index')->name('transaksi.cod');
+            Route::post('/cod', 'TransaksiCodController@action')->name('transaksi.cod.action');
+        });
+    });
+
+    # BUAT INVESTOR
+    Route::group(['middleware' => ['role:admin|investor']], function(){
+        Route::group(['prefix' => '/laporan'], function(){
+            // faza.com/laporan/transaksi
+            Route::get('/transaksi', 'LaporanTransaksiController@index')->name('laporan.transaksi');
         });
     });
 
@@ -100,11 +134,14 @@ Route::get('/dev/ekspedisi', function(){
     // return $ekspedisi;
 
     // contoh cek ongkos kirim - ($pengirim, $tujuan, $berat)
-    // $jne = Ekspedisi()->name('tiki');
-    // return $jne->calculate("KABUPATEN MALANG", "KOTA MOJOKERTO", 100);
+    $jne = Ekspedisi()->name('jne');
+    dd( $jne->calculate("KABUPATEN MALANG", "KOTA JAKARTA PUSAT", 1) );
 });
 
 Route::get('/dev', function(){
+
+    // return Transaksi::has('berhasil')->get();
+
     // $transaksi = \App\Models\Transaksi::create([
     //     'user_id' => auth()->user()->id,
     //     'alamat_id' => 1,
@@ -125,15 +162,23 @@ Route::get('/dev', function(){
     //     'catatan' => ''
     // ]);
 
-    Keranjang()->add(1, 50);
-    Keranjang()->add(2, 100);
+    // return \App\Models\TransaksiTrack::create([
+    //     "transaksi_id" => 1,
+    //     "status" => "Proses Pengemasan"
+    // ]);
+    // return \App\Models\Transaksi::with('track')
+    //     ->has('track')
+    //     ->get();
+
+    // Keranjang()->add(1, 10);
+    // Keranjang()->add(2, 5);
+    $transaksi = Keranjang()->toTransaksi('kirim barang', 1);
+    if ( $transaksi === true) return "berhasil";
+    return $transaksi;
     // return \App\Models\Transaksi::with('barangs', 'barangs.barang')->find(3s);
     // $delete = \App\Models\Transaksi::find(1)->delete();
     // dd($delete);
     // return Keranjang()->get();
-    $transaksi = Keranjang()->toTransaksi('cod', 1);
-    if ( $transaksi === true) return "berhasil";
-    return $transaksi;
 
     // $bayar = \App\Models\TransaksiBayar::create([
     //     'transaksi_id' => 1,
@@ -141,11 +186,11 @@ Route::get('/dev', function(){
     //     'catatan' => "BCA"
     // ]);
     // dd($bayar);
-    $transaksi = \App\Models\Transaksi::with('barangs', 'barangs.barang', 'bayar');
+    // $transaksi = \App\Models\Transaksi::with('barangs', 'barangs.barang', 'bayar');
     // return $transaksi->find(1)->barangs->sum('harga');
-    return $transaksi->find(1);
+    // return $transaksi->find(1);
 
-    return Keranjang()->get();
+    // return Keranjang()->get();
 });
 
 

@@ -31,8 +31,9 @@ class Ekspedisi {
         foreach($ekspedisi as $item_k => $item)
         {
             $result[$item_k] = $this->name($item_k)->info();
+            $result[$item_k]['code'] = $item_k;
         }
-        return $result;
+        return (object) json_decode(json_encode($result));
     }
 
 

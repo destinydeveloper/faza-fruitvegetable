@@ -19,6 +19,7 @@ class CreateBarangMentahTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->longText('catatan')->nullable();
             $table->integer('stok')->default(0);
+            $table->double('total');
             $table->timestamps();
         });
     }

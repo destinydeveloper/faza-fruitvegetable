@@ -46,6 +46,7 @@ class ManagerInputBarangMentahController extends Controller
                     'barang_id' => $request->input('barang'),
                     'user_id' => Auth()->user()->id,
                     'stok' => $request->input('stok'),
+                    'total' => $request->input('harga'),
                 ]);
 
                 

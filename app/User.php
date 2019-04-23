@@ -56,6 +56,6 @@ class User extends Authenticatable
 
     public function keranjang()
     {
-        return $this->hasMany('App\Models\Keranjang');
+        return $this->hasMany('App\Models\Keranjang')->orderBy('created_at', 'ASC');
     }
 }

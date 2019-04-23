@@ -48,13 +48,14 @@ class Jne implements BaseEkspedisi{
         $destination = str_replace('KOTA ', '', $destination);
 
         // get semua kota
-        $destination = ucfirst(strtolower($destination));
-        $origin = ucfirst(strtolower($origin));
+        $destination = ucwords(strtolower($destination));
+        $origin = ucwords(strtolower($origin));
         $kota = $this->cURL("https://api.rajaongkir.com/starter/city");  
 
 
         // CARI KOTA DESTINASI      
         $kota_result = array_search($destination, array_column( (array) $kota , 'city_name'));
+        // dd($kota);
         $result = $kota[$kota_result];
         $destination_data = $result;
         if ($result['type'] == 'Kabupaten' && $forceKabDestination == false) 
@@ -99,12 +100,13 @@ class Jne implements BaseEkspedisi{
         ];
 
         $ongkir = $this->cURL("https://api.rajaongkir.com/starter/cost", $option)[0];
-        
-        dd([
+
+        return [
             'ongkir' => $ongkir,
             'origin' => $origin_data,
             'destination' => $destination_data,
-        ]);
+            'weight' => $weight,
+        ];
     }
 
 

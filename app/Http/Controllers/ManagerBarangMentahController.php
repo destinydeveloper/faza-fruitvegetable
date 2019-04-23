@@ -7,6 +7,7 @@ use DataTables;
 
 use App\Models\BarangMentah;
 use App\Models\Barang;
+use App\Models\TransaksiMasuk;
 
 class ManagerBarangMentahController extends Controller
 {
@@ -28,9 +29,7 @@ class ManagerBarangMentahController extends Controller
                 $nama = "'".$u->barang->nama ."'";
                 $username = "'".$u->user->nama ."'";
                 return '
-                    <button onclick="app.add('.$id.', '.$nama.')" title="Pindahkan Ke Barang" class="btn btn-xs btn-success"><i class="fa fa-chevron-right "></i></button>
-                    <button onclick="app.edit('.$id.')" title="Edit" class="btn btn-xs btn-warning"><i class="fa fa-pencil"></i></button>
-                    <button onclick="app.delete('.$id.', '.$nama.', '.$username.')" title="Hapus" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+                    <button onclick="app.add('.$id.', '.$nama.')" title="Pindahkan Ke Barang" class="btn btn-xs btn-success"><i class="fa fa-chevron-right "></i></button>                    <button onclick="app.delete('.$id.', '.$nama.', '.$username.')" title="Hapus" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></button>
                 ';
             })
             ->make(true);
@@ -69,6 +68,12 @@ class ManagerBarangMentahController extends Controller
                 $BarangMentah = BarangMentah::with('barang')->findOrFail($request->input('id'));
                 $barang = Barang::findOrFail($BarangMentah->barang->id);
                 $barang->increment('stok', $BarangMentah->stok);
+
+                $transaksiMasuk = TransaksiMasuk::create([
+                    'barang_id' => $BarangMentah->barang_id,
+                    'stok' => $BarangMentah->stok,
+                    'total' => $BarangMentah->total,
+                ]);
                 $BarangMentah->delete();
 
                 $user = \App\User::with('roles')->whereHas('roles', function($q){

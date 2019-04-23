@@ -506,24 +506,25 @@
                 }
             },
             update(){
-                this.addEditData.append('action', 'update');
-                this.addEditData.append('id', this.id);
-                this.addEditData.append('nama', this.nama);
-                this.addEditData.append('jenis', this.jenis);
-                this.addEditData.append('harga', this.harga);
-                this.addEditData.append('berat', this.berat);
-                this.addEditData.append('stok', this.stok);
-                this.addEditData.append('satuan_berat', this.satuan_berat);
-                this.addEditData.append('satuan_stok', this.satuan_stok);
-                this.addEditData.append('status', this.status);
+                app.addEditData.append('action', 'update');
+                app.addEditData.append('id', app.id);
+                app.addEditData.append('nama', app.nama);
+                app.addEditData.append('jenis', app.jenis);
+                app.addEditData.append('harga', app.harga);
+                app.addEditData.append('berat', app.berat);
+                app.addEditData.append('stok', app.stok);
+                app.addEditData.append('satuan_berat', app.satuan_berat);
+                app.addEditData.append('satuan_stok', app.satuan_stok);
+                app.addEditData.append('status', app.status);
 
-                this.imagesEdit.forEach(function(item) {
+                app.imagesEdit.forEach(function(item) {
                     app.addEditData.append('images_old[]', item.id);
                 });
 
 
                 app.loadStart();
                 axios.post('', this.addEditData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(function(res){
+                    console.log(res);
                     if (res.data.status == 'success') {
                         alertify.success('Berhasil memperbarui');
                     } else if (res.data.status == 'error') {
