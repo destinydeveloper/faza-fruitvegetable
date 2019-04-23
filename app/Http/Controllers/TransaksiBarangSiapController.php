@@ -39,7 +39,7 @@ class TransaksiBarangSiapController extends Controller
                     <button onclick="app.delete('.$delete.')" class="btn btn-xs btn-danger" title="Batalkan Konfirmasi" data-toggle="tooltip" data-placement="top" title="Tolak Konfirmasi">
                         <i class="fa fa-fw fa-chevron-left"></i>
                     </button>
-                    <button onclick="app.kirim('.$delete.')" class="btn btn-xs btn-success" title="Kirim ke Penerima" data-toggle="tooltip" data-placement="top" title="Kirim ke Penerima">
+                    <button onclick="app.kirim('.$transaksi_id.')" class="btn btn-xs btn-success" title="Kirim ke Penerima" data-toggle="tooltip" data-placement="top" title="Kirim ke Penerima">
                         <i class="fa fa-fw fa-chevron-right"></i>
                     </button>
                     <button onclick="app.detail('.$transaksi_id.')" class="btn btn-xs btn-info" title="Detail Transaksi"  data-toggle="tooltip" data-placement="top" title="Detail Transaksi">
@@ -60,7 +60,7 @@ class TransaksiBarangSiapController extends Controller
                 $request->validate([ 'id' => 'required|integer' ]);
                 return response()->json([
                     'status' => 'success',
-                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat')
+                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat', 'ekspedisi')
                                 ->findOrFail($request->input('id'))
                 ]);
                 break;
@@ -68,6 +68,7 @@ class TransaksiBarangSiapController extends Controller
             case 'kirim':
                 $request->validate([ 'id' => 'required|integer' ]);
                 $check = Transaksi::findOrFail($request->input('id'));
+                // return $request->input('id');
                 $result = \App\Models\TransaksiTrack::create([
                     "transaksi_id" => $request->input('id'),
                     "status" => "Proses Pengemasan"

@@ -49,7 +49,7 @@
                                     <label>Pilih Metode</label>
                                 </div>
                             </div>
-                            <div v-if="layananEkspedisi != null">
+                            <div v-if="(layananEkspedisi != null) && (metode != 'cod')">
                                 <label>Pilih Layanan</label>
                                 <div class="input-field">
                                     <select @change="pilihLayanan" v-model="layanan" class="browser-default">
@@ -147,9 +147,17 @@
                         </div>
                         <div class="card-action">
                             <a href="{{ route('homepage') }}" class="waves-effect waves-light btn-flat">Batal</a>
-                            <a @click="alert('ashiap');" :disabled="alamat == null || metode == null || layanan == null" href="javascript:void();" class="waves-effect waves-light btn right">Proses Transaksi</a>
+                                <a onclick="event.preventDefault();document.getElementById('transaksi-form').submit();" @click="alert('ashiap');" :disabled="(alamat == null || metode == null || layanan == null) && (alamat == null || metode != 'cod') " href="javascript:void();" class="waves-effect waves-light btn right">Proses Transaksi</a>
+                            @{{ metode }} - @{{ layanan }} - @{{ alamat_id }}
                         </div>
                     </div>
+                    <form id="transaksi-form" action="{{ route('keranjang.pengiriman') }}" method="POST" style="display: none;">
+                        @csrf
+                        <input type="hidden" name="action" value="transaksi">
+                        <input type="hidden" name="alamat" v-model="alamat_id">
+                        <input type="hidden" name="metode" v-model="metode">
+                        <input type="hidden" name="layanan" v-model="layanan">
+                    </form>
                 </div>
             </div>
         </div>

@@ -7,6 +7,7 @@ use App\Models\Keranjang as modelKeranjang;
 use App\Models\Barang;
 use App\Models\Transaksi;
 use App\Models\TransaksiBarang;
+use App\Models\TransaksiEkspedisi;
 use App\Models\Alamat;
 
 class Keranjang {
@@ -81,7 +82,7 @@ class Keranjang {
         ]);
     }
 
-    public function toTransaksi($method = "kirim barang", $alamat)
+    public function toTransaksi($method = "kirim barang", $alamat, $ekspedisi = [])
     {
         $keranjang = $this->get();
         $error = [];
@@ -94,7 +95,8 @@ class Keranjang {
         }
         
         # cek keranjang
-        if (count($keranjang) == 0) {
+        $keranjangCount = (array) json_decode(json_encode($keranjang));
+        if (count($keranjangCount) == 0) {
             array_push($error, "Tidak ada barang dikeranjang");
             if (count($error) > 0) return ['error' => $error];
         }
@@ -109,6 +111,7 @@ class Keranjang {
         # cek ada error kah di keranjang
         foreach($keranjang as $item)
         {
+            $item = (array) json_decode(json_encode($item));
             if ($item["error"] != "") {
                 array_push($error, [
                     "barang" => $item["barang_nama"],
@@ -135,6 +138,7 @@ class Keranjang {
         $new = [];
         foreach($keranjang as $item)
         {
+            $item = (array) json_decode(json_encode($item));
             $new[] = [
                 'transaksi_id' => $transaksi_id,
                 'barang_id' => $item["barang_id"],
@@ -144,6 +148,12 @@ class Keranjang {
             ];
         }
         $transaksi_barang = TransaksiBarang::insert($new);
+
+        if ($method == "kirim barang") 
+        {
+            $ekspedisi['transaksi_id'] = $transaksi_id;
+            $transaksi_ekspedisi = TransaksiEkspedisi::create($ekspedisi);
+        }
 
         # hapus keranjang
         $this->destroy();
@@ -163,6 +173,15 @@ class Keranjang {
                 'info'
             );
         }
+
+        # buat notif ke pelanggan
+        notification()->stack(
+            'Konfirmasi Transaksi', 
+            'Ada Transaksi Baru Dari Pelanggan',
+            Auth()->user()->id, 
+            url('user/transaksi/permintaan'),
+            'info'
+        );
 
         # return true - berhasil
         return true;
@@ -226,5 +245,17 @@ class Keranjang {
 
         // shuffle the result
         return str_shuffle($pin);
+    }
+
+    public function getTotalBerat()
+    {
+        $barangs = $this->get();
+        $ttl = 0;
+        foreach($barangs as $item)
+        {
+            $ttl = $ttl + ($item->barang->berat * $item->stok);
+        }
+
+        return $ttl;
     }
 }

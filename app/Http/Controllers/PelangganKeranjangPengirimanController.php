@@ -49,16 +49,65 @@ class PelangganKeranjangPengirimanController extends Controller
                 $tujuan = explode(", ", $request->input('alamat'))[1];
                 $berat = $request->input('berat');
                 $ekspedisi = $request->input('ekspedisi');
-
                 $ongkir = Ekspedisi()->name($ekspedisi)->calculate('KOTA MALANG', $tujuan, $berat);
                 
                 return response()->json([
                     'status' => 'success',
                     'result' => $ongkir
                 ], 200);
+                break;
+            
+            case 'transaksi':
+                $request->validate([ 
+                    'metode' => 'required', 
+                    'layanan' => 'required|integer', 
+                    'alamat' => 'required' 
+                ]);
+                
 
+                # VALIDASI COD / KIRIM BARANG
+                if ($request->input('metode') == 'cod') 
+                {
+                    $transaksi = keranjang()->toTransaksi("cod", $request->input('alamat'));
+                    if ( $transaksi === true) return "berhasil";
+                    return $transaksi;
+                    
+                } else {
+                    # CEK ADAKAH EKSPEDISI / VALIDASI
+                    $ekspedisi = (array) json_decode(json_encode(Ekspedisi()->get()));
+                    if (!isset($ekspedisi[$request->input('metode')])) return response()->json([
+                        'status' => 'error',
+                        'error' => "Ekspedisi tidak ada"
+                    ], 200);
 
+                    # CEK ONGKIR SEKALI LAGI
+                    $alamat = \App\Models\Alamat::findOrFail($request->input('alamat'));
+                    $tujuan = explode(", ", $alamat->alamat)[1];
+                    $berat = keranjang()->getTotalBerat();
+                    $ekspedisi = $request->input('metode');
+                    $ongkir = Ekspedisi()->name($ekspedisi)->calculate('KOTA MALANG', $tujuan, $berat);
 
+                    if(!isset($ongkir['ongkir']['costs'][$request->input('layanan')])) return response()->json([
+                        'status' => 'error',
+                        'error' => "Layanan tidak ada"
+                    ], 200);
+
+                    $layanan_ongkir = $ongkir['ongkir']['costs'][$request->input('layanan')];
+                    $harga_ongkir = $layanan_ongkir['cost'][0]['value'];                
+
+                    $ekspedisi_detail = [
+                        'nama' => $ekspedisi,
+                        'layanan' => $layanan_ongkir['service'] . ' ['.$layanan_ongkir['description'].')' ,
+                        'ongkir' => $harga_ongkir,
+                        'tujuan' => $alamat->alamat,
+                    ];
+
+                    $transaksi = keranjang()->toTransaksi("kirim barang", $request->input('alamat'), $ekspedisi_detail);
+                    if ( $transaksi === true) return "berhasil";
+                    return $transaksi;
+                }
+
+                dd($request->all());
                 break;
         }
         return abort(404);

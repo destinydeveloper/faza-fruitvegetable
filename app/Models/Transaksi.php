@@ -53,6 +53,11 @@ class Transaksi extends Model
         return $this->hasMany('App\Models\TransaksiTrack');
     }
 
+    public function ekspedisi()
+    {
+        return $this->hasOne('App\Models\TransaksiEkspedisi');
+    }
+
     public function berhasil()
     {
         return $this->hasOne('App\Models\TransaksiBerhasil');

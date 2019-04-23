@@ -104,6 +104,25 @@
                                 <td>@{{ transaksi.created_at }}</td>
                             </tr>
                         </table>
+
+                        <table class="table" v-if="transaksi.ekspedisi != null">
+                            <tr>
+                                <th>Nama Ekspedisi</th>
+                                <td>@{{ transaksi.ekspedisi.nama }}</td>
+                            </tr>
+                            <tr>
+                                <th>Layanan</th>
+                                <td>@{{ transaksi.ekspedisi.layanan }}</td>
+                            </tr>
+                            <tr>
+                                <th>Ongkir</th>
+                                <td>@{{ rupiah(transaksi.ekspedisi.ongkir) }}</td>
+                            </tr>
+                            <tr>
+                                <th>Tujuan</th>
+                                <td>@{{ transaksi.ekspedisi.tujuan }}</td>
+                            </tr>
+                        </table>
                     </div>
                     <div class="tab-pane fade" id="bayar" role="tabpanel" aria-labelledby="bayar-tab" v-if="transaksi.length != 0 && transaksi.metode == 'kirim barang'">
                         <div style="margin-top: 15px;">

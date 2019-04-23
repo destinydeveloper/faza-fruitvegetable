@@ -105,6 +105,24 @@
                                     <td>@{{ data.created_at }}</td>
                                 </tr>
                             </table>
+                            <table class="table" v-if="data.ekspedisi != null">
+                                <tr>
+                                    <th>Nama Ekspedisi</th>
+                                    <td>@{{ data.ekspedisi.nama }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Layanan</th>
+                                    <td>@{{ data.ekspedisi.layanan }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Ongkir</th>
+                                    <td>@{{ rupiah(data.ekspedisi.ongkir) }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Tujuan</th>
+                                    <td>@{{ data.ekspedisi.tujuan }}</td>
+                                </tr>
+                            </table>
                         </div>
                         <div class="tab-pane fade" id="bayar" role="tabpanel" aria-labelledby="bayar-tab" v-if="data.length != 0 && data.metode == 'kirim barang'">
                             <div style="margin-top: 15px;">
