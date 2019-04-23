@@ -62,12 +62,12 @@
 @stop
 
 @push('meta')
-    <meta name="api" content="{{ route('user.transaksi.barang_siap') }}">    
-    <meta name="assets" content="{{ asset('assets') }}">    
+    <meta name="api" content="{{ route('user.transaksi.barang_siap') }}">
+    <meta name="assets" content="{{ asset('assets') }}">
 @endpush
 
 @push('js')
     <script>
-    $('#sidebar-transaksi-siap').addClass('active');
+        $('#sidebar-transaksi-siap').addClass('active');
     </script>
 @endpush

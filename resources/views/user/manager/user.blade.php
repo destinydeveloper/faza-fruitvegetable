@@ -15,12 +15,12 @@
 @endpush
 
 @push('meta')
-    <meta name="api" content="{{ route('user.manager.user.action') }}">    
-    <meta name="assets" content="{{ asset('assets') }}">    
+    <meta name="api" content="{{ route('user.manager.user.action') }}">
+    <meta name="assets" content="{{ asset('assets') }}">
 @endpush
 
 @push('js')
-    {{-- NProgress --}} 
+    {{-- NProgress --}}
     <script src="{{ asset('assets/vendor/nprogress/nprogress.min.js') }}"></script>
     {{-- DataTables --}}
     <script src="{{ asset('assets/vendor/datatables/datatables.min.js') }}"></script>
@@ -72,7 +72,7 @@
             </div>
         </div>
     </section>
-    
+
     {{-- Modal AddNew --}}
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -246,7 +246,7 @@
                         let user = res.data.result;
                         let avatar = (user.avatar === null ? assets + '/dist/img/avatar.png' : assets + "/images/100x100/" + user.avatar.path);
                         let html = "<div class='row'><div class='col-3'><div class='avatar'><img src='"+avatar+"' alt='...' class='img-fluid rounded-circle'></div></div><div class='col-8'><table><tr><td><b>ID</b></td><td> : "+user.id+"</td></tr><tr><td><b>Nama</b></td><td> : "+user.nama+"</td></tr><tr><td><b>Email</b></td><td> : "+user.email+"</td></tr><tr><td><b>Username</b></td><td> : "+user.username+"</td></tr><tr><td><b>Created at</b></td><td> : "+user.created_at+"</td></tr></table></div></div>";
-                        alertify.alert('Detail User', html); 
+                        alertify.alert('Detail User', html);
                     }
                     app.loadDone();
                 }).catch(function(error){
@@ -394,7 +394,7 @@
                         array[current] = array[top];
                         array[top] = tmp;
                     }
-                    return array.join('');    
+                    return array.join('');
                 };
                 var password = (lowercase.pick(1) + uppercase.pick(1) + all.pick(3, 10)).shuffle();
                 this.password = password;

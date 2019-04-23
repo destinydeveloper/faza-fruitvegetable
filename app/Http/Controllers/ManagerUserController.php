@@ -16,7 +16,7 @@ class ManagerUserController extends Controller
 
         if ($request->ajax()) {
             if (!$request->has('filter')) return abort(404);
-            
+
             return Datatables::of(\App\User::whereNotIn('id', [Auth()->user()->id])->role($request->input('filter')))
                 ->addColumn('no', function(){
                     static $no = 1;
@@ -58,13 +58,13 @@ class ManagerUserController extends Controller
                 ]);
 
                 $create_user = account()->make(
-                    $request->input("nama"), 
-                    $request->input("username"), 
-                    $request->input("email"), 
-                    $request->input("password"), 
+                    $request->input("nama"),
+                    $request->input("username"),
+                    $request->input("email"),
+                    $request->input("password"),
                     $request->input('role')
                 );
-                
+
                 return response()->json(['status' => 'success', 'result' => $create_user], 200);
                 break;
 
@@ -73,14 +73,14 @@ class ManagerUserController extends Controller
                 if ($user === null) return $this->errNotFound();
                 return response()->json(['status' => 'success', 'result' => $user], 200);
                 break;
-            
+
             case 'delete':
                 $user = User::find($request->input('id'));
                 $delete = $user->delete();
 
                 return response()->json(['status' => 'success', 'result' => $request->input('id')]);
                 break;
-            
+
             case 'update':
                 $request->validate([
                     'nama' => 'required',

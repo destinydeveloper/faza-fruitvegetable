@@ -16,9 +16,9 @@ class Notification {
         if (!$limit == null)  $getNotif->take($limit);
         if (!$skip == null)  $getNotif->skip($skip);
         $getNotif = $getNotif->get();
-        
+
         if ($getNotif->count() != 0 && $getNotif[0]->read == '0') $set_read = $notif->update(['read' => '1']);
-        
+
 
         return $getNotif;
     }
@@ -30,8 +30,8 @@ class Notification {
                     ->whereRead('0');
         return $notif->count();
     }
-    
-    
+
+
     public function make($title = '', $content = '', $id_user = null, $url, $type = 'info')
     {
         if ($id_user == null) $id_user = Auth()->user()->id;

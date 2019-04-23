@@ -24,30 +24,30 @@ Route::group([
     'middleware' => 'auth'
 ], function () {
     Route::get('/', 'UserHomeController@index')->name('home');
-    
-    Route::group(['prefix' => 'manager'], function(){
-        Route::group(['middleware' => ['role:admin']], function(){
+
+    Route::group(['prefix' => 'manager'], function() {
+        Route::group(['middleware' => ['role:admin']], function() {
             // Manager User
             Route::get('/user', 'ManagerUserController@index')->name('manager.user');
             Route::post('/user/action', 'ManagerUserController@action')->name('manager.user.action');
-            
+
             // Manager  Gaji Karyawan
             Route::get('/gaji-karyawan', 'ManagerGajiKaryawanController@index')->name('manager.gajikaryawan');
             Route::post('/gaji-karyawan', 'ManagerGajiKaryawanController@action')->name('manager.gajikaryawan.action');
         });
-    
+
         Route::group(['middleware' => ['role:admin|pengepak']], function(){
             // Manager Barang
             Route::get('/barang', 'ManagerBarangController@index')->name('manager.barang');
             Route::post('/barang', 'ManagerBarangController@action')->name('manager.barang.action');
         });
-    
+
         Route::group(['middleware' => ['role:admin|pengepak']], function(){
             // Manager Barang Mentah
             Route::get('/barang-mentah', 'ManagerBarangMentahController@index')->name('manager.barang_mentah');
             Route::post('/barang-mentah', 'ManagerBarangMentahController@action')->name('manager.barang_mentah.action');
         });
-    
+
         Route::group(['middleware' => ['role:admin|supervisor']], function(){
             // Manager Input Barang Mentah
             Route::get('/input-barang-mentah', 'ManagerInputBarangMentahController@index')->name('manager.input_barang_mentah');
@@ -70,7 +70,16 @@ Route::group([
         });
     });
 
-    
+    Route::group(['prefix' => '/investor', 'middleware' => ['role:investor']], function() {
+        Route::get('/dashboard', 'InvestorController@dashboard')->name('investor.dashboard');
+        Route::group(['prefix' => '/transaksi-investor'], function() {
+            Route::get('/', 'InvestorController@transaksi_investor')->name('investor.transaksi_investor');
+            Route::get('/input', 'InvestorController@input_transaksi')->name('investor.input_transaksi');
+            Route::post('/input', 'InvestorController@input_save')->name('investor.input_save');
+        });
+        Route::get('/keuangan', 'InvestorController@keuangan')->name('investor.keuangan');
+    });
+
     Route::get('/notifikasi', 'NotificationController@index')->name('notifikasi');
     Route::post('/notifikasi', 'NotificationController@action')->name('notifikasi.action');
 
@@ -86,7 +95,7 @@ Route::group([
 
 
 Route::get('/dev/ekspedisi', function(){
-    // mengambil daftar ekspedisi tersedia 
+    // mengambil daftar ekspedisi tersedia
     // $ekspedisi = Ekspedisi()->get();
     // return $ekspedisi;
 
@@ -153,7 +162,7 @@ Route::get('/dev/install', function(){
 Route::post('/dev/install', function(\Illuminate\Http\Request $request){
     $request->validate(['pin' => 'required']);
     if ($request->pin != '63945')  return redirect(url()->current());
-    
+
     // RUN MIGRATE
     echo "[+] migrate <br>";
     Artisan::call("migrate:fresh");echo "<br>";

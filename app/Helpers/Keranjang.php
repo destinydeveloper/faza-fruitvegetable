@@ -34,7 +34,7 @@ class Keranjang {
         } else {
             $stok_update = intval($check->stok) + $stok;
             if ($stok_update > $check->barang->stok) $stok_update = $check->barang->stok;
-            return $this->update($check->id, $stok_update, $catatan); 
+            return $this->update($check->id, $stok_update, $catatan);
         }
 
         return $keranjang;
@@ -66,7 +66,7 @@ class Keranjang {
         $barang = modelKeranjang::find($id);
         if ($barang == null) return false;
 
-        // if 
+        // if
         if (($stok) > $barang->barang->stok) $stok = $barang->barang->stok;
 
         return $barang->update([
@@ -79,20 +79,20 @@ class Keranjang {
     {
         $keranjang = $this->get();
         $error = [];
-        
+
         # cek metode pembelian
         $method_accept = ["kirim barang", "cod"];
         if (!in_array($method, $method_accept)) {
             array_push($error, "metode tidak valid");
             if (count($error) > 0) return ['error' => $error];
         }
-        
+
         # cek keranjang
         if (count($keranjang) == 0) {
             array_push($error, "Tidak ada barang dikeranjang");
             if (count($error) > 0) return ['error' => $error];
         }
-        
+
         # cek alamat
         $cek_alamat = Alamat::find($alamat);
         if ($cek_alamat == null or $cek_alamat === null) {
@@ -113,7 +113,7 @@ class Keranjang {
             }
         }
         if (count($error) > 0) return ['error' => $error];
-        
+
         # buat transaksi
         $transaksi = Transaksi::create([
             'user_id' => auth()->user()->id,
@@ -145,14 +145,14 @@ class Keranjang {
         # buat notif ke admin
         $user = \App\User::with('roles')->whereHas('roles', function($q){
             return $q->whereIn('name', ['admin', 'pengepak']);
-        });        
+        });
         $alluser = $user->get();
         foreach($alluser as $user)
         {
             notification()->stack(
-                'Konfirmasi Transaksi', 
+                'Konfirmasi Transaksi',
                 'Ada Transaksi Baru Dari Pelanggan',
-                $user->id, 
+                $user->id,
                 url('user/transaksi/permintaan'),
                 'info'
             );
@@ -195,7 +195,7 @@ class Keranjang {
                     'harga_per_stok' => $item->barang->harga,
                     'error' => $error
                 ]);
-            
+
             } else {
                 // delete keranjang jika barang = null / dihapus / tidak ada
                 $this->remove($item->id);

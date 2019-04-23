@@ -19,7 +19,7 @@
                 <!-- Navbar Menu -->
                 <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
                     <!-- Notifications-->
-                    <li class="nav-item dropdown"> 
+                    <li class="nav-item dropdown">
                         <a v-on:click="getNotif" id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">
                             <i class="fa fa-bell-o"></i>
                             @if(notification()->getNotReadCount() != 0)
@@ -31,7 +31,7 @@
                                 <div style="text-align: center;">Getting Information...</div>
                             </div>
                             <div v-if-else="!notif === null">
-                                <li v-for="(item, i) in notif"><a  rel="nofollow" v-bind:href="item.url" class="dropdown-item"> 
+                                <li v-for="(item, i) in notif"><a  rel="nofollow" v-bind:href="item.url" class="dropdown-item">
                                     <div class="notification">
                                         <div class="notification-title"><strong>@{{ item.title }}</strong></div>
                                         <div class="notification-content">@{{ item.content }}</div>
@@ -46,7 +46,7 @@
                             </div>
                         </ul>
                     </li>
-                    
+
                     <!-- Languages dropdown    -->
                     <li class="nav-item dropdown">
                         <a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><img class="img-fluid rounded-circle" style="max-height: 32px;" src="{{ Auth()->user()->avatar === null ? asset('assets/dist/img/avatar.png') : asset('assets/images/100x100/'.Auth()->user()->avatar->path) }}">
@@ -71,7 +71,7 @@
 </header>
 
 @push('meta')
-    <meta name="notif-api" content="{{ route('user.notifikasi.action') }}">    
+    <meta name="notif-api" content="{{ route('user.notifikasi.action') }}">
     <meta name="assets" content="{{ asset('assets') }}">
 @endpush
 

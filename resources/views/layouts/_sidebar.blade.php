@@ -13,6 +13,17 @@
         <li id="sidebar-notifikasi"><a href="{{ route('user.notifikasi') }}"> <i class="fa fa-bell"></i>Notifikasi </a></li>
     </ul>
 
+{{-- Investor --}}
+    @role('investor')
+    <span class="heading">Investor</span>
+    <ul class="list-unstyled">
+        <li id="sidebar-home" class="{{ Request::is('*/dashboard*') ? 'active' : '' }}"><a href="{{ route('user.investor.dashboard') }}"> <i class="fa fa-book"></i>Dashboard </a></li>
+        <li id="sidebar-home" class="{{ Request::is('*/keuangan*') ? 'active' : '' }}"><a href="{{ route('user.investor.keuangan') }}"> <i class="fa fa-money"></i>Laporan Keuangan </a></li>
+        <li id="sidebar-home" class="{{ Request::is('*/transaksi-investor*') ? 'active' : '' }}"><a href="{{ route('user.investor.transaksi_investor') }}"> <i class="fa fa-list-ol"></i>Transaksi </a></li>
+    </ul>
+    @endrole
+{{-- Investor --}}
+
     @hasanyrole('admin|pengepak|kurir')
     <span class="heading">Transaksi</span>
     <ul class="list-unstyled">
@@ -20,7 +31,7 @@
             <li id="sidebar-transaksi-permintaan"><a href="{{ route('user.transaksi.permintaan') }}"><i class="fa fa-envelope-open"></i>Permintaan Transaksi</a></li>
             <li id="sidebar-transaksi-siap"><a href="{{ route('user.transaksi.barang_siap') }}"><i class="fa fa-truck"></i>Barang Siap Keluar</a></li>
         @endhasanyrole
-        
+
         @hasanyrole('admin|kurir')
             <li id="sidebar-transaksi-track"><a href="{{ route('user.transaksi.trace_track') }}"><i class="fa fa-map-marker"></i>Trace & Track</a></li>
         @endhasanyrole

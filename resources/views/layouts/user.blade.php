@@ -8,9 +8,9 @@
     @include('layouts._navbar')
     {{-- HeaderNavbar:end --}}
 
-    
+
     {{-- Body:start --}}
-    <div class="page-content d-flex align-items-stretch"> 
+    <div class="page-content d-flex align-items-stretch">
         <!-- Side Navbar -->
         @include('layouts._sidebar')
         <div class="content-inner">
@@ -50,5 +50,5 @@
 
 @push('js')
     <script src="{{ asset('assets/vendor/jquery.cookie/jquery.cookie.js') }}"> </script>
-    <script src="{{ asset('assets/dist/js/front.js') }}"></script>    
+    <script src="{{ asset('assets/dist/js/front.js') }}"></script>
 @endpush
