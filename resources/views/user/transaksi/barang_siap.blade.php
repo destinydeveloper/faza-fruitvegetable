@@ -148,7 +148,10 @@
                             <div class="form">
                                 <div class="form-group">
                                     <label>Bukti Pembayaran :</label>
-                                    <div>Belum Ada</div>
+                                    <div v-if="data.bukti.length == 0">Tidak ada</div>
+                                    <div v-else>
+                                        <img v-bind:src="'{{ asset('assets/images/original/') }}/' + data.bukti[0].path" class="responsive-img" style="max-height:250px;">
+                                    </div>
                                 </div>
                             </div>
                             <hr>
@@ -180,6 +183,13 @@
                                     <td>@{{ rupiah(item.harga) }}</td>
                                     <td>@{{ item.stok }}</td>
                                     <td>@{{ item.catatan }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Total : </b></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@{{ rupiah(totalhargabarang) }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -258,6 +268,7 @@
             id: null,
             nominal: 0,
             catatan: '',
+            totalhargabarang: 0
         },
         methods: {
             rupiah(angka) {
@@ -316,6 +327,12 @@
                     app.loadDone();
                     if (res.data.status == 'success') {
                         app.data = res.data.result;
+                        let barangs = app.data.barangs;
+                        let ttl = 0;
+                        barangs.forEach(function(item){
+                            ttl = ttl + item.barang.harga * item.stok;                    
+                        });
+                        app.totalhargabarang = ttl;
                         $('#konfirmasiModal').modal('show');
                     } else {
                         alertify.error(res.data.error);

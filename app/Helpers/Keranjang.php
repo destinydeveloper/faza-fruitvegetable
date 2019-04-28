@@ -12,6 +12,8 @@ use App\Models\Alamat;
 
 class Keranjang {
     protected $error = [];
+    protected $transaksi_id = null;
+    protected $transaksi_kode = null;
 
     public function __construct() {
         if (!Auth()->check()) return abort(403);
@@ -133,6 +135,8 @@ class Keranjang {
             'log_track' => ''
         ]);
         $transaksi_id = $transaksi->id;
+        $this->transaksi_id = $transaksi_id;
+        $this->transaksi_kode = $transaksi->kode;
 
         # buat detail untuk transaksi
         $new = [];
@@ -190,6 +194,14 @@ class Keranjang {
     public function error()
     {
         return $this->error;
+    }
+
+    public function last_transaksi()
+    {
+        return [
+            'id' => $this->transaksi_id,
+            'kode' => $this->transaksi_kode,
+        ];
     }
 
     public function validation($keranjang)

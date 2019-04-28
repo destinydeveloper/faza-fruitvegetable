@@ -94,7 +94,7 @@
         <ul class="collection card-reveal" style="margin:0px;padding: 0px;">
             <li class="collection-item" style="padding: 0px 0px 10px 0px;margin:0;"><a class="waves-effect waves-light btn btn-small card-title sora_aio" style="margin:0px;width: 100%;line-height: 45px !important;font-weight: bold;"><i class="material-icons left white-text" style="font-weight: bold;">arrow_back</i>Menu Kategori</a></li>
             <li class="collection-item" style="padding:0px" ><a href="{{ route('barang.sayur') }}" class="cyan-text"><i class="material-icons b">dashboard</i>
-                <span>Sayur</span></a></li>
+            <span>Sayur</span></a></li>
             <li class="collection-item" style="padding:0px"><a href="{{ route('barang.buah') }}" class="cyan-text"><i class="material-icons b">dashboard</i>
                 <span>Buah</span></a>
             </li>   
@@ -120,6 +120,10 @@
             <li>
                 <a href="{{ route('barang.buah') }}" class="cyan-text"><i class="material-icons b">dashboard</i>
                 <span>Buah</span></a>
+            </li>             
+            <li>
+                <a href="{{ route('transaksi') }}" class="cyan-text"><i class="material-icons b">dashboard</i>
+                <span>Transaksi</span></a>
             </li>
             </ul>
         </div>

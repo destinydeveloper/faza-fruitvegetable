@@ -60,7 +60,7 @@ class TransaksiBarangDiterimaController extends Controller
                 $request->validate([ 'id' => 'required|integer' ]);
                 return response()->json([
                     'status' => 'success',
-                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat', 'track', 'ekspedisi')
+                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat', 'track', 'ekspedisi', 'bukti')
                                 ->findOrFail($request->input('id'))
                 ]);
                 break;

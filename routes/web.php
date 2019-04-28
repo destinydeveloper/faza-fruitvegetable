@@ -24,6 +24,8 @@ Route::group([
     Route::get('/keranjang/pengiriman', 'PelangganKeranjangPengirimanController@index')->name('keranjang.pengiriman');
     Route::post('/keranjang/pengiriman', 'PelangganKeranjangPengirimanController@action')->name('keranjang.pengiriman.action');
     Route::get('/transaksi', 'PelangganTransaksiController@index')->name('transaksi');
+    Route::get('/transaksi/{kode}', 'PelangganTransaksiDetailController@index')->name('transaksi.detail');
+    Route::post('/transaksi/{kode}', 'PelangganTransaksiDetailController@action')->name('transaksi.detail.action');
 });
 
 
@@ -44,6 +46,7 @@ Route::group([
 
     Route::group(['prefix' => 'manager'], function(){
         Route::group(['middleware' => ['role:admin']], function(){
+
             // Manager User
             Route::get('/user', 'ManagerUserController@index')->name('manager.user');
             Route::post('/user/action', 'ManagerUserController@action')->name('manager.user.action');
@@ -51,6 +54,10 @@ Route::group([
             // Manager  Gaji Karyawan
             Route::get('/gaji-karyawan', 'ManagerGajiKaryawanController@index')->name('manager.gajikaryawan');
             Route::post('/gaji-karyawan', 'ManagerGajiKaryawanController@action')->name('manager.gajikaryawan.action');
+
+            // Manager Rekening
+            Route::get('/rekening', 'RekeningController@index')->name('manager.rekening');    
+            Route::post('/rekening', 'RekeningController@action')->name('manager.rekening.action');    
         });
 
         Route::group(['middleware' => ['role:admin|pengepak']], function(){

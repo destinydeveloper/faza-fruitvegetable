@@ -48,7 +48,7 @@ class TransaksiBatalController extends Controller
                 $request->validate([ 'id' => 'required|integer' ]);
                 return response()->json([
                     'status' => 'success',
-                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat', 'ekspedisi')
+                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat', 'ekspedisi', 'bukti')
                                 ->findOrFail($request->input('id'))
                 ]);
                 break;

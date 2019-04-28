@@ -62,7 +62,7 @@ class TransaksiTraceTrackController extends Controller
                 $request->validate([ 'id' => 'required|integer' ]);
                 return response()->json([
                     'status' => 'success',
-                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat', 'ekspedisi', 'track')
+                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat', 'ekspedisi', 'track', 'bukti')
                                 ->findOrFail($request->input('id'))
                 ]);
                 break;
@@ -76,9 +76,13 @@ class TransaksiTraceTrackController extends Controller
                     $track_diupdate = [];
                     $track_old = $request->input('tracks_old');
 
+                    // return $request->input('tracks');
+
+                    $track_dihapus = [];
                     foreach ($request->input('tracks') as $track) {
                         if (!isset($track['id'])) {
-                            $this->buatBaru($request->input('id'), $track);
+                            $coba = $this->buatBaru($request->input('id'), $track);
+                            $track_dihapus[] = $coba->id;
                         } else {
                             $track_diupdate[] = $track['id'];
                             $status = TransaksiTrack::findOrFail($track['id']);
@@ -91,13 +95,15 @@ class TransaksiTraceTrackController extends Controller
                         $track = (object) $track;
                     }
 
-                    $track_dihapus = [];
                     foreach($track_old as $track)
                     {
-                        if (in_array($track['id'], $track_diupdate) ) $track_dihapus[] =  $track['id'];
+                        if (isset($track['id'])) {
+                            if (in_array($track['id'], $track_diupdate) ) $track_dihapus[] =  $track['id'];
+                        }
                     }
 
-                    $hapus = TransaksiTrack::whereNotIn('id', $track_dihapus)->delete();
+                    // return [$track_old, $track_dihapus];
+                    $hapus = TransaksiTrack::whereTransaksiId($request->input('id'))->whereNotIn('id', $track_dihapus)->delete();
                 }
                 
                 return response()->json([
@@ -126,9 +132,11 @@ class TransaksiTraceTrackController extends Controller
 
     public function buatBaru($id, $track)
     {
-        TransaksiTrack::create([
+        $buat = TransaksiTrack::create([
             'transaksi_id' => $id,
             'status' => $track['status']
         ]);
+
+        return $buat;
     }
 }

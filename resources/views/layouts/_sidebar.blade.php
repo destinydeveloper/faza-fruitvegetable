@@ -68,7 +68,8 @@
             <li id="sidebar-manager-inputbarangmentah"><a href="{{ route('user.manager.input_barang_mentah') }}"> <i class="fa fa-exchange"></i>Input Barang Mentah</a></li>
         @endhasanyrole
         @hasanyrole('admin')
-            <li id="sidebar-manager-gajikaryawan"><a href="{{ route('user.manager.gajikaryawan') }}"> <i class="fa fa-users"></i>Gaji Karyawan </a></li>
+        <li id="sidebar-manager-gajikaryawan"><a href="{{ route('user.manager.gajikaryawan') }}"> <i class="fa fa-users"></i>Gaji Karyawan </a></li>
+        <li id="sidebar-manager-rekening"><a href="{{ route('user.manager.rekening') }}"> <i class="fa fa-credit-card"></i>Rekening </a></li>
         @endhasanyrole
     </ul>
     @endhasanyrole
