@@ -6,6 +6,17 @@
     <div class="row m-3 text-center">
         <div class="col-md-12 col-xs-12" style="background: white;">
             <div class="m-3" style="display: inline">
+                {{-- @if (session('error'))
+                <div class="alert alert-danger alert-dismissible">
+                    Harap memilih periode dengan benar
+                </div>
+                @endif --}}
+                @if (session('error'))
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    Harap memilih periode dengan benar
+                </div>
+                @endif
                 <h2 class="">Tabel Laporan Keuangan</h2>
                 <div class="float-left text-left">
                     <form action="#" method="get">
@@ -41,7 +52,7 @@
                                 <button type="submit" class="btn btn-info btn-sm">
                                     <span class="fa fa-plus"></span> Cari
                                 </button>
-                                <a href="#" class="btn btn-success btn-sm">
+                                <a href="{{ route('user.investor.keuangan') }}" class="btn btn-success btn-sm">
                                     <span class="fa fa-database"></span> Tampilkan semua
                                 </a>
                             </div>
@@ -57,15 +68,28 @@
                                 <th>Periode</th>
                                 <th>Pemasukan</th>
                                 <th>Pengeluaran</th>
+                                <th>Keuntungan Bersih</th>
                             </tr>
                         </thead>
                         <tbody>
+                            @php $i = 1; @endphp
+                            @foreach ( ($cek == 'kosong' ? $keuntunganKotor : $keuntunganKotorBulan) as $key => $keuntunganKotor)
                             <tr>
-                                <td>1. </td>
-                                <td><b> Rp. 1.000.000 </b></td>
-                                <td><b> Rp. 1.000.000 </b></td>
-                                <td><b> Rp. 1.000.000 </b></td>
+                                <td>{{ $i++ }} .</td>
+                                <td><b> {{ $convertBulan[$key] }} </b></td>
+                                <td><b> {{ toRupiah($keuntunganKotor->nominal) }} </b></td>
+                                <td><b>
+                                    {{
+                                        ($cek == 'kosong' ? (empty($pengeluaran[$key]) ? '-' : toRupiah($pengeluaran[$key]))
+                                        :
+                                        (empty($pengeluaran) ? '-' : toRupiah($pengeluaran)) )
+                                    }}
+                                </b></td>
+                                <td><b>
+                                    {{ ($cek == 'kosong' ? toRupiah($laba[$key]) : toRupiah($laba)) }}
+                                 </b></td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

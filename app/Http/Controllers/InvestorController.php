@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Charts\TransaksiChart;
 use App\Models\Barang;
 use App\Models\Investasi;
+use App\Helpers\Investor;
+
 use DB;
 
 class InvestorController extends Controller
@@ -20,26 +22,32 @@ class InvestorController extends Controller
         $jml_buah_sayur = count(Barang::all());
 
         // Total investasi
-        $total_investasi = DB::table('investasi')
-                            ->having('status', '=', '1')
-                            ->latest()->first();
+        $total_investasi = Investor::totalInvestasi();
 
-        // Keuntungan Bulan Ini
-        $keuntungan_bulan = DB::table('transaksi_bayar')
-                            ->select(DB::raw('transaksi_bayar.created_at ,sum(transaksi_bayar.nominal) as nominal, YEAR(transaksi_bayar.created_at) year, MONTH(transaksi_bayar.created_at) month'))
-                            ->groupBy('month', 'year')
-                            ->having('month', '=', date('m'))
-                            ->get();
-        // dd();
+        // Keuntungan kotor bulan ini
+        $getKeuntunganKotor = Investor::keuntunganBulan(date('m'), date('Y'))->pluck('nominal')[0];
 
-        // Graph Pemasukan
-        $pemasukan = DB::table('transaksi_bayar')
-        ->select(DB::raw('transaksi_bayar.created_at ,sum(transaksi_bayar.nominal) as nominal, YEAR(transaksi_bayar.created_at) year, MONTH(transaksi_bayar.created_at) month'))
-        ->groupBy('month', 'year')
-        ->orderBy('year', 'asc')
-        ->orderBy('month', 'asc')
-        ->get();
-        // dd($pemasukan);
+        /**
+         * Pengeluaran bulan ini
+         */
+
+        // Pengeluaran transaksi_masuk per bulan
+        $pengeluaran_transaksi = Investor::pengeluaranBulanTransaksi(date('m'), date('Y'))->pluck('nominal')[0];
+
+        // Pengeluaran operasional per bulan
+        $pengeluaran_operasional = Investor::pengeluaranBulanOperasional(date('m'), date('Y'))->pluck('nominal')[0];
+
+        // Keuntungan bersih per bulan
+        $keuntunganBersih = Investor::keuntunganBersihBulan($getKeuntunganKotor, $pengeluaran_transaksi, $pengeluaran_operasional) ;
+
+        /**
+         * Chart
+         */
+
+        //  Chart Pemasukan
+        $pemasukan = Investor::keuntunganKotor();
+
+        // Mengambil data dari query pemasukan
         $ambilBulan = $pemasukan->pluck('month');
         $ambilTahun = $pemasukan->pluck('year');
 
@@ -49,47 +57,41 @@ class InvestorController extends Controller
         $index = 0;
         foreach ($ambilBulan as $dataBulan) {
 
-            if ($dataBulan == 1) {
-                $fixBulan = 'Januari';
-            }else if ($dataBulan == 2) {
-                $fixBulan = 'Pebruari';
-            }else if ($dataBulan == 3) {
-                $fixBulan = 'Maret';
-            }else if ($dataBulan == 4) {
-                $fixBulan = 'April';
-            }else if ($dataBulan == 5) {
-                $fixBulan = 'Mei';
-            }else if ($dataBulan == 6) {
-                $fixBulan = 'Juni';
-            }else if ($dataBulan == 7) {
-                $fixBulan = 'Juli';
-            } else if ($dataBulan == 8) {
-                $fixBulan = 'Agustus';
-            }else if ($dataBulan == 9) {
-                $fixBulan = 'September';
-            }else if ($dataBulan == 10) {
-                $fixBulan = 'Oktober';
-            }else if ($dataBulan == 11) {
-                $fixBulan = 'Nopember';
-            }else if ($dataBulan == 12) {
-                $fixBulan = 'Desember';
-            }
+            $fixBulan = convertBulan($dataBulan);
 
             array_push($inputArr, $fixBulan.' '.$fixTahun[$index]);
             $index++;
         }
 
+
+        // Chart Pengeluaran (Transaksi Masuk)
+        $ambilPengeluaranTransaksi = Investor::pengeluaran('transaksi_masuk');
+
+        // Chart Pengeluaran (Biaya Operasional)
+        $ambilPengeluaranOperasional = Investor::pengeluaran('biaya_operasional');
+
+        $transaksi_masuk = $ambilPengeluaranTransaksi->pluck('nominal');
+        $biaya_operasional = $ambilPengeluaranOperasional->pluck('nominal');
+
+        // Variabel yang dimasukna ke chart pengeluaran
+        $pengeluaran = Investor::totalPengeluaran();
+
         $chart = new TransaksiChart;
         $chart->loaderColor("#fffff");
         $chart->title('Grafik Pemasukan dan Pengeluaran', 25, '', 'bold');
         $chart->barWidth(0.8);
-        $chart->labels($inputArr)->formatDatasets();
+        $chart->labels($inputArr)
+              ->formatDatasets();
         $chart->dataset('Pemasukan', 'bar', collect($pemasukan->pluck('nominal')))
               ->backgroundColor("#1e90ff");
-        // $chart->dataset('Pengeluaran', 'bar', [20000, 50000, 60000, 20000])->backgroundColor("#b22222");
-        // Graph
+        $chart->dataset('Pengeluaran', 'bar', collect($pengeluaran))
+              ->backgroundColor("#b22222");
 
-        return view('user.manager.investor.dashboard', compact('chart', 'jml_buah_sayur', 'total_investasi', 'keuntungan_bulan'));
+        /**
+         * Chart
+        */
+
+        return view('user.manager.investor.dashboard', compact('chart', 'jml_buah_sayur', 'total_investasi', 'keuntunganBersih'));
     }
 
     /**
@@ -130,41 +132,48 @@ class InvestorController extends Controller
      *
      * @return void
      */
-    public function keuangan() {
-        return view('user.manager.investor.keuangan');
+    public function keuangan(Request $request) {
+        $bulan = $request->query('bulan');
+        $tahun = $request->query('tahun');
+
+        $keuntunganKotor = 0;
+        $keuntunganKotorBulan = 0;
+        $convertBulan = [];
+        $pengeluaran = 0;
+        $cek = '';
+        $laba = 0;
+
+        try {
+            if ($bulan == '' || $tahun == '') {
+                $cek = 'kosong';
+                $keuntunganKotor = Investor::keuntunganKotor();
+                // dd($keuntunganKotor);
+                foreach ($keuntunganKotor as $data) {
+                    array_push($convertBulan, convertBulan($data->month).' '.$data->year);
+                }
+
+                $pengeluaran = Investor::totalPengeluaran();
+                $laba = Investor::keuntunganBersih($keuntunganKotor);
+            } else {
+                $cek = 'terisi';
+                $keuntunganKotorBulan = Investor::keuntunganBulan($bulan, $tahun);
+                array_push($convertBulan, convertBulan($keuntunganKotorBulan->pluck('month')[0]).' '.$keuntunganKotorBulan->pluck('year')[0]);
+
+                $transaksi_masuk = Investor::pengeluaranBulanTransaksi($bulan, $tahun)->pluck('nominal')[0];
+                $operasional = Investor::pengeluaranBulanOperasional($bulan, $tahun)->pluck('nominal')[0];
+                // total pengeluaran
+                $pengeluaran = Investor::totalPengeluaranBulan($transaksi_masuk, $operasional);
+
+                $laba = Investor::keuntunganBersihBulan($keuntunganKotorBulan->pluck('nominal')[0], $transaksi_masuk, $operasional);
+            }
+            // dd($cek, $convertBulan, $keuntunganKotorBulan, $pengeluaran, $laba);
+
+            return view('user.manager.investor.keuangan', compact('cek' ,'keuntunganKotor', 'keuntunganKotorBulan', 'convertBulan', 'pengeluaran', 'laba'));
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with(['error' => $e->getMessage()]);
+        }
     }
 
 
 }
-// $tahun = 2019;
-
-        // $rugi = DB::table('transaksi_bayar')
-        // ->select('transaksi_bayar.created_at', DB::raw('sum(transaksi_bayar.nominal) as nominal, YEAR(transaksi_bayar.created_at) year, MONTH(transaksi_bayar.created_at) month'))
-        // ->orderBy('nominal', 'asc')
-        // ->groupBy('month', 'year')
-        // ->get();
-
-        // $arr = [];
-
-        // for ($i = 0; $i < count($rugi); $i++) {
-        //     array_push($arr, $rugi[$i]);
-        // }
-
-        // $fixBulan = collect($arr)->map(function ($item, $key) {
-        //     return $item;
-        // });
-
-        // $transaksi = TransaksiBayar::where(DB::raw(
-        //     "(DATE_FORMAT(created_at,'%Y'))"), date('Y'))->get();
-
-
-         // $rugi = TransaksiBayar::where()
-        // dd($rugi->pluck('nominal'));
-        // $chart = Charts::multiDatabase('bar', 'highcharts')
-		// 	      ->title("Monthly new Register Users")
-        //           ->elementLabel("Total Users")
-        //           ->colors(['#ff0000', '#fdgdfg'])
-		// 	      ->dimensions(1000, 500)
-        //           ->responsive(true)
-        //         //   ->dataset('untung', collect($arr))
-        //           ->dataset('rugi', $rugi->pluck('nominal'));

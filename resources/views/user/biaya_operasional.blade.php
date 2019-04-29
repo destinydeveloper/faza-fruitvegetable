@@ -4,7 +4,7 @@
 
 
 @push('js')
-    {{-- NProgress --}} 
+    {{-- NProgress --}}
     <script src="{{ asset('assets/vendor/nprogress/nprogress.min.js') }}"></script>
     {{-- Alertify --}}
     <link rel="stylesheet" href="{{ asset('assets/vendor/alertify/css/alertify.min.css') }}">
@@ -49,7 +49,7 @@
         </div>
     </section>
 
-    
+
     {{-- Modal AddNew --}}
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -81,7 +81,7 @@
     </div>
 
 
-    
+
     {{-- Modal AddNew --}}
     <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -114,14 +114,14 @@
 @stop
 
 @push('meta')
-    <meta name="api" content="{{ route('user.biaya_operasional') }}">    
-    <meta name="assets" content="{{ asset('assets') }}">    
+    <meta name="api" content="{{ route('user.biaya_operasional') }}">
+    <meta name="assets" content="{{ asset('assets') }}">
 @endpush
 
 @push('css')
     {{-- DataTables Bootstrap --}}
     <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/datatables.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/responsive.dataTables.min.css') }}">    
+    <link rel="stylesheet" href="{{ asset('assets/vendor/datatables/responsive.dataTables.min.css') }}">
 @endpush
 
 @push('js')

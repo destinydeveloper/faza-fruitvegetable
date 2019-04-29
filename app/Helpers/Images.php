@@ -14,7 +14,7 @@ class Images {
     {
         return self::$errors;
     }
-    
+
     public static function upload($requestFile, $title = null, $description = null, $dimension = null, $mergeDimension = false)
     {
         $path = public_path(env('RESOURCE_IMAGES_PATH', 'assets/images/'));
@@ -28,11 +28,11 @@ class Images {
         if (!$request->has($requestFile)) return Redirect::back()->withErrors([$requestFile, 'File Image '.$requestFile."Not Found"]);
 
         $request->validate([
-            $requestFile => 'mimes:'.$mimes.'|max:'.$max_size,            
+            $requestFile => 'mimes:'.$mimes.'|max:'.$max_size,
         ]);
 
         if ($dimension !== null and $mergeDimension == false) $dimensions = $dimension;
-        if ($dimension !== null and $mergeDimension == true) 
+        if ($dimension !== null and $mergeDimension == true)
         {
             $dimensions = explode('|', $dimensions);
             $dimension = explode('|', $dimension);
@@ -66,7 +66,7 @@ class Images {
                 $constraint->upsize();
             });
             $img->crop($row[0], $row[1]);
-            
+
             $canvas->insert($resizeImage, 'center');
             self::checkPath($path . '/' . $row[0] . 'x' . $row[1]);
             $canvas->save($path . '/' . $row[0] . 'x' . $row[1] . '/' . $fileName);
@@ -102,10 +102,10 @@ class Images {
         if (!$request->has($requestFile)) return Redirect::back()->withErrors([$requestFile, 'File Image '.$requestFile."Not Found"]);
 
         $request->validate([
-            $requestFile.'.*' => 'mimes:'.$mimes.'|max:'.$max_size,            
+            $requestFile.'.*' => 'mimes:'.$mimes.'|max:'.$max_size,
         ]);
         if ($dimension !== null and $mergeDimension == false) $dimensions = $dimension;
-        if ($dimension !== null and $mergeDimension == true) 
+        if ($dimension !== null and $mergeDimension == true)
         {
             $dimensions = explode('|', $dimensions);
             $dimension = explode('|', $dimension);
@@ -115,7 +115,7 @@ class Images {
         }
 
         $dimensions = explode('|', $dimensions);
-        
+
         foreach ($files as $file) {
 
             $fileName = Carbon::now()->timestamp . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
@@ -141,7 +141,7 @@ class Images {
                     $constraint->upsize();
                 });
                 $img->crop($row[0], $row[1]);
-                
+
                 $canvas->insert($resizeImage, 'center');
                 self::checkPath($path . '/' . $row[0] . 'x' . $row[1]);
                 $canvas->save($path . '/' . $row[0] . 'x' . $row[1] . '/' . $fileName);

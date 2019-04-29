@@ -98,21 +98,17 @@ Route::group([
 
     # BUAT INVESTOR
     Route::group(['middleware' => ['role:admin|investor']], function(){
-        Route::group(['prefix' => '/laporan'], function(){
-            // faza.com/laporan/transaksi
-            Route::get('/transaksi', 'LaporanTransaksiController@index')->name('laporan.transaksi');
+        Route::group(['prefix' => '/investor', 'middleware' => ['role:admin|investor']], function() {
+            Route::get('/dashboard', 'InvestorController@dashboard')->name('investor.dashboard');
+            Route::group(['prefix' => '/transaksi-investor'], function() {
+                Route::get('/', 'InvestorController@transaksi_investor')->name('investor.transaksi_investor');
+                Route::get('/input', 'InvestorController@input_transaksi')->name('investor.input_transaksi');
+                Route::post('/input', 'InvestorController@input_save')->name('investor.input_save');
+            });
+            Route::get('/keuangan', 'InvestorController@keuangan')->name('investor.keuangan');
         });
     });
 
-    Route::group(['prefix' => '/investor', 'middleware' => ['role:investor']], function() {
-        Route::get('/dashboard', 'InvestorController@dashboard')->name('investor.dashboard');
-        Route::group(['prefix' => '/transaksi-investor'], function() {
-            Route::get('/', 'InvestorController@transaksi_investor')->name('investor.transaksi_investor');
-            Route::get('/input', 'InvestorController@input_transaksi')->name('investor.input_transaksi');
-            Route::post('/input', 'InvestorController@input_save')->name('investor.input_save');
-        });
-        Route::get('/keuangan', 'InvestorController@keuangan')->name('investor.keuangan');
-    });
 
     Route::get('/notifikasi', 'NotificationController@index')->name('notifikasi');
     Route::post('/notifikasi', 'NotificationController@action')->name('notifikasi.action');

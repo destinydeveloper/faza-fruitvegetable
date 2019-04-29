@@ -73,12 +73,16 @@
     </ul>
     @endhasanyrole
 
+    {{-- Investor --}}
     @hasanyrole('admin|investor')
     <span class="heading">Laporan</span>
     <ul class="list-unstyled">
-        <li id="sidebar-laporan-transaksi"><a href="{{ route('user.laporan.transaksi') }}"><i class="fa fa-envelope-open"></i>Semua Transaksi</a></li>
+        <li id="sidebar-home" class="{{ Request::is('*/dashboard*') ? 'active' : '' }}"><a href="{{ route('user.investor.dashboard') }}"> <i class="fa fa-book"></i>Dashboard </a></li>
+        <li id="sidebar-home" class="{{ Request::is('*/keuangan*') ? 'active' : '' }}"><a href="{{ route('user.investor.keuangan') }}"> <i class="fa fa-money"></i>Laporan Keuangan </a></li>
+        <li id="sidebar-home" class="{{ Request::is('*/transaksi-investor*') ? 'active' : '' }}"><a href="{{ route('user.investor.transaksi_investor') }}"> <i class="fa fa-list-ol"></i>Transaksi </a></li>
     </ul>
     @endhasanyrole
+    {{-- Investor --}}
 
     <span class="heading">Pengaturan</span>
     <ul class="list-unstyled">

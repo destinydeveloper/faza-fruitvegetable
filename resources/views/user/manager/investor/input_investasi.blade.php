@@ -20,7 +20,7 @@
         <form action="{{ route('user.investor.input_save') }}" method="post" class="form-group text-left">
             @csrf
             <label for="nominal">Input Nominal Investasi</label>
-            <input type="number" value="{{old('nominal')}}" placeholder="Masukan nominal investasi" min="50000" step="50000" size="11" autofocus=on name="nominal" id="nominal" class="form-control mb-3" required>
+            <input type="number" name="nominal" id="nominal" class="form-control mb-3" value="{{old('nominal')}}" placeholder="Masukan nominal investasi" min="50000" step="50000" size="11" autofocus=on required>
             <input type="submit" value="Simpan" class="btn btn-success form-control mb-3" onclick="return confirm('Apakah nominal yang anda inputkan sudah benar ?')">
         </form>
     </div>
