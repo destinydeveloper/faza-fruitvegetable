@@ -32,9 +32,9 @@
                         <label style="margin-right: 10px;" for="filter">Filter : </label>
                         <select v-on:change="loadTable()" v-model="filter" class="form-control" id="filter">
                             <option value="semua">Semua</option>
-                            <option value="belum">Belum Dibayar</option>
-                            <option value="sudah">Sudah Dibayar</option>
-                            <option value="cod">COD</option>
+                            <option value="belum">Kirim Barang - Belum Kirim Bukti</option>
+                            <option value="sudah">Kirim Barang - Sudah Kirim Bukti</option>
+                            <option value="cod">Cash On Delivery</option>
                         </select>
                         <span style="margin-left: 10px;">
                             <button v-on:click="refreshTable()" title="Refresh" class="btn btn-sm btn-warning">
@@ -129,11 +129,15 @@
                             <div class="form">
                                 <div class="form-group">
                                     <label>Bukti Pembayaran :</label>
-                                    <div>Belum Ada</div>
+                                    <div v-if="transaksi.bukti.length == 0">Tidak ada</div>
+                                    <div v-else>
+                                            <img v-bind:src="'{{ asset('assets/images/original/') }}/' + transaksi.bukti[0].path" class="responsive-img" style="max-height:250px;">
+                                    </div>
                                 </div>
                             </div>
                             <hr>
                             <div class="form">
+                                <h4>Konfirmasi Pembayaran Pelanggan</h4>
                                 <div class="form-group">
                                     <label>Nominal</label>
                                     <input v-model="nominal" type="text" class="form-control">
@@ -161,6 +165,13 @@
                                     <td>@{{ rupiah(item.harga) }}</td>
                                     <td>@{{ item.stok }}</td>
                                     <td>@{{ item.catatan }}</td>
+                                </tr>
+                                <tr>
+                                    <td><b>Total : </b></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>@{{ rupiah(totalhargabarang) }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -241,6 +252,7 @@
             nominal: 0,
             id: null,
             catatan: '',
+            totalhargabarang: 0
         },
         methods: {
             rupiah(angka) {
@@ -323,6 +335,13 @@
                     if (res.data.status == 'success') {
                         app.id = res.data.result.id;
                         app.transaksi = res.data.result;
+                        let barangs = app.transaksi.barangs;
+                        let ttl = 0;
+                        barangs.forEach(function(item){
+                            ttl = ttl + item.barang.harga * item.stok;                    
+                        });
+                        app.totalhargabarang = ttl;
+                        app.nominal = ttl;
                         $('#konfirmasiModal').modal('show');
                     } else {
                         alertify.error(res.data.error);

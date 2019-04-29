@@ -67,4 +67,9 @@ class Transaksi extends Model
     {
         return $this->hasOne('App\Models\TransaksiBatal');
     }
+    
+    public function bukti()
+    {
+        return $this->belongsToMany('App\Models\Gambar', 'App\Models\TransaksiBukti');
+    }
 }

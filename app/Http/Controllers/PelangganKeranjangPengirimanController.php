@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Transaksi;
+
 class PelangganKeranjangPengirimanController extends Controller
 {
     public function index(Request $request)
@@ -60,7 +62,6 @@ class PelangganKeranjangPengirimanController extends Controller
             case 'transaksi':
                 $request->validate([ 
                     'metode' => 'required', 
-                    'layanan' => 'required|integer', 
                     'alamat' => 'required' 
                 ]);
                 
@@ -69,10 +70,13 @@ class PelangganKeranjangPengirimanController extends Controller
                 if ($request->input('metode') == 'cod') 
                 {
                     $transaksi = keranjang()->toTransaksi("cod", $request->input('alamat'));
-                    if ( $transaksi === true) return "berhasil";
-                    return $transaksi;
-                    
+                    if ( $transaksi === true) {
+                        $check = Transaksi::whereUserId(Auth()->user()->id)->orderBy('created_at', 'DESC')->first();
+                        return redirect()->route('transaksi.detail', ['kode' => $check->kode]);
+                    }
+                    return redirect()->back();
                 } else {
+                    $request->validate(['layanan' => 'required|integer']);
                     # CEK ADAKAH EKSPEDISI / VALIDASI
                     $ekspedisi = (array) json_decode(json_encode(Ekspedisi()->get()));
                     if (!isset($ekspedisi[$request->input('metode')])) return response()->json([
@@ -103,11 +107,12 @@ class PelangganKeranjangPengirimanController extends Controller
                     ];
 
                     $transaksi = keranjang()->toTransaksi("kirim barang", $request->input('alamat'), $ekspedisi_detail);
-                    if ( $transaksi === true) return "berhasil";
-                    return $transaksi;
+                    if ( $transaksi === true) {
+                        $check = Transaksi::whereUserId(Auth()->user()->id)->orderBy('created_at', 'DESC')->first();
+                        return redirect()->route('transaksi.detail', ['kode' => $check->kode]);
+                    }
+                    return redirect()->back();
                 }
-
-                dd($request->all());
                 break;
         }
         return abort(404);

@@ -24,6 +24,7 @@ class TransaksiBarangSiapController extends Controller
             ->whereMetode('kirim barang')
             ->doesntHave('track')
             ->doesntHave('batal')
+            ->doesntHave('berhasil')
             ->has('dikonfirmasi');
         
         return DataTables::of($query->orderBy('created_at', 'DESC'))
@@ -35,11 +36,12 @@ class TransaksiBarangSiapController extends Controller
                 $transaksi_id = $u->id;
                 $transaksi_kode = $u->kode;
                 $delete = $u->dikonfirmasi->id.", '$transaksi_kode'";
+                $act = "'$transaksi_kode'";
                 return '
                     <button onclick="app.delete('.$delete.')" class="btn btn-xs btn-danger" title="Batalkan Konfirmasi" data-toggle="tooltip" data-placement="top" title="Tolak Konfirmasi">
                         <i class="fa fa-fw fa-chevron-left"></i>
                     </button>
-                    <button onclick="app.kirim('.$transaksi_id.')" class="btn btn-xs btn-success" title="Kirim ke Penerima" data-toggle="tooltip" data-placement="top" title="Kirim ke Penerima">
+                    <button onclick="app.kirim('.$transaksi_id.', '.$act.')" class="btn btn-xs btn-success" title="Kirim ke Penerima" data-toggle="tooltip" data-placement="top" title="Kirim ke Penerima">
                         <i class="fa fa-fw fa-chevron-right"></i>
                     </button>
                     <button onclick="app.detail('.$transaksi_id.')" class="btn btn-xs btn-info" title="Detail Transaksi"  data-toggle="tooltip" data-placement="top" title="Detail Transaksi">
@@ -60,7 +62,7 @@ class TransaksiBarangSiapController extends Controller
                 $request->validate([ 'id' => 'required|integer' ]);
                 return response()->json([
                     'status' => 'success',
-                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat', 'ekspedisi')
+                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat', 'ekspedisi', 'bukti')
                                 ->findOrFail($request->input('id'))
                 ]);
                 break;
@@ -71,7 +73,7 @@ class TransaksiBarangSiapController extends Controller
                 // return $request->input('id');
                 $result = \App\Models\TransaksiTrack::create([
                     "transaksi_id" => $request->input('id'),
-                    "status" => "Proses Pengemasan"
+                    "status" => "Proses Pengiriman"
                 ]);
                 return response()->json([
                     'status' => 'success',

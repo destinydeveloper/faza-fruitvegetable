@@ -2,6 +2,7 @@
 @section('title', 'Kirim Barang - Faza')
 
 @section('content')
+
     <!--start container-->
     <div class="container" style="padding: 0 0.5rem;
     margin: 0 auto;
@@ -9,6 +10,9 @@
     width: 98%;">
         <div class="section">
             <div class="row">
+                @if($errors->any())
+                <h4>{{ $errors->first() }}</h4>
+                @endif
                 <div class="col l8">
                     <div class="card">
                         <div class="card-action">
@@ -147,7 +151,7 @@
                         </div>
                         <div class="card-action">
                             <a href="{{ route('homepage') }}" class="waves-effect waves-light btn-flat">Batal</a>
-                                <a onclick="event.preventDefault();document.getElementById('transaksi-form').submit();" @click="alert('ashiap');" :disabled="(alamat == null || metode == null || layanan == null) && (alamat == null || metode != 'cod') " href="javascript:void();" class="waves-effect waves-light btn right">Proses Transaksi</a>
+                                <a onclick="event.preventDefault();document.getElementById('transaksi-form').submit();" :disabled="(alamat == null || metode == null || layanan == null) && (alamat == null || metode != 'cod') " href="javascript:void();" class="waves-effect waves-light btn right">Proses Transaksi</a>
                             @{{ metode }} - @{{ layanan }} - @{{ alamat_id }}
                         </div>
                     </div>

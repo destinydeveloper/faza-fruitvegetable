@@ -36,12 +36,12 @@ class TransaksiPermintaanController extends Controller
             case 'belum':
                 $query = $query
                     ->where('metode', 'kirim barang')
-                    ->doesntHave('bayar');
+                    ->doesntHave('bukti');
                 break;
 
             case 'sudah':
                 $query = $query->where('metode', 'kirim barang')
-                    ->has('bayar');
+                    ->has('bukti');
                 break;
 
             case 'cod':
@@ -80,7 +80,7 @@ class TransaksiPermintaanController extends Controller
                 $request->validate([ 'id' => 'required|integer' ]);
                 return response()->json([
                     'status' => 'success',
-                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat', 'ekspedisi')
+                    'result' => Transaksi::with('barangs', 'barangs.barang', 'bayar', 'user', 'alamat', 'ekspedisi', 'bukti')
                                 ->findOrFail($request->input('id'))
                 ]);
                 break;
