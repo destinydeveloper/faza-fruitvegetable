@@ -113,7 +113,7 @@
                                         <input v-model="berat" type="text" class="form-control" placeholder="Berat">
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <input v-model="satuan_berat" type="text" class="form-control" placeholder="Satuan..kg,gram">
+                                        <input v-bind:value="satuan_berat" type="text" class="form-control" placeholder="Satuan..kg,gram" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -205,7 +205,7 @@
                                         <input v-model="berat" type="text" class="form-control" placeholder="Berat">
                                     </div>
                                     <div class="form-group col-md-4">
-                                        <input v-model="satuan_berat" type="text" class="form-control" placeholder="Satuan..kg,gram">
+                                        <input v-bind:value="satuan_berat" type="text" class="form-control" placeholder="Satuan..kg,gram" readonly>
                                     </div>
                                 </div>
                             </div>
@@ -266,7 +266,7 @@
             harga: '',
             berat: '',
             stok: '',
-            satuan_berat: '',
+            satuan_berat: 'kg',
             satuan_stok: '',
             id: null,
             status: '',
