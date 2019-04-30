@@ -13,13 +13,6 @@
         <li id="sidebar-notifikasi"><a href="{{ route('user.notifikasi') }}"> <i class="fa fa-bell"></i>Notifikasi </a></li>
     </ul>
 
-    @hasanyrole('admin|pengepak|kurir|supervisor')
-    <span class="heading">Transaksi</span>
-    <ul class="list-unstyled">
-        <li id="sidebar-biaya-operasional"><a href="{{ route('user.biaya_operasional') }}"><i class="fa fa-money"></i>Biaya Operasional</a></li>
-    </ul>
-    @endhasanyrole
-
     @hasanyrole('admin|pengepak|kurir')
     <span class="heading">Transaksi</span>
     <ul class="list-unstyled">
@@ -71,6 +64,7 @@
         <li id="sidebar-manager-gajikaryawan"><a href="{{ route('user.manager.gajikaryawan') }}"> <i class="fa fa-users"></i>Gaji Karyawan </a></li>
         <li id="sidebar-manager-rekening"><a href="{{ route('user.manager.rekening') }}"> <i class="fa fa-credit-card"></i>Rekening </a></li>
         @endhasanyrole
+        <li id="sidebar-biaya-operasional"><a href="{{ route('user.biaya_operasional') }}"><i class="fa fa-money"></i>Biaya Operasional</a></li>
     </ul>
     @endhasanyrole
 

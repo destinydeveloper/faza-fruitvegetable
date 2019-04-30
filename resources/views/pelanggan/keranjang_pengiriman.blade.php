@@ -151,8 +151,7 @@
                         </div>
                         <div class="card-action">
                             <a href="{{ route('homepage') }}" class="waves-effect waves-light btn-flat">Batal</a>
-                                <a onclick="event.preventDefault();document.getElementById('transaksi-form').submit();" :disabled="(alamat == null || metode == null || layanan == null) && (alamat == null || metode != 'cod') " href="javascript:void();" class="waves-effect waves-light btn right">Proses Transaksi</a>
-                            @{{ metode }} - @{{ layanan }} - @{{ alamat_id }}
+                            <a onclick="event.preventDefault();document.getElementById('transaksi-form').submit();" :disabled="(alamat == null || metode == null || layanan == null) && (alamat == null || metode != 'cod') " href="javascript:void();" class="waves-effect waves-light btn right">Proses Transaksi</a>
                         </div>
                     </div>
                     <form id="transaksi-form" action="{{ route('keranjang.pengiriman') }}" method="POST" style="display: none;">
