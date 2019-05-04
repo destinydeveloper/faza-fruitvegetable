@@ -79,6 +79,14 @@
     @endhasanyrole
     {{-- Investor --}}
 
+    {{-- Investor --}}
+    @hasanyrole('admin')
+    <span class="heading">Halaman</span>
+    <ul class="list-unstyled">
+        <li class="{{ Request::is('*/halaman/bantuan*') ? 'active' : '' }}"><a href="{{ route('user.halaman.bantuan') }}"> <i class="fa fa-list-ol"></i>Bantuan</a></li>
+    </ul>
+    @endhasanyrole
+
     <span class="heading">Pengaturan</span>
     <ul class="list-unstyled">
         <li id="sidebar-alamat"><a href="{{ route('user.alamat') }}"> <i class="fa fa-map"></i>Alamat Editor </a></li>
