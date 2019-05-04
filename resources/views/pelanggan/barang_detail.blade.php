@@ -45,7 +45,7 @@
                                             </tr>
                                             <tr>
                                                 <td>Berat</td>
-                                                <td>{{ $barang->berat }} kg</td>
+                                                <td>{{ $barang->berat }} gram</td>
                                             </tr>
                                             <tr>
                                                 <td>Jenis</td>

@@ -119,7 +119,7 @@
                                                 </div>
                                                 <div>
                                                     <span>Berat</span>
-                                                    <span style="float: right;"><b><span>@{{ item.barang.berat }} kg</span></b></span>
+                                                    <span style="float: right;"><b><span>@{{ item.barang.berat }} gram</span></b></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -145,7 +145,7 @@
                                 </div>
                                 <div>
                                     <span>Total Berat</span>
-                                    <span style="float: right;"><b><span>@{{ totalberat }} kg</span></b></span>
+                                    <span style="float: right;"><b><span>@{{ totalberat }} gram</span></b></span>
                                 </div>
                             </div>
                         </div>
@@ -278,7 +278,7 @@
                     berat: app.totalberat,
                     alamat: app.alamats[app.alamat].alamat
                 };
-                axios.post('/', params).then(function(res){
+                axios.post('', params).then(function(res){
                     app.loadingMetode = false;
                     app.loadDone();
                     if (res.data.status == 'success') {

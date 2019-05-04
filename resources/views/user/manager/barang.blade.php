@@ -266,7 +266,7 @@
             harga: '',
             berat: '',
             stok: '',
-            satuan_berat: 'kg',
+            satuan_berat: 'gram',
             satuan_stok: '',
             id: null,
             status: '',

@@ -15,7 +15,7 @@ class CreateTransaksiKonfirmasiTable extends Migration
     {
         Schema::create('transaksi_konfirmasi', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('transaksi_id')->unsiged();
+            $table->integer('transaksi_id')->unsigned()->nullable(); 
             $table->timestamps();
         });
     }

@@ -206,7 +206,7 @@
             delete(id){
                 app.loadStart();
                 app.loadingDel = true;  
-                axios.post('/', {action: 'delete', 'id': id}).then(function(res){
+                axios.post('', {action: 'delete', 'id': id}).then(function(res){
                     if (res.data.status == 'success') {
                         app.getKeranjang();
                     } else {
@@ -229,7 +229,7 @@
             destroy(){
                 app.loadStart();
                 app.loadingDel = true;  
-                axios.post('/', {action: 'destroy'}).then(function(res){
+                axios.post('', {action: 'destroy'}).then(function(res){
                     if (res.data.status == 'success') {
                         app.getKeranjang();
                     } else {
@@ -251,7 +251,7 @@
             },
             updateStok(id, stok){
                 app.loadStart();
-                axios.post('/', {action: 'updateStok', 'id': id, 'stok': stok}).then(function(res){
+                axios.post('', {action: 'updateStok', 'id': id, 'stok': stok}).then(function(res){
                     if (res.data.status == 'success') {
                     } else {
                         alertify.error("Failed: update stock");
