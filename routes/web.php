@@ -116,6 +116,11 @@ Route::group([
         });
     });
 
+    Route::group(['middleware' => ['role:admin'], 'prefix' => 'halaman'], function(){
+        Route::get('/bantuan', 'HalamanBantuanController@index')->name('halaman.bantuan');
+        Route::get('/bantuan/baru', 'HalamanBantuanController@baru')->name('halaman.bantuan.baru');
+    });
+
 
     Route::get('/notifikasi', 'NotificationController@index')->name('notifikasi');
     Route::post('/notifikasi', 'NotificationController@action')->name('notifikasi.action');

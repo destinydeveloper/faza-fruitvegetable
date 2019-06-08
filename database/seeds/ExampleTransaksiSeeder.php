@@ -20,8 +20,8 @@ class ExampleTransaksiSeeder extends Seeder
 
         #### BUAT BARANG BARU
         // Nambah Barang
-        $this->tambahBarang("Tomat", "buah", 1000, 10, 10, "gram", "sak");
-        $this->tambahBarang("Kangkung", "sayur", 25000, 10, 10, "gram", "ikat");
+        $this->tambahBarang("Tomat", "buah", 1000, 10, 10, "kg", "sak");
+        $this->tambahBarang("Kangkung", "sayur", 25000, 10, 10, "kg", "ikat");
 
         
         #### TRANSAKSI KELUAR

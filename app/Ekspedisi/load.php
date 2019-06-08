@@ -1,8 +1,8 @@
 <?php
 $allEkspedisi = [
     'jne' => '\App\Ekspedisi\Jne',
-    'tiki' => '\App\Ekspedisi\Tiki',
-    'pos' => '\App\Ekspedisi\Pos'
+    // 'tiki' => '\App\Ekspedisi\Tiki',
+    // 'pos' => '\App\Ekspedisi\Pos'
 ];
 
 /*

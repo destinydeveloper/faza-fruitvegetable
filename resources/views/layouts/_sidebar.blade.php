@@ -13,13 +13,6 @@
         <li id="sidebar-notifikasi"><a href="{{ route('user.notifikasi') }}"> <i class="fa fa-bell"></i>Notifikasi </a></li>
     </ul>
 
-    @hasanyrole('admin|pengepak|kurir|supervisor')
-    <span class="heading">Transaksi</span>
-    <ul class="list-unstyled">
-        <li id="sidebar-biaya-operasional"><a href="{{ route('user.biaya_operasional') }}"><i class="fa fa-money"></i>Biaya Operasional</a></li>
-    </ul>
-    @endhasanyrole
-
     @hasanyrole('admin|pengepak|kurir')
     <span class="heading">Transaksi</span>
     <ul class="list-unstyled">
@@ -71,6 +64,7 @@
         <li id="sidebar-manager-gajikaryawan"><a href="{{ route('user.manager.gajikaryawan') }}"> <i class="fa fa-users"></i>Gaji Karyawan </a></li>
         <li id="sidebar-manager-rekening"><a href="{{ route('user.manager.rekening') }}"> <i class="fa fa-credit-card"></i>Rekening </a></li>
         @endhasanyrole
+        <li id="sidebar-biaya-operasional"><a href="{{ route('user.biaya_operasional') }}"><i class="fa fa-money"></i>Biaya Operasional</a></li>
     </ul>
     @endhasanyrole
 
@@ -84,6 +78,14 @@
     </ul>
     @endhasanyrole
     {{-- Investor --}}
+
+    {{-- Investor --}}
+    @hasanyrole('admin')
+    <span class="heading">Halaman</span>
+    <ul class="list-unstyled">
+        <li class="{{ Request::is('*/halaman/bantuan*') ? 'active' : '' }}"><a href="{{ route('user.halaman.bantuan') }}"> <i class="fa fa-list-ol"></i>Bantuan</a></li>
+    </ul>
+    @endhasanyrole
 
     <span class="heading">Pengaturan</span>
     <ul class="list-unstyled">

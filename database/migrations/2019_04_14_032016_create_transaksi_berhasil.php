@@ -15,7 +15,7 @@ class CreateTransaksiBerhasil extends Migration
     {
         Schema::create('transaksi_berhasil', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('transaksi_id')->unsiged();
+            $table->integer('transaksi_id')->unsigned()->nullable(); 
             $table->string('penerima');
             $table->string('pengantar');
             $table->timestamps();
