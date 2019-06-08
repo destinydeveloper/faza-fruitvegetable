@@ -22,7 +22,7 @@ class NotificationController extends Controller
             case 'getall':
                 return $this->getAll();
                 break;
-            
+
             case 'getnavbar':
                 return response()->json([
                     'status' => 'success',

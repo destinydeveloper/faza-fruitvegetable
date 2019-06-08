@@ -24,8 +24,8 @@
                                 <p class="mb-1">{{ $item->content }}</p>
                               </a>
                         @endforeach
-                    </div>     
-                    <div v-for="(item, i) in notif" class="list-group" v-else>  
+                    </div>
+                    <div v-for="(item, i) in notif" class="list-group" v-else>
                         <a v-bind:href="item.url" class="list-group-item list-group-item-action"
                             v-bind:class="getClass(item.read)">
                             <div class="d-flex w-100 justify-content-between">
@@ -49,8 +49,8 @@
 @endsection
 
 @push('meta')
-    <meta name="api" content="{{ route('user.notifikasi') }}">    
-    <meta name="assets" content="{{ asset('assets') }}">    
+    <meta name="api" content="{{ route('user.notifikasi') }}">
+    <meta name="assets" content="{{ asset('assets') }}">
 @endpush
 
 @push('js')
@@ -87,6 +87,6 @@
         mounted(){
         },
     });
-    </script>    
+    </script>
 @endpush
 

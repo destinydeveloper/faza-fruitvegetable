@@ -40,7 +40,7 @@ class FazaInstall extends Command
         $this->showHeader();
         $this->line("Melakukan perintah ini akan menyiapkan");
         $this->line("faza ini ke fresh project yang siap digunakan.");
-        
+
         $askbeforeinstall = $this->option('custom');
         if (!$this->option('force')) {
             $continueInstal = $this->confirm('Lanjutkan?');
@@ -62,7 +62,7 @@ class FazaInstall extends Command
                 $this->call("db:seed", ['--class' => 'IndoRegionRegencySeeder']);
                 $this->call("db:seed", ['--class' => 'IndoRegionVillageSeeder']);
             }
-            
+
 
             if ($this->confirm('Lakukan Seeder Untuk Sample Transaksi?')) {
                 $this->titleStep("Run Command - Seeder [ExamlpeTransaksi]");

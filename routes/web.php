@@ -56,8 +56,8 @@ Route::group([
             Route::post('/gaji-karyawan', 'ManagerGajiKaryawanController@action')->name('manager.gajikaryawan.action');
 
             // Manager Rekening
-            Route::get('/rekening', 'RekeningController@index')->name('manager.rekening');    
-            Route::post('/rekening', 'RekeningController@action')->name('manager.rekening.action');    
+            Route::get('/rekening', 'RekeningController@index')->name('manager.rekening');
+            Route::post('/rekening', 'RekeningController@action')->name('manager.rekening.action');
         });
 
         Route::group(['middleware' => ['role:admin|pengepak']], function(){
@@ -104,7 +104,7 @@ Route::group([
     });
 
     # BUAT INVESTOR
-    Route::group(['middleware' => ['role:admin|investor']], function(){
+    Route::group(['middleware' => ['role:admin|investor']], function() {
         Route::group(['prefix' => '/investor', 'middleware' => ['role:admin|investor']], function() {
             Route::get('/dashboard', 'InvestorController@dashboard')->name('investor.dashboard');
             Route::group(['prefix' => '/transaksi-investor'], function() {
