@@ -48,6 +48,7 @@
             {!! $chart->container() !!}
         </div>
     </div>
+
 @endsection
 
 @push('js')

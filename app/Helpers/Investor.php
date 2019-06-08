@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 use DB;
+use Illuminate\Support\Collection;
 
 Class Investor {
 
@@ -26,34 +27,56 @@ Class Investor {
             $a = 'harga';
         }
 
-        $pengeluaran = DB::table($namaTabel)
-            ->select(DB::raw(''.$namaTabel.'.created_at ,sum('.$namaTabel.'.'.$a.') as nominal, YEAR('.$namaTabel.'.created_at) year, MONTH('.$namaTabel.'.created_at) month'))
-            ->groupBy('month', 'year')
-            ->orderBy('year', 'asc')
-            ->orderBy('month', 'asc')
-            ->get();
+        try {
+            $pengeluaran = DB::table($namaTabel)
+                ->select(DB::raw(''.$namaTabel.'.created_at ,sum('.$namaTabel.'.'.$a.') as nominal, YEAR('.$namaTabel.'.created_at) year, MONTH('.$namaTabel.'.created_at) month'))
+                ->groupBy('month', 'year')
+                ->orderBy('year', 'asc')
+                ->orderBy('month', 'asc')
+                ->get();
 
-        return $pengeluaran;
+            return $pengeluaran;
+
+        } catch (\Exception $e) {
+            return 0;
+        }
     }
 
     // Menghitung total transaksi
     public static function totalPengeluaran() {
-        $dataArr = 0;
-        $pengeluaran = [];
+            $dataArr = 0;
+            $pengeluaran = [];
 
-        foreach (self::pengeluaran('transaksi_masuk')->pluck('nominal') as $i => $transaksi) {
-            if (empty(self::pengeluaran('biaya_operasional')->pluck('nominal')[$i])) {
-                $dataArr = 0;
+        try {
+            if (self::pengeluaran('transaksi_masuk')->pluck('nominal')->isEmpty()) {
+                foreach (self::pengeluaran('biaya_operasional')->pluck('nominal') as $i => $transaksi) {
+                    if (empty(self::pengeluaran('transaksi_masuk')->pluck('nominal')[$i])) {
+                        $dataArr = 0;
+                    } else {
+                        $dataArr = self::pengeluaran('transaksi_masuk')->pluck('nominal')[$i];
+                    }
+
+                    array_push($pengeluaran, $transaksi + $dataArr);
+
+                    $i++;
+                }
             } else {
-                $dataArr = self::pengeluaran('biaya_operasional')->pluck('nominal')[$i];
+                foreach (self::pengeluaran('transaksi_masuk')->pluck('nominal') as $i => $transaksi) {
+                    if (empty(self::pengeluaran('biaya_operasional')->pluck('nominal')[$i])) {
+                        $dataArr = 0;
+                    } else {
+                        $dataArr = self::pengeluaran('biaya_operasional')->pluck('nominal')[$i];
+                    }
+
+                    array_push($pengeluaran, $transaksi + $dataArr);
+
+                    $i++;
+                }
             }
+            return $pengeluaran;
+        } catch (\Exception $e) {
 
-            array_push($pengeluaran, $transaksi + $dataArr);
-
-            $i++;
         }
-
-        return $pengeluaran;
     }
 
     // Total Investasi terakhir
@@ -67,38 +90,75 @@ Class Investor {
 
     // keuntungan per bulan
     public static function keuntunganBulan($bulan, $tahun) {
-        $keuntungan_bulan = DB::table('transaksi_barang')
-            ->select(DB::raw('transaksi_barang.created_at ,sum(transaksi_barang.harga) as nominal, YEAR(transaksi_barang.created_at) year, MONTH(transaksi_barang.created_at) month'))
-            ->groupBy('month', 'year')
-            ->having('month', '=', $bulan)
-            ->having('year', '=', $tahun)
-            ->get();
+        try {
+            $keuntungan_bulan = DB::table('transaksi_barang')
+                ->select(DB::raw('transaksi_barang.created_at ,sum(transaksi_barang.harga) as nominal, YEAR(transaksi_barang.created_at) year, MONTH(transaksi_barang.created_at) month'))
+                ->groupBy('month', 'year')
+                ->having('month', '=', $bulan)
+                ->having('year', '=', $tahun)
+                ->get();
 
-        return $keuntungan_bulan;
+                if ($keuntungan_bulan->isEmpty()) {
+                    $data = collect([
+                        ['nominal' => 0]
+                    ]);
+                    return $data;
+                } else {
+                    return $keuntungan_bulan;
+                }
+
+            } catch (\Exception $e) {
+
+            }
     }
 
     // pengeluaran transaksi masuk per bulan
     public static function pengeluaranBulanTransaksi($bulan, $tahun) {
-        $pengeluaran_bln = DB::table('transaksi_masuk')
-            ->select(DB::raw('transaksi_masuk.created_at ,sum(transaksi_masuk.harga) as nominal, YEAR(transaksi_masuk.created_at) year, MONTH(transaksi_masuk.created_at) month'))
-            ->groupBy('month', 'year')
-            ->having('month', '=', $bulan)
-            ->having('year', '=', $tahun)
-            ->get();
+        try {
+            $pengeluaran_bln = DB::table('transaksi_masuk')
+                ->select(DB::raw('transaksi_masuk.created_at ,sum(transaksi_masuk.harga) as nominal, YEAR(transaksi_masuk.created_at) year, MONTH(transaksi_masuk.created_at) month'))
+                ->groupBy('month', 'year')
+                ->having('month', '=', $bulan)
+                ->having('year', '=', $tahun)
+                ->get();
 
-        return $pengeluaran_bln;
+            if ($pengeluaran_bln->isEmpty()) {
+                $data = collect([
+                    ['nominal' => 0]
+                ]);
+                return $data;
+            } else {
+                return $pengeluaran_bln;
+            }
+
+        } catch (\Exception $e) {
+
+        }
     }
 
     // pengeluaran transaksi masuk per bulan
     public static function pengeluaranBulanOperasional($bulan, $tahun) {
-        $pengeluaran_bln = DB::table('biaya_operasional')
-            ->select(DB::raw('biaya_operasional.created_at ,sum(biaya_operasional.biaya) as nominal, YEAR(biaya_operasional.created_at) year, MONTH(biaya_operasional.created_at) month'))
-            ->groupBy('month', 'year')
-            ->having('month', '=', $bulan)
-            ->having('year', '=', $tahun)
-            ->get();
+        try {
+            $data_operasional = DB::table('biaya_operasional')
+                ->select(DB::raw('biaya_operasional.created_at ,sum(biaya_operasional.biaya) as nominal, YEAR(biaya_operasional.created_at) year, MONTH(biaya_operasional.created_at) month'))
+                ->groupBy('month', 'year')
+                ->having('month', '=', $bulan)
+                ->having('year', '=', $tahun)
+                ->get();
 
-        return $pengeluaran_bln;
+            // return $pengeluaran_bln;
+            if ($data_operasional->isEmpty()) {
+                $data = collect([
+                    ['nominal' => 0]
+                ]);
+
+                return $data;
+            } else {
+                return $data_operasional;
+            }
+
+        } catch (\Exception $e) {
+        }
     }
 
     public static function totalPengeluaranBulan($transaksiMasuk, $operasional) {
@@ -138,11 +198,15 @@ Class Investor {
          * Keuntungan_bersih = Keuntungan_kotor - Pengeluaran
          * keuntungan_real = (keuntungan_bersih * 40%) - (keuntungan_bersih * 2,5%)
          */
+        try {
+            $totalPengeluaranBulan = self::totalPengeluaranBulan($transaksiMasuk, $operasional);
+            $keuntunganBersih =  (($keuntunganKotor - $totalPengeluaranBulan) * 40/100) - ((($keuntunganKotor - $totalPengeluaranBulan) * 40/100) * (2.5/100)) ;
 
-        $totalPengeluaranBulan = self::totalPengeluaranBulan($transaksiMasuk, $operasional);
-        $keuntunganBersih =  (($keuntunganKotor - $totalPengeluaranBulan) * 40/100) - ((($keuntunganKotor - $totalPengeluaranBulan) * 40/100) * (2.5/100)) ;
+            return $keuntunganBersih;
 
-        return $keuntunganBersih;
+        } catch (\Exception $e) {
+
+        }
     }
 }
 
